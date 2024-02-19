@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* Start of Buttons */
+
+.main-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  background-image: linear-gradient(110deg, #ff4700, #ffb938, #ffb938, #ff4700);
+  background-position: left;
+  border: 0 solid rgb(255, 255, 255, 0.5);
+  background-size: 200% 100%;
+  transition: background-position 0.5s, background-size 0.5s, border-width 0.2s;
+  color: white;
+  height: 3rem;
+  width: 9rem;
+}
+
+.main-btn:hover {
+  font-family: 'Poppins', sans-serif ;
+  color: white;
+  font-weight: 300;
+  background-position: right;
+  background-size: 200% 100%;
+  border-width: 0;
+}
+
+.main-btn:active{
+  border-width: 5px;
+}
+
+/* End of Buttons */
+
+/* Start of Footer */
+
+.footer-wrap{
+  background-color: #12141c;
+}
+
+.footer-content{
+  margin: 0 11% 0 11%;
+  padding-top: 1%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 1%;
+  color: white;
+}
+
+.twentyXX{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: #fff;
+  font-size: 1rem;
+  text-align: justify;
+  margin: 2% 0%;
+}
+
+.copyleft{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: #fff;
+  padding-bottom: 2%;
+  font-size: 1rem;
+  justify-content: center;
+  text-align: justify;
+}
+
+.flex-footer{
+  display: flex;
+  justify-content: center;
+}
+
+/* End of Footer */
