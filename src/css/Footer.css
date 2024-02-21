@@ -5,11 +5,9 @@
   }
   
   .footer-content{
-    margin: 0 11% 0 11%;
-    padding-top: 1%;
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-bottom: 1%;
+    margin: 0 3rem 0 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     color: white;
   }
   
@@ -19,14 +17,14 @@
     color: #fff;
     font-size: 0.7rem;
     text-align: justify;
-    margin: 2% 0%;
+    margin: 1rem;
   }
   
   .copyleft{
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
     color: #fff;
-    padding-bottom: 2%;
+    padding-bottom: 1rem;
     font-size: 0.75rem;
     justify-content: center;
     text-align: justify;
