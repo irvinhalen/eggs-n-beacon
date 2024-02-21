@@ -1,18 +1,15 @@
+/* Start of Navbar */
+
 .navbar{
-    display: flex;
-    justify-content: space-around;
     transition: all 0.5s;
     z-index: 2;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
     background-color: white;
     border: solid 1px lightgray;
     border-left: none;
     border-right: none;
-}
-
-.sticky{
-    position: fixed;
-    top: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
     width: 100%;
 }
+
+/* End of Navbar */

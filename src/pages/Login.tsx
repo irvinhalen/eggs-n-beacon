@@ -20,7 +20,7 @@ function Login() {
                     noValidate
                     autoComplete="off"
                 >
-                    <Card sx={{
+                    <Card elevation={3} sx={{
                         padding: '1rem',
                         height: '90vh',
                         minWidth: '85%'

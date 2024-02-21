@@ -1,0 +1,40 @@
+/* Start of Footer */
+
+.footer-wrap{
+    background-color: #12141c;
+  }
+  
+  .footer-content{
+    margin: 0 11% 0 11%;
+    padding-top: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 1%;
+    color: white;
+  }
+  
+  .twentyXX{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    font-size: 0.7rem;
+    text-align: justify;
+    margin: 2% 0%;
+  }
+  
+  .copyleft{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    padding-bottom: 2%;
+    font-size: 0.75rem;
+    justify-content: center;
+    text-align: justify;
+  }
+  
+  .flex-footer{
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* End of Footer */

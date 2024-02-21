@@ -1,3 +1,4 @@
+import '../css/Footer.css';
 import { useState, useEffect } from "react";
 
 function Footer() {
@@ -15,7 +16,7 @@ function Footer() {
                 <p className='twentyXX'>&copy; {currentYear} Eggs & Beacon, All rights and lefts.</p>
                 <hr />
             </div>
-            </div>
+        </div>
     )
 }
 
