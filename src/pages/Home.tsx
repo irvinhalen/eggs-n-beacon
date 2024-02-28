@@ -1,33 +1,41 @@
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
-// import BarGraph from "../components/BarGraph";
 import TableSoil from "../components/TableBeacon";
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import CardsBeacon from "../components/CardsBeacon";
 import LineChart from "../components/LineChart";
+import { Card } from "react-bootstrap";
 
 function Home() {
   return (
     <>
       <Navbar />
-      <Stack direction='column' bgcolor={'#f4f7f9'}>
-        <Box m={3}>
-          <Typography variant='h2'>
-            Crispy Beacon 🥓
-          </Typography>
-        </Box>
-        <Grid container>
-          <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-            <CardsBeacon />
-          </Grid>
-          <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
-            <LineChart />
-          </Grid>
-        </Grid>
-        <Box display={"flex"} justifyContent={"center"} paddingTop={2} paddingBottom={2}>
-          <TableSoil />
-        </Box>
-      </Stack>
+      <div style={{backgroundColor: '#f4f7f9'}}>
+        <div className='px-3 pt-3 pb-2'>
+          <h1 className='dashboard-text'>DASHBOARD</h1>
+        </div>
+        <div className='container-fluid'>
+          <div className='row'>
+            <div className='col col-sm-12 col-md-6 col-lg-6'>
+              <Card className="shadow-sm border-0 h-100 p-1">
+                <Card.Body>
+                  <Card.Title className="dashboard-text">Daily Eggs and Bacon (Beacon)</Card.Title></Card.Body>
+              </Card>
+            </div>
+            <div className='col col-sm-12 col-md-6 col-lg-6'>
+              <Card className="shadow-sm border-0 p-1">
+                <Card.Body>
+                  <Card.Title className="dashboard-text">Weekly Eggs and Bacon (Beacon)</Card.Title>
+                  <LineChart />
+                </Card.Body>
+              </Card>
+            </div>
+          </div>
+          <div className="row">
+            <Card className="shadow-sm m-2 border-0">
+              <TableSoil />
+            </Card>
+          </div>
+        </div>
+      </div>
       <Footer />
     </> 
   )

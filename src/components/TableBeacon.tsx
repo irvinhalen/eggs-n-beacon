@@ -23,7 +23,7 @@ function TableBeacon() {
         getPeopleList();
     }, [])
   return (
-    <TableContainer component={Paper} elevation={3} sx={{ marginLeft: '1.5rem', marginRight: '1.5rem' }}>
+    <TableContainer component={Paper} elevation={0}>
         <Table aria-label="simple table">
             <TableHead>
             <TableRow>
@@ -54,9 +54,9 @@ function TableBeacon() {
 export default TableBeacon;
 
 const temp_data = [
-    {id: 1, first_name: 'Eggs', last_name: 'Bacon', email: 'Eggs@Bacon.com'},
     {id: 5, first_name: 'Aspin', last_name: 'Puspin', email: 'Aspin@Puspin.net'},
-    {id: 69, first_name: 'Test', last_name: 'Tickles', email: 'testtickles@tt.cum'},
+    {id: 1, first_name: 'Eggs', last_name: 'Bacon', email: 'Eggs@Bacon.com'},
+    {id: 69, first_name: 'Test', last_name: 'Tickles', email: 'tt@page.com'},
     {id: 15, first_name: 'Blue', last_name: 'Wand', email: 'Bluewand@redwang.org'},
-    {id: 8, first_name: 'Deez', last_name: 'Nuts', email: 'deeznuts@mail.com'}
+    {id: 8, first_name: 'Desu', last_name: 'Knots', email: 'desuknots@mail.com'}
 ]
