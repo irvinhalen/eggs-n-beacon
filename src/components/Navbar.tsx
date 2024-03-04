@@ -11,7 +11,9 @@ function Navbar() {
           </div>
           <Link to='Login'>
             <div style={{ paddingRight: '0.75rem' }}>
-              <img width='50rem' alt='Goldman (3D illustration of a person wearing a gold tie and holding a gold suitcase)' src={ goldman } />
+              <div id='avatar-crop' className='shadow-sm'>
+                <img width='50rem' alt='Goldman (3D illustration of a person wearing a gold tie and holding a gold suitcase)' src={ goldman } />
+              </div>
             </div>
           </Link>
         </nav>
