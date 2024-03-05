@@ -4,8 +4,9 @@ import { Box, Stack, Card, CardHeader, CardContent, TextField  } from '@mui/mate
 import { Link } from 'react-router-dom';
 
 function Login() {
+
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid bg-white' style={{ position: 'fixed', zIndex: 3, top: 0 }}>
             <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-6'>
                     <Box

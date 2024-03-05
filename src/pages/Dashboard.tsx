@@ -1,6 +1,4 @@
-import '../css/Home.css';
-import Navbar from "../components/Navbar";
-import Footer from '../components/Footer';
+import '../css/Dashboard.css';
 import Table from "../components/Table";
 import LineChart from "../components/LineChart";
 import PieChart from "../components/PieChart";
@@ -8,7 +6,7 @@ import PieChart from "../components/PieChart";
 // import { getDocs, collection } from 'firebase/firestore';
 // const collectionRef = collection(db, 'collection_name');
 /* Firebase Stuffs are commented out for now */
-function Home() {
+function Dashboard() {
 // const [ collectionList, setCollectionList ] = useState([]);
 /* More Firebase Stuffs ( I'm stuffs! ) */
 // useEffect(() => {
@@ -29,10 +27,9 @@ function Home() {
 // }, [])
   return (
     <>
-      <Navbar />
       <div id='home_main_div'>
         <div className='px-3 pt-3 mb-3'>
-          <h1 className='dashboard-text'>DASHBOARD</h1>
+          <h1 className='main-text'>DASHBOARD</h1>
         </div>
         <div className='container-fluid'>
           <div className='row'>
@@ -50,12 +47,11 @@ function Home() {
           </div>
         </div>
       </div>
-      <Footer />
     </> 
   )
 }
 
-  export default Home
+  export default Dashboard;
 
   const temp_data = [
     {beacon_id: 1, truck_type: '1-Ton', times_pinged_inside: 15, date: '03/17/2024'},

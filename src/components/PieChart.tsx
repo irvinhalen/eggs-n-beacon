@@ -2,7 +2,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import '../css/Home.css';
+import '../css/Dashboard.css';
 
   ChartJS.register(
     ArcElement,
@@ -51,7 +51,7 @@ function PieChart({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_typ
   return (
     <Card className="shadow-sm border-0 p-1" style={{ height: '27rem' }}>
       <Card.Header style={{background: 'none'}}>
-        <Card.Title className="dashboard-text">Daily Amount of Soil <span className="badge-date">2024/03/18</span></Card.Title>
+        <Card.Title className="main-text">Daily Amount of Soil <span className="badge-date">2024/03/18</span></Card.Title>
       </Card.Header>
       <Card.Body style={{ position: 'relative' }}>
         <Pie
@@ -78,7 +78,7 @@ function PieChart({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_typ
         />
       </Card.Body>
       <Card.Footer style={{ borderWidth: 0 }}>
-        <div className="dashboard-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: {dailyTotal}</p></div>
+        <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: {dailyTotal}</p></div>
       </Card.Footer>
     </Card>
   )
