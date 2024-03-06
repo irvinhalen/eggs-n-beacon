@@ -28,8 +28,8 @@ function Table({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_type: 
 export default Table;
 
 const columns = [
-    {title:"ID", field:"beacon_id", width: '15%'},
-    {title:"Weight Capacity of Truck", field:"truck_type", width: '35%'},
-    {title:"Soil Delivery Occurance", field:"times_pinged_inside", width: '25%'},
-    {title:"Date", field:"date", width: '25%'},
-  ];
+  {title:"ID", field:"beacon_id", width: '15%'},
+  {title:"Weight Capacity of Truck", field:"truck_type", width: '35%'},
+  {title:"Soil Delivery Occurance", field:"times_pinged_inside", width: '25%'},
+  {title:"Date", field:"date", width: '25%'},
+];

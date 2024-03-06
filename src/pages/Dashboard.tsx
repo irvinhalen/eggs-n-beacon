@@ -27,7 +27,7 @@ function Dashboard() {
 // }, [])
   return (
     <>
-      <div id='home_main_div'>
+      <div className='main_div'>
         <div className='px-3 pt-3 mb-3'>
           <h1 className='main-text'>DASHBOARD</h1>
         </div>

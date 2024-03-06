@@ -12,22 +12,21 @@
 /* Start of Buttons */
 
 .main-btn {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 300;
+  font-size: x-large;
+  font-weight: 600;
+  padding: 0.5rem 5rem;
   background-image: linear-gradient(110deg, #ff4700, #ffb938, #ffb938, #ff4700);
   background-position: left;
-  border: 0 solid rgb(255, 255, 255, 0.5);
   background-size: 200% 100%;
+  border: 0 solid rgb(255, 255, 255, 0.5);
+  border-radius: 0.25rem;
   transition: background-position 0.5s, background-size 0.5s, border-width 0.2s;
   color: white;
-  height: 3rem;
-  width: 9rem;
+  margin-top: 3rem;
 }
 
 .main-btn:hover {
-  font-family: 'Poppins', sans-serif ;
   color: white;
-  font-weight: 300;
   background-position: right;
   background-size: 200% 100%;
   border-width: 0;

@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
+import ManageSites from './pages/ManageSites';
+import AddSite from './pages/AddSite';
 
 function App() {
 
@@ -15,10 +17,10 @@ function App() {
           <Sidebar />
           <Topbar />
           <Routes>
-            <Route path='/' element={<Dashboard />} />
+            <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/manage-sites' />
-            <Route path='/add-site' />
+            <Route path='/manage-sites' element={<ManageSites />} />
+            <Route path='/add-site' element={<AddSite />} />
             <Route path='/manage-trucks' />
             <Route path='/register-truck' />
           </Routes>

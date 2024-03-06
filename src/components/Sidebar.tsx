@@ -105,49 +105,51 @@ function Sidebar() {
   return (
     <div id='sidebar' className='sidebar shadow main-text'>
         <div className='sidebar-container'>
-            <h2 className='sidebar-title mb-5 text-white'>MENU</h2>
-            <div className='sidebar-list text-white'>
-                <div id='sidebar-information'>
-                    <div className='sidebar-list-header'>
-                        📁 Information
-                    </div>
-                    <Link to='/' style={{ textDecoration: 'none' }}>
-                        <div className={ onDashboard ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateDashboard}>
-                            Dashboard
-                        </div>
-                    </Link>
-                </div>
-                <div id='sidebar-sites'>
-                    <div className='sidebar-list-header'>
-                        🏗️ Sites
-                    </div>
-                    <Link to='/manage-sites' style={{ textDecoration: 'none' }}>
-                        <div className={ onManageSites ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageSites}>
-                            Manage Sites
-                        </div>
-                    </Link>
-                    <Link to='/add-site' style={{ textDecoration: 'none' }}>
-                        <div className={ onAddSite ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateAddSite}>
-                            Add Sites
-                        </div>
-                    </Link>
-                </div>
-            </div>
-            <div id='sidebar-trucks'>
+            <div className='sidebar-elements'>
+                <h2 className='sidebar-title text-white mb-1'>MENU</h2>
                 <div className='sidebar-list text-white'>
-                    <div className='sidebar-list-header'>
-                        🚛 Trucks
+                    <div id='sidebar-information'>
+                        <div className='sidebar-list-header'>
+                            📁 Information
+                        </div>
+                        <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+                            <div className={ onDashboard ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateDashboard}>
+                                Dashboard
+                            </div>
+                        </Link>
                     </div>
-                    <Link to='/manage-trucks' style={{ textDecoration: 'none' }}>
-                        <div className={ onManageTrucks ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageTrucks}>
-                            Manage Trucks
+                    <div id='sidebar-sites'>
+                        <div className='sidebar-list-header'>
+                            🏗️ Sites
                         </div>
-                    </Link>
-                    <Link to='/register-truck' style={{ textDecoration: 'none' }}>
-                        <div className={ onRegisterTruck ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateRegisterTruck}>
-                            Register Truck
+                        <Link to='/manage-sites' style={{ textDecoration: 'none' }}>
+                            <div className={ onManageSites ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageSites}>
+                                Site Management
+                            </div>
+                        </Link>
+                        <Link to='/add-site' style={{ textDecoration: 'none' }}>
+                            <div className={ onAddSite ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateAddSite}>
+                                Site Registration
+                            </div>
+                        </Link>
+                    </div>
+                    <div id='sidebar-trucks'>
+                        <div className='sidebar-list text-white'>
+                            <div className='sidebar-list-header'>
+                                🚛 Trucks
+                            </div>
+                            <Link to='/manage-trucks' style={{ textDecoration: 'none' }}>
+                                <div className={ onManageTrucks ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageTrucks}>
+                                    Truck Management
+                                </div>
+                            </Link>
+                            <Link to='/register-truck' style={{ textDecoration: 'none' }}>
+                                <div className={ onRegisterTruck ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateRegisterTruck}>
+                                    Truck Registration
+                                </div>
+                            </Link>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             </div>
             <Link to='/login' style={{ textDecoration: 'none' }}>

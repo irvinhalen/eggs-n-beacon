@@ -7,4 +7,20 @@
     object-position: right;
 }
 
+.input-div {
+    display: inherit;
+    flex-direction: inherit;
+    gap: 1.5rem;
+    width: 80%;
+}
+
+.card-wrapper {
+    height: 100vh;
+    position: relative;
+}
+
+.login-sub-text {
+    color: #8a8a8a;
+}
+
 /* End of Login */
