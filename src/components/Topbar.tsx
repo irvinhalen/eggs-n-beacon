@@ -1,10 +1,13 @@
 import '../css/Navbar.css';
 import goldman from '../assets/goldman.jpg';
 import temp_logo from '../assets/logo.png'
+import { AuthContextType, useAuth } from '../utils/AuthContext';
 
 function Topbar() {
-
+  const {user} = useAuth() as AuthContextType;
     return (
+      <>
+      {user ? (
         <nav id='topbar' className='navbar main-text'>
           <div style={{ paddingLeft: '0.75rem' }}>
             <img src={temp_logo} alt='Eggs & Beacon' width='35rem' />&nbsp;Eggs & Beacon
@@ -15,6 +18,10 @@ function Topbar() {
             </div>
           </div>
         </nav>
+      ):(
+        ''
+      )}
+      </>
     )
 }
 

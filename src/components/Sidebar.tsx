@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import '../css/Navbar.css';
 import { useEffect, useState } from 'react';
+import { AuthContextType, useAuth } from '../utils/AuthContext';
 
 function Sidebar() {
+    const {user} = useAuth() as AuthContextType;
     const [onDashboard, setOnDashboard] = useState<boolean>(false);
     const [onManageSites, setOnManageSites] = useState<boolean>(false);
     const [onAddSite, setOnAddSite] = useState<boolean>(false);
@@ -103,7 +105,9 @@ function Sidebar() {
     }
 
   return (
-    <div id='sidebar' className='sidebar shadow main-text'>
+    <>
+    {user ? (
+        <div id='sidebar' className='sidebar shadow main-text'>
         <div className='sidebar-container'>
             <div className='sidebar-elements'>
                 <h2 className='sidebar-title text-white mb-1'>MENU</h2>
@@ -112,7 +116,7 @@ function Sidebar() {
                         <div className='sidebar-list-header'>
                             📁 Information
                         </div>
-                        <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+                        <Link to='/' style={{ textDecoration: 'none' }}>
                             <div className={ onDashboard ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateDashboard}>
                                 Dashboard
                             </div>
@@ -159,6 +163,10 @@ function Sidebar() {
             </Link>
         </div>
     </div>
+    ):(
+        ''
+    )}
+    </>
   )
 }
 
