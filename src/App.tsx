@@ -9,10 +9,9 @@ import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import ManageSites from './pages/ManageSites';
 import AddSite from './pages/AddSite';
-import { AuthProvider, useAuth } from './utils/AuthContext';
+import { AuthProvider } from './utils/AuthContext';
 
 function App() {
-
   return (
     <>
       <div>

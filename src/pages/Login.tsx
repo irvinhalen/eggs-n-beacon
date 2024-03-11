@@ -1,34 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState ,useEffect } from 'react';
 import '../css/Login.css';
-import Axios from 'axios';
-import brekkie from '../assets/brekkie.jpg';
+import login_photo from '../assets/login_photo.png';
 import logo from '../assets/logo.png';
 import { TextField } from '@mui/material';
 import { Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { AuthContextType, useAuth } from '../utils/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
-    const {user} = useAuth() as AuthContextType;
-    useEffect(() => {
-        if(user){
-            navigate('/');
-        }
-    }, [])
+    const {user, loginUser} = useAuth() as AuthContextType;
     
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
     const navigate = useNavigate();
 
-    const login = (event:any) => {
+    useEffect(() => {
+      if(user) {
+        navigate('/');
+      }
+    }, [])
+
+    const login = (event: any) => {
         event.preventDefault();
-        Axios.post('http://localhost:3001/api/login', {
-            username: username,
-            password: password
-        }).then((response:any) => {
-            console.log(response);
-            navigate('/');
-        });
+        let userInfo = {username, password}
+        loginUser(userInfo);
     };
 
     return (
@@ -41,11 +37,12 @@ function Login() {
                                 <Card.Title style={{ fontWeight: '700' }}><h1><img src={logo} alt='Eggs & Beacon' height='70rem' />&nbsp;Eggs & Beacon</h1></Card.Title>
                                 <form style={{ display: 'inherit', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
                                     <div className='input-div'>
-                                        <TextField label="Username" variant="outlined" size='medium' onChange={(event) => {setUsername(event.target.value)}} />
-                                        <TextField label="Password" type='password' variant="outlined" size='medium' onChange={(event) => {setPassword(event.target.value)}} />
+                                        <TextField label="Username" variant="outlined" size='small' onChange={(event) => {setUsername(event.target.value)}} />
+                                        <TextField label="Password" type='password' variant="outlined" size='small' onChange={(event) => {setPassword(event.target.value)}} />
                                     </div>
                                     <p className='login-sub-text'>※ A display resolution of FHD (1920 x 1080) or higher is recommended.</p>
-                                    <button onClick={login} className='main-btn'>Login</button>
+                                    <button onClick={login} type='submit' className='main-btn'>Login</button>
+                                    <p className='login-sub-text'>Not registered? <Link to='/register'>Create an Account</Link></p>
                                 </form>
                             </Card.Body>
                         </Card>
@@ -57,7 +54,7 @@ function Login() {
                         maxHeight: '100vh',
                         overflow: 'hidden',
                     }}>
-                        <img src={brekkie} alt='eggs and bacon' className='brekkie'/>
+                        <img src={login_photo} alt='dump truck at a construction site' className='truck'/>
                     </div>
                 </div>
             </div>

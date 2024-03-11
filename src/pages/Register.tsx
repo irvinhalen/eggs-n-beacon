@@ -2,14 +2,23 @@ import '../css/Login.css';
 import Axios from 'axios';
 import { Divider, TextField } from '@mui/material';
 import { Card } from 'react-bootstrap';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContextType, useAuth } from '../utils/AuthContext';
 
 function Register() {
+    const {user} = useAuth() as AuthContextType;
+
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user) {
+          navigate('/');
+        }
+      }, [])
 
     const register = (event:any) => {
         event.preventDefault();
@@ -40,8 +49,8 @@ function Register() {
                                 <TextField name='password' label="Password" type='password' variant="outlined" size='small' onChange={(event) => {setPassword(event.target.value)}} />
                                 <TextField name='re_password' label="Confirm Password" type='password' variant="outlined" size='small' />
                             </div>
-                            {/* <Link to='/'><button className='main-btn'>Register</button></Link> */}
                             <button onClick={register} className='main-btn'>Register</button>
+                            <p className='login-sub-text'>Already have an account? <Link to='/login'>Sign in</Link></p>
                         </form>
                     </Card.Body>
                 </Card>

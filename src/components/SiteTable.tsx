@@ -12,12 +12,10 @@ function getSite() {
 }
 
 const viewFormat = (cell: any) => {
-  // let  val = cell.getValue();
+  let  val = cell.getValue();
 
   return(
-    "<button onclick=getSite() class='btn btn-primary py-0 px-1'>\
-      View\
-    </button>"
+    "<button onclick=getSite() class='btn btn-primary py-0 px-1'>"+ val + "</button>"
   );
 };
 

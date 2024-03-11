@@ -1,107 +1,13 @@
 import { Link } from 'react-router-dom';
 import '../css/Navbar.css';
-import { useEffect, useState } from 'react';
 import { AuthContextType, useAuth } from '../utils/AuthContext';
 
 function Sidebar() {
-    const {user} = useAuth() as AuthContextType;
-    const [onDashboard, setOnDashboard] = useState<boolean>(false);
-    const [onManageSites, setOnManageSites] = useState<boolean>(false);
-    const [onAddSite, setOnAddSite] = useState<boolean>(false);
-    const [onManageTrucks, setOnManageTrucks] = useState<boolean>(false);
-    const [onRegisterTruck, setOnRegisterTruck] = useState<boolean>(false);
+    const {user, logoutUser} = useAuth() as AuthContextType;
 
-    useEffect(() => {
-        let path:string = window.location.pathname;
-        path = path.toLowerCase();
-        if(path) {
-            switch(path) {
-                case '/login':
-                    setOnDashboard(false);
-                    setOnManageSites(false);
-                    setOnAddSite(false);
-                    setOnManageTrucks(false);
-                    setOnRegisterTruck(false);
-                    break;
-                case '/':
-                    setOnDashboard(true);
-                    setOnManageSites(false);
-                    setOnAddSite(false);
-                    setOnManageTrucks(false);
-                    setOnRegisterTruck(false);
-                    break;
-                case '/manage-sites':
-                    setOnDashboard(false);
-                    setOnManageSites(true);
-                    setOnAddSite(false);
-                    setOnManageTrucks(false);
-                    setOnRegisterTruck(false);
-                    break;
-                case '/add-site':
-                    setOnDashboard(false);
-                    setOnManageSites(false);
-                    setOnAddSite(true);
-                    setOnManageTrucks(false);
-                    setOnRegisterTruck(false);
-                    break;
-                case '/manage-trucks':
-                    setOnDashboard(false);
-                    setOnManageSites(false);
-                    setOnAddSite(false);
-                    setOnManageTrucks(true);
-                    setOnRegisterTruck(false);
-                    break;
-                case '/register-truck':
-                    setOnDashboard(false);
-                    setOnManageSites(false);
-                    setOnAddSite(false);
-                    setOnManageTrucks(false);
-                    setOnRegisterTruck(true);
-                    break;
-                default:
-                    console.log('sidebar buttons not active');
-            }
-        }
-    }, [])
-
-    function activateDashboard() {
-        setOnDashboard(true);
-        setOnManageSites(false);
-        setOnAddSite(false);
-        setOnManageTrucks(false);
-        setOnRegisterTruck(false);
-    }
-
-    function activateManageSites() {
-        setOnDashboard(false);
-        setOnManageSites(true);
-        setOnAddSite(false);
-        setOnManageTrucks(false);
-        setOnRegisterTruck(false);
-    }
-
-    function activateAddSite() {
-        setOnDashboard(false);
-        setOnManageSites(false);
-        setOnAddSite(true);
-        setOnManageTrucks(false);
-        setOnRegisterTruck(false);
-    }
-    
-    function activateManageTrucks() {
-        setOnDashboard(false);
-        setOnManageSites(false);
-        setOnAddSite(false);
-        setOnManageTrucks(true);
-        setOnRegisterTruck(false);
-    }
-
-    function activateRegisterTruck() {
-        setOnDashboard(false);
-        setOnManageSites(false);
-        setOnAddSite(false);
-        setOnManageTrucks(false);
-        setOnRegisterTruck(true);
+    const handleLogout = (event:any) => {
+        event.preventDefault();
+        logoutUser();
     }
 
   return (
@@ -117,7 +23,7 @@ function Sidebar() {
                             📁 Information
                         </div>
                         <Link to='/' style={{ textDecoration: 'none' }}>
-                            <div className={ onDashboard ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateDashboard}>
+                            <div className='sidebar-list-item'>
                                 Dashboard
                             </div>
                         </Link>
@@ -127,12 +33,12 @@ function Sidebar() {
                             🏗️ Sites
                         </div>
                         <Link to='/manage-sites' style={{ textDecoration: 'none' }}>
-                            <div className={ onManageSites ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageSites}>
+                            <div className='sidebar-list-item'>
                                 Site Management
                             </div>
                         </Link>
                         <Link to='/add-site' style={{ textDecoration: 'none' }}>
-                            <div className={ onAddSite ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateAddSite}>
+                            <div className='sidebar-list-item'>
                                 Site Registration
                             </div>
                         </Link>
@@ -143,12 +49,12 @@ function Sidebar() {
                                 🚛 Trucks
                             </div>
                             <Link to='/manage-trucks' style={{ textDecoration: 'none' }}>
-                                <div className={ onManageTrucks ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateManageTrucks}>
+                                <div className='sidebar-list-item'>
                                     Truck Management
                                 </div>
                             </Link>
                             <Link to='/register-truck' style={{ textDecoration: 'none' }}>
-                                <div className={ onRegisterTruck ? `sidebar-list-item-active` : `sidebar-list-item`} onClick={activateRegisterTruck}>
+                                <div className='sidebar-list-item'>
                                     Truck Registration
                                 </div>
                             </Link>
@@ -157,7 +63,7 @@ function Sidebar() {
                 </div>
             </div>
             <Link to='/login' style={{ textDecoration: 'none' }}>
-                <div className='sidebar-logout' onClick={activateDashboard}>
+                <div className='sidebar-logout' onClick={handleLogout}>
                     Log Out
                 </div>
             </Link>
