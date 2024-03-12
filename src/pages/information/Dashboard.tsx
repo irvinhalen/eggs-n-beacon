@@ -1,30 +1,9 @@
-import '../css/Dashboard.css';
-import Table from "../components/Table";
-import LineChart from "../components/LineChart";
-import PieChart from "../components/PieChart";
-// import { db } from '../config/firebase';
-// import { getDocs, collection } from 'firebase/firestore';
-// const collectionRef = collection(db, 'collection_name');
-/* Firebase Stuffs are commented out for now */
+import '../../css/Dashboard.css';
+import Table from "../../components/dashboard/Table";
+import LineChart from "../../components/dashboard/LineChart";
+import PieChart from "../../components/dashboard/PieChart";
+
 function Dashboard() {
-// const [ collectionList, setCollectionList ] = useState([]);
-/* More Firebase Stuffs ( I'm stuffs! ) */
-// useEffect(() => {
-//   const getCollectionList = async () => {
-//   try{
-//       const data = await getDocs(collectionRef);
-//       const filteredData = data.docs.map((doc) => ({
-//       ...doc.data(),
-//       id: doc.id
-//       }))
-//       setCollectionList(filteredData);
-      
-//   }catch(error){
-//       console.error(error);
-//   }
-//   }
-//   getCollectionList();
-// }, [])
   return (
     <>
       <div className='main_div'>

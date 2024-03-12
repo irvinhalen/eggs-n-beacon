@@ -26,12 +26,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
     
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(user));
+        setLoading(false);
     }, [user])
 
     useEffect(() => {
         var localUser = JSON.parse(localStorage.getItem('user') || '{}');
         if(localUser){
-            console.log('local:', localUser, user);
             setUser(localUser);
         }
         checkUserStatus();
@@ -46,12 +46,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
             console.log(response);
             if (response.status === 200){
                 if(response.data.status === 'success') {
-                    let accountDetails = response.data;
+                    let accountDetails = response.data[0];
                     // let token = response.data.token;
                     setUser(accountDetails);
                 }
             }
-            setLoading(false);
         }).catch((error:any) => {
             console.error('Error during login:', error);
             setLoading(false);
@@ -59,7 +58,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
     }
     
     const logoutUser = () => {
-        console.log('logging out');
         setUser(null);
         localStorage.removeItem('user');
         Axios.post('http://localhost:3001/api/logout', {

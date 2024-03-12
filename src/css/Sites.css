@@ -1,0 +1,34 @@
+/* Start of ManageSites */
+
+.bg-div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background-color: #f4f7f9;
+    z-index: 0;
+}
+
+.main_div {
+    position: relative;
+    margin-left: 15rem;
+    font-family: 'MS PGothic', sans-serif;
+    z-index: 1;
+}
+
+.site-table-card {
+    border-width: 0;
+}
+
+/* End of ManageSites */
+
+/* Start of SiteTable */
+
+.tabulator-footer-contents {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* End of SiteTable */

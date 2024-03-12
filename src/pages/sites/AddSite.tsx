@@ -1,4 +1,4 @@
-import '../css/AddSite.css';
+import '../../css/Sites.css';
 
 function AddSite() {
   return (

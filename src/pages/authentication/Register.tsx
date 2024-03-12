@@ -1,10 +1,10 @@
-import '../css/Login.css';
+import '../../css/Authentication.css';
 import Axios from 'axios';
 import { Divider, TextField } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContextType, useAuth } from '../utils/AuthContext';
+import { AuthContextType, useAuth } from '../../utils/AuthContext';
 
 function Register() {
     const {user} = useAuth() as AuthContextType;
