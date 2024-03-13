@@ -40,7 +40,7 @@ function Login() {
                         <div className='card-wrapper'>
                             <Card className='shadow' style={{ borderWidth: 0, height: '95%', width: '95%', position: 'absolute', margin: 'auto', top: 0, bottom: 0, left: 0, right: 0 }}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '3rem', textAlign: 'center' }}>
-                                    <Card.Title style={{ fontWeight: '700' }}><h1><img src={logo} alt='Eggs & Beacon' height='70rem' />&nbsp;Eggs & Beacon</h1></Card.Title>
+                                    <Card.Title style={{ fontWeight: '700' }}><h1><img src={logo} alt='Site Manager Logo' height='70rem' />&nbsp;Site Manager</h1></Card.Title>
                                     <form style={{ display: 'inherit', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
                                         <div className='input-div'>
                                             <TextField label="Username" variant="outlined" size='small' onChange={(event) => {setUsername(event.target.value)}} />

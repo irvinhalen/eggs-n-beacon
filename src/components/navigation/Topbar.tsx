@@ -1,30 +1,38 @@
 import '../../css/Navigation.css';
-// import goldman from '../assets/goldman.jpg';
 import temp_logo from '../../assets/logo.png'
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
 
 function Topbar() {
-  const {user} = useAuth() as AuthContextType;
+  const {user, logoutUser} = useAuth() as AuthContextType;
   
-    return (
-      <>
-      {user ? (
-        <nav id='topbar' className='navbar main-text'>
-          <div style={{ paddingLeft: '0.75rem' }}>
-            <img src={temp_logo} alt='Eggs & Beacon' width='35rem' />&nbsp;Eggs & Beacon
+  const handleLogout = (event:any) => {
+    event.preventDefault();
+    logoutUser();
+  }
+  return (
+    <>
+    {user ? (
+      <nav id='topbar' className='navbar main-text'>
+        <div style={{ paddingLeft: '0.75rem' }}>
+          <img src={temp_logo} alt='Eggs & Beacon' width='35rem' />&nbsp;Site Manager
+        </div>
+        <div id='profile-header-div'>
+          <h4>{user.username}</h4>
+          <div id='logout-div' onClick={handleLogout}>
+            <LogoutIcon className='logout-icon' sx={{ transition: 'none' }} />
+            <Link to='/login' className='logout-link'>
+              Log Out
+            </Link>
           </div>
-          <div style={{ paddingRight: '0.75rem' }}>
-            <h5>{user.username}</h5>
-            {/* <div id='avatar-crop' className='shadow-sm'>
-              <img width='50rem' alt='Goldman (3D illustration of a person wearing a gold tie and holding a gold suitcase)' src={ goldman } />
-            </div> */}
-          </div>
-        </nav>
-      ):(
-        ''
-      )}
-      </>
-    )
+        </div>
+      </nav>
+    ):(
+      ''
+    )}
+    </>
+  )
 }
 
 export default Topbar;

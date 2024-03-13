@@ -38,6 +38,44 @@
     width: auto;
 }
 
+#profile-header-div {
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.75rem;
+    text-align: right;
+}
+
+#profile-header-div h4 {
+    margin-bottom: 0;
+}
+
+#logout-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    font-weight: 100;
+    justify-content: end;
+}
+
+#logout-div:hover>.logout-link, #logout-div:hover>.logout-icon {
+    cursor: pointer;
+    color: #d32f2f !important;
+    fill: #d32f2f !important;
+}
+
+.logout-icon {
+    fill: darkgray !important;
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+.logout-link {
+    color: black;
+    font-size: 0.8rem;
+    color: darkgray;
+}
+
 /* End of Topbar */
 
 /* Start of Sidebar */
@@ -102,22 +140,6 @@
 li {
     height: 0.5rem;
     list-style-type: circle;
-}
-
-.sidebar-logout {
-    color: #B22222;
-    border-radius: 0.25rem;
-    font-weight: 600;
-    user-select: none;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.sidebar-logout:hover {
-    background-color: #B22222;
-    color: white;    
 }
 
 /* End of Sidebar */

@@ -38,7 +38,7 @@ function Register() {
     return (
         <div className='container-fluid bg-white main-text' style={{ position: 'fixed', zIndex: 3, top: 0 }}>
             <div className='card-wrapper'>
-                <Card className='shadow' style={{ borderWidth: 0, height: '95%', maxWidth: '95%', position: 'absolute', margin: 'auto', top: 0, bottom: 0, left: 0, right: 0 }}>
+                <Card className='shadow w-100' style={{ borderWidth: 0, height: '95%', maxWidth: '35rem', position: 'absolute', margin: 'auto', top: 0, bottom: 0, left: 0, right: 0 }}>
                     <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '3rem', textAlign: 'center' }}>
                         <Card.Title style={{ fontWeight: '700' }}><h1>Create Account</h1></Card.Title>
                         <form style={{ display: 'inherit', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>

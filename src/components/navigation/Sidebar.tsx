@@ -1,14 +1,9 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../../css/Navigation.css';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
 
 function Sidebar() {
-    const {user, logoutUser} = useAuth() as AuthContextType;
-
-    const handleLogout = (event:any) => {
-        event.preventDefault();
-        logoutUser();
-    }
+    const {user} = useAuth() as AuthContextType;
 
   return (
     <>
@@ -102,7 +97,7 @@ function Sidebar() {
                         </div>
                         <div id='sidebar-beacons'>
                             <div className='sidebar-list-header'>
-                                🥓 Beacons
+                                🔷 Beacons
                             </div>
                             <NavLink to='/beacons' className={({ isActive }) =>
                                 isActive ? "sidebar-list-item-active" : "sidebar-list-item"
@@ -111,12 +106,16 @@ function Sidebar() {
                                         <li>Management</li>
                                     </ul>
                             </NavLink>
+                            <NavLink to='/beacon-transaction' className={({ isActive }) =>
+                                isActive ? "sidebar-list-item-active" : "sidebar-list-item"
+                                }>
+                                    <ul>
+                                        <li>Transaction</li>
+                                    </ul>
+                            </NavLink>
                         </div>
                     </div>
                 </div>
-                <Link to='/login' className='sidebar-logout' onClick={handleLogout}>
-                        Log Out
-                </Link>
             </div>
         </div>
     ):(

@@ -6,12 +6,13 @@ import { AuthProvider } from './utils/AuthContext';
 import Login from './pages/authentication/Login'
 import Register from './pages/authentication/Register';
 import Sidebar from './components/navigation/Sidebar';
-import Topbar from './components/navigation/Topbar';
 import Dashboard from './pages/information/Dashboard'
 import ManageSites from './pages/sites/ManageSites';
 import AddSite from './pages/sites/AddSite';
 import ManageTrucks from './pages/trucks/ManageTrucks';
 import ManageBeacons from './pages/beacons/ManageBeacons';
+import TruckTransactions from './pages/trucks/TruckTransactions';
+import BeaconTransactions from './pages/beacons/BeaconTransactions';
 
 function App() {
   return (
@@ -20,7 +21,6 @@ function App() {
         <Router>
           <AuthProvider>
             <Sidebar />
-            <Topbar />
             <Routes>
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
@@ -30,7 +30,9 @@ function App() {
                 <Route path='/register-site' element={<AddSite />} />
                 <Route path='/trucks' element={<ManageTrucks />} />
                 <Route path='/register-truck' />
-                <Route path='/beacons' element={<ManageBeacons/>}/>
+                <Route path='/truck-transaction' element={<TruckTransactions />} />
+                <Route path='/beacons' element={<ManageBeacons/>} />
+                <Route path='/beacon-transaction' element={<BeaconTransactions />} />
               </Route>
             </Routes>
           </AuthProvider>
