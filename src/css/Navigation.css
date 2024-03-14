@@ -10,7 +10,7 @@
     border: 0.1rem solid lightgray;
     border-left: none;
     border-right: none;
-    margin-left: 15rem;
+    margin-left: 14rem;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
     font-weight: 900;
@@ -80,14 +80,25 @@
 
 /* Start of Sidebar */
 
+.logo-div {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 0.1rem solid #E4E4E4;
+}
+
+.logo-photo {
+    max-height: 5rem;
+}
+
 .sidebar {
-    background-color:#43454f;
+    background-color:#F9F9F9;
     height:100%;
-    width:15rem;
+    width: 14rem;
     position:fixed;
     z-index:3;
     overflow:auto;
-    padding: 2rem;
+    border-right: 0.1rem solid #E4E4E4;
 }
 
 .sidebar-container {
@@ -99,47 +110,101 @@
 }
 
 .sidebar-list-header {
-    color: white;
-    font-weight: 600;
+    color: black;
+    font-size: 0.7rem;
     border-radius: 0.25rem;
     user-select: none;
-    border: 0.1rem solid #6c757d;
-    box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
-    cursor: default;
-    margin-top: 1.5rem;
     margin-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+}
+
+.sidebar-icons {
+    width: 1rem!important;
 }
 
 .sidebar-list-item {
-    color: white;
+    color: black;
+    font-size: 0.8rem;
     display: flex;
-    border-radius: 0.25rem;
+    align-items: center;
     user-select: none;
-    cursor: pointer;
-    margin-bottom: 0.5rem;
     text-decoration: none;
 }
 
+.sidebar-list-item:not(:last-child),
+.sidebar-list-item-active:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
 .sidebar-list-item:hover {
-    background-color: rgb(208, 145, 183, 0.5);
+    color: #E72423;
 }
 
 .sidebar-list-item-active {
-    background-color: #D091B7;
-    color: white;
+    color: #E72423;
+    font-size: 0.8rem;
     display: flex;
-    border-radius: 0.25rem;
+    align-items: center;
     user-select: none;
-    cursor: pointer;
-    margin-bottom: 0.5rem;
     text-decoration: none;
 }
 
 li {
     height: 0.5rem;
     list-style-type: circle;
+}
+
+.sidebar-group {
+    padding: 1rem;
+    border-bottom: 0.1rem solid #E4E4E4;
+}
+
+#sidebar-profile {
+    color: #E72423;
+    border-top: 0.1rem solid #E4E4E4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.sidebar-sticky {
+    position: fixed;
+    background-color: #F9F9F9;
+    width: 14rem;
+    border-right: 0.1rem solid #E4E4E4;
+    bottom: 0;
+}
+
+.profile-user-div {
+    display: inherit;
+    align-items: inherit;
+}
+
+.profile-avatar {
+    background-color: rgb(231, 36, 35, 0.1);
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.25rem;
+    position: relative;
+}
+
+.profile-letter {
+    font-size: small;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}
+
+.profile_username {
+    font-size: small;
+    margin: 0rem 0.5rem;
 }
 
 /* End of Sidebar */

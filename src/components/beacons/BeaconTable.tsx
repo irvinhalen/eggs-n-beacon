@@ -25,7 +25,7 @@ function BeaconTable() {
   return (
     <Card className="mx-5 site-table-card shadow-sm">
       <Card.Header style={{background: 'none'}}>
-        <Card.Title className="main-text">Beacon List</Card.Title>
+        <Card.Title className="card-text">Beacon List</Card.Title>
       </Card.Header>
       <Card.Body>
         <ReactTabulator

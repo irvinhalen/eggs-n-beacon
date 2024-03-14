@@ -8,7 +8,7 @@ function Table({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_type: 
   return (
     <Card className="shadow-sm border-0 h-100 p-1">
       <Card.Header style={{background: 'none'}}>
-        <Card.Title className="main-text">Soil Tracking Table <span className='badge-date'> 2024 </span></Card.Title>
+        <Card.Title className="card-text">Soil Tracking Table <span className='badge-date'> 2024 </span></Card.Title>
       </Card.Header>
       <Card.Body style={{ position: 'relative' }}>
         <ReactTabulator

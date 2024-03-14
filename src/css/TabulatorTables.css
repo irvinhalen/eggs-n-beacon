@@ -1,0 +1,63 @@
+.tabulator-col {
+    background-color: black!important;
+    border-right: 0.1rem solid black!important;
+    color: white;
+}
+
+.tabulator-col:last-child {
+    border-right: 5rem solid red!important;
+}
+
+.tabulator-row-odd,
+.tabulator-row-even {
+    background-color: white!important;
+}
+
+.tabulator-row-odd:hover,
+.tabulator-row-even:hover {
+    background-color: #F5F5F5!important;
+}
+
+.card-text {
+    font-style: 'Inter', sans-serif!important;
+}
+
+.site-table-card {
+    border-radius: 0.5rem!important;
+    overflow: hidden;
+}
+
+.manager-cards {
+    padding: 0;
+}
+
+.tabulator-col-group-cols {
+    border-top: 0.1rem solid rgb(255, 255, 255, 0.2)!important;
+}
+
+.tabulator-footer-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tabulator-page-counter {
+    display: flex;
+    align-items: center;
+}
+
+.tabulator-paginator{
+    display: flex;
+    align-items: center;
+}
+
+.tabulator-page, .tabulator-pages {
+    margin: 0!important;
+}
+
+.tabulator-row {
+    min-height: 0;
+}
+
+.tabulator-cell {
+    padding: 0.5rem!important;
+}

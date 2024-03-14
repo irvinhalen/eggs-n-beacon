@@ -50,7 +50,7 @@ function PieChart({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_typ
   return (
     <Card className="shadow-sm border-0 p-1" style={{ height: '27rem' }}>
       <Card.Header style={{background: 'none'}}>
-        <Card.Title className="main-text">Daily Amount of Soil <span className="badge-date">2024/03/18</span></Card.Title>
+        <Card.Title className="card-text">Daily Amount of Soil <span className="badge-date">2024/03/18</span></Card.Title>
       </Card.Header>
       <Card.Body style={{ position: 'relative' }}>
         <Pie

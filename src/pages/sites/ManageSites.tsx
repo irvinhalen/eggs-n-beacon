@@ -6,8 +6,8 @@ function ManageSites() {
     <>
       <div className='bg-div' />
       <div className='main_div'>
-        <div className='px-3 pt-3 mb-3'>
-          <h1 className='main-text'>SITE MANAGEMENT</h1>
+      <div className='px-4 py-4 mb-1'>
+          <h3 className='main-text site-header-text'>SITE MANAGEMENT</h3>
         </div>
         <div className='container-fluid'>
           <div className='row'>

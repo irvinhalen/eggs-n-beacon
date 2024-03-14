@@ -1,11 +1,12 @@
 import { Card } from "react-bootstrap";
 import { ReactTabulator, reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css';
-import 'react-tabulator/css/tabulator_simple.min.css';
+import 'react-tabulator/css/tabulator_materialize.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from "@mui/material";
 import { Edit, Visibility } from "@mui/icons-material";
+import '../../css/TabulatorTables.css';
 
 function TruckTransactionTable() {
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
@@ -26,10 +27,7 @@ function TruckTransactionTable() {
 
   return (
     <Card className="mx-5 site-table-card shadow-sm">
-      <Card.Header style={{background: 'none'}}>
-        <Card.Title className="main-text">Transaction List</Card.Title>
-      </Card.Header>
-      <Card.Body>
+      <Card.Body className='manager-cards'>
         <ReactTabulator
             data={listOfTruckTransactions}
             columns={columns}
@@ -46,22 +44,12 @@ const testTickleZ = (cellData:any) => {
   alert(cellData);
 }
 
-const ViewFormat = (props:any) => {
-  let deezNuts = props.cell.getData();
-  deezNuts = deezNuts.truck_transaction_id;
-  return (
-    <Button variant='contained' color='primary' onClick={() => {testTickleZ(deezNuts)}}>
-      <Visibility />
-    </Button>
-  );
-}
-
 const EditFormat = (props:any) => {
   let deezNuts = props.cell.getData();
   deezNuts = deezNuts.truck_transaction_id;
   return (
-    <Button variant='contained' color='success' onClick={() => {testTickleZ(deezNuts)}}>
-      <Edit />
+    <Button variant='outlined' color='error' startIcon={<Edit />} onClick={() => {testTickleZ(deezNuts)}}>
+      ACTION
     </Button>
   );
 }
@@ -76,6 +64,7 @@ const options = {
 }
 
 const columns = [
+  {field: 'truck_transaction_id', width: '8%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
   {title: 'Project', field: 'project_name', width: '17%'},
   {title: 'License Plate', field: 'license_plate', width: '15%', headerSort: false},
   {
@@ -92,13 +81,6 @@ const columns = [
     columns: [
       {title: 'Inside', field: 'in_time', width: '17%'},
       {title: 'Outside', field: 'out_time', width: '17%'}
-    ]
-  },
-  {
-    title: 'Options',
-    columns: [
-      {title: 'View', field: 'truck_transaction_id', width: '4%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<ViewFormat />)},
-      {title: 'Edit', field: 'truck_transaction_id', width: '4%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)}
     ]
   }
 ];

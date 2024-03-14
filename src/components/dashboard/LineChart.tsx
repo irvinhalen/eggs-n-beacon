@@ -72,7 +72,7 @@ function LineChart({ soil_data }:{ soil_data:Array<{ beacon_id: number, truck_ty
   return (
     <Card className="shadow-sm border-0 p-1" style={{ height: '27rem' }}>
       <Card.Header style={{background: 'none'}}>
-        <Card.Title className="main-text">Weekly Amount of Soil <span className='badge-date'>2024, 03/17 - 03/23</span>  </Card.Title>
+        <Card.Title className="card-text">Weekly Amount of Soil <span className='badge-date'>2024, 03/17 - 03/23</span>  </Card.Title>
       </Card.Header>
       <Card.Body>
         <Line

@@ -1,15 +1,19 @@
 .main_div {
-    background-color: #f4f7f9;
-    margin-left: 15rem;
+    background-color: white;
+    margin-left: 14rem;
 }
 
 .badge-date {
     background-color: #9197D0;
     color: white;
-    font-family: 'MS PGothic', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     padding: 0.25rem;
     border-radius: 0.25rem;
     user-select: none;
+}
+
+.site-header-text {
+    font-weight: 600;
 }

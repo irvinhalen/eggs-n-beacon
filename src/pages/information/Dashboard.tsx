@@ -6,9 +6,10 @@ import PieChart from "../../components/dashboard/PieChart";
 function Dashboard() {
   return (
     <>
+      <div className='bg-div' />
       <div className='main_div'>
-        <div className='px-3 pt-3 mb-3'>
-          <h1 className='main-text'>DASHBOARD</h1>
+        <div className='px-4 py-4 mb-1'>
+          <h3 className='main-text site-header-text'>DASHBOARD</h3>
         </div>
         <div className='container-fluid'>
           <div className='row'>
