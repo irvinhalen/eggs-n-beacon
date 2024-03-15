@@ -5,7 +5,7 @@ import 'react-tabulator/css/tabulator_materialize.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from "@mui/material";
-import { Edit, Visibility } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import '../../css/TabulatorTables.css';
 
 function TruckTransactionTable() {

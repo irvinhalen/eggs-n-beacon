@@ -1,5 +1,5 @@
 import '../../css/Dashboard.css';
-import Table from "../../components/dashboard/Table";
+import DashboardTable from "../../components/dashboard/DashboardTable";
 import LineChart from "../../components/dashboard/LineChart";
 import PieChart from "../../components/dashboard/PieChart";
 
@@ -17,12 +17,12 @@ function Dashboard() {
               <PieChart soil_data={temp_data} />
             </div>
             <div className='col col-sm-12 col-md-8 col-lg-8 mb-2'>
-              <LineChart soil_data={temp_data} />
+              <LineChart />
             </div>
           </div>
           <div className='row'>
             <div className="col mb-2">
-              <Table soil_data={temp_data} />
+              <DashboardTable />
             </div>
           </div>
         </div>

@@ -4,21 +4,32 @@ import logo from '../../assets/logo_sidebar.png';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
 import { CasesOutlined, MovingRounded, RuleOutlined, SpaceDashboardOutlined, UnfoldMoreRounded } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
+import { ButtonBase, Popover } from '@mui/material';
 
 function Sidebar() {
     const {user, logoutUser} = useAuth() as AuthContextType;
     const [userLetter, setUserLetter] = useState<String>('');
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
-        const usernameLetter:string = Array.from(user.username as string)[0];
-        const capitalizedLetter:string = usernameLetter.toUpperCase();
-        setUserLetter(capitalizedLetter);
-    }, []);
-    
-    
-    
+        if (user) {
+            const usernameLetter:string = Array.from(user.username as string)[0];
+            const capitalizedLetter:string = usernameLetter.toUpperCase();
+            setUserLetter(capitalizedLetter);
+        }
+    }, [user]);
+        
     const handleLogout = (event:any) => {
         event.preventDefault();
+        handleClose();
         logoutUser();
     }
 
@@ -99,22 +110,40 @@ function Sidebar() {
                                 }>
                                     <CasesOutlined className='sidebar-icons' />&nbsp;&nbsp; Beacon Transaction
                             </NavLink>
-                            {/* <Link to='/login' onClick={handleLogout}>
-                                Logout
-                            </Link> */}
                         </div>
                     </div>
                 </div>
                 <div className='sidebar-sticky'>
-                    <div id='sidebar-profile'>
-                        <div className='profile-user-div'>
-                            <div className='profile-avatar'>
-                                <div className='profile-letter'>{ userLetter }</div>
+                    <ButtonBase onClick={handleClick} sx={{ width: '100%' }}>
+                        <div id='sidebar-profile' style={{ width: '100%' }}>
+                            <div className='profile-user-div'>
+                                <div className='profile-avatar'>
+                                    <div className='profile-letter'>{ userLetter }</div>
+                                </div>
+                                <div className='profile_username'>{ user.username }</div>
                             </div>
-                            <div className='profile_username'>{ user.username }</div>
+                            <UnfoldMoreRounded sx={{ height: '1.25rem' }}  />
                         </div>
-                        <UnfoldMoreRounded sx={{ height: '1.25rem' }} />
-                    </div>
+                    </ButtonBase>
+                    <Popover
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        sx={{ padding:'1rem', width: '100%' }}
+                    >
+                        <div className='main-text' style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem' }}>
+                            Profile
+                            <Link to='/login' onClick={handleLogout}>Logout</Link>
+                        </div>
+                    </Popover>
                 </div>
             </div>
         </div>

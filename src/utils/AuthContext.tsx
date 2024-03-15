@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import Axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     children?: ReactNode
@@ -9,7 +10,8 @@ export interface AuthContextType {
     user: any;
     loginUser: (userInfo: any) => void;
     logoutUser: () => void;
-    // registerUser: (userInfo: any) => void;
+    registerUser: (userInfo: any) => void;
+    loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,7 +25,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
             }
             return JSON.parse(localValue);
         });
-    
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(user));
         setLoading(false);
@@ -43,12 +47,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
             username: userInfo.username,
             password: userInfo.password
         }).then((response:any) => {
-            console.log(response);
             if (response.status === 200){
                 if(response.data.status === 'success') {
                     let accountDetails = response.data[0];
                     // let token = response.data.token;
                     setUser(accountDetails);
+                    navigate('/');
+                } else {
+                    setLoading(false);
                 }
             }
         }).catch((error:any) => {
@@ -56,19 +62,43 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
             setLoading(false);
         });
     }
-    
+
     const logoutUser = () => {
         setUser(null);
         localStorage.removeItem('user');
         Axios.post('http://localhost:3001/api/logout', {
             user: user
         }).then((response:any) => {
-            console.log(response);
             setUser(null);
         });
     }
 
-    // const registerUser = (userInfo:Object) => {}
+    const registerUser = (userInfo:any) => {
+        setLoading(true);
+        Axios.post('http://localhost:3001/api/register', {
+            username: userInfo.username,
+            password: userInfo.password,
+            email: userInfo.email
+        }).then((response:any) => {
+            if(response.status === 200){
+                if(response.data.status === 'success') {
+                    let accountDetails = response.data[0];
+                    // let token = response.data.token;
+                    setUser(accountDetails);
+                    navigate('/');
+                } else {
+                    setLoading(false);
+                }
+            }else{
+                console.error(response.error);
+                setLoading(false);
+            }
+        }).catch((error:any) => {
+            console.error('Error during registration:', error);
+            setLoading(false);
+        });
+    }
+
     const checkUserStatus = () => {
         if(user){
             setLoading(false);
@@ -79,11 +109,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
         user,
         loginUser,
         logoutUser,
-        // registerUser
+        registerUser,
+        loading
     }
     return(
         <AuthContext.Provider value={contextData}>
-            {loading ? <p>Loading...</p> : children}
+            {children}
         </AuthContext.Provider>
     )
 }
