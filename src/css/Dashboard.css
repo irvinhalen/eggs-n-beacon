@@ -1,6 +1,6 @@
 .main_div {
     background-color: white;
-    margin-left: 14rem;
+    margin-left: 14rem!important;
 }
 
 .badge-date {
@@ -17,3 +17,23 @@
 .site-header-text {
     font-weight: 600;
 }
+
+.map-container {
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.map-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Start of Map */
+
+.leaflet-container {
+    height: 25rem;
+}
+
+/* End of Map */

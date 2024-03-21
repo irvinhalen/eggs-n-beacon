@@ -26,7 +26,7 @@ function TruckTransactionTable() {
   };
 
   return (
-    <Card className="mx-5 site-table-card shadow-sm">
+    <Card className="site-table-card shadow-sm">
       <Card.Body className='manager-cards'>
         <ReactTabulator
             data={listOfTruckTransactions}
@@ -57,14 +57,14 @@ const EditFormat = (props:any) => {
 const options = {
   layout: 'fitDataStretch',
   pagination: true,
-  paginationSize: 10,
+  paginationSize: 5,
   paginationSizeSelector: [5, 10, 50, 100, 1000],
   paginationCounter: 'rows',
   paginationButtonCount: 3
 }
 
 const columns = [
-  {field: 'truck_transaction_id', width: '8%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
+  // {field: 'truck_transaction_id', width: '8%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
   {title: 'Project', field: 'project_name', width: '17%'},
   {title: 'License Plate', field: 'license_plate', width: '15%', headerSort: false},
   {

@@ -23,7 +23,7 @@ function BeaconTransactionTable() {
   };
 
   return (
-    <Card className="mx-5 site-table-card shadow-sm">
+    <Card className=" site-table-card shadow-sm">
       <Card.Header style={{background: 'none'}}>
         <Card.Title className="card-text">Transaction List</Card.Title>
       </Card.Header>
