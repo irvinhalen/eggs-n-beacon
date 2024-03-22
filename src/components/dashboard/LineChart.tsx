@@ -5,8 +5,8 @@ import { Card } from "react-bootstrap";
 import Axios from "axios";
 
   interface SoilData {
-    soil_amount: number;
-    in_time: Date;
+    soil_amount: any;
+    date: any;
     project_name: string;
   }
 
@@ -24,11 +24,22 @@ import Axios from "axios";
 function LineChart() {
   const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
   const [groupedData, setGroupedData] = useState<Array<any>>([]);
+  let pastSevenDays = getPastSevenDays();
 
   useEffect(() => {
     getLineChartData();
     groupTheData();
   }, []);
+
+  const getLineChartData = () =>{
+    Axios.get('http://localhost:3001/api/dashboard').then((response) => {
+      setLineChartData(() => {
+        return response.data.map((entry:any) => {
+          return {...entry}
+        });
+      });
+    });
+  };
 
   const groupTheData = () => {
     const length: number = lineChartData.length;
@@ -44,7 +55,7 @@ function LineChart() {
         }
         groupedData[projectName].push(data);
       });
-
+      
       Object.values(groupedData).forEach((group) => {
         const index = dataGroup.findIndex((arr) => arr.length === 0);
         if (index !== -1) {
@@ -54,22 +65,26 @@ function LineChart() {
     }
 
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
+    console.log(dataGroup);
     setGroupedData(dataGroup);
-
-    // var date:Date = new Date(dataGroup[0][0].in_time)
-    // console.log(date.toDateString());
   };
-
-  const getLineChartData = () =>{
-    Axios.get('http://localhost:3001/api/dashboard').then((response) => {
-      setLineChartData(() => {
-        return response.data.map((entry:any) => {
-          return {...entry}
-        });
-      });
-    });
-  };
-
+  
+  function getPastSevenDays() {
+    var pastDays = [];
+    var today = new Date();
+    
+    for (var i = 0; i < 7; i++) {
+      let pastDay = new Date(today);
+      pastDay.setDate(today.getDate() - i);
+      const month = pastDay.getUTCMonth() + 1;
+      const day = pastDay.getUTCDate();
+      const year = pastDay.getUTCFullYear();
+      const newDate = year + "-" + month + "-" + day;
+      pastDays.push(newDate);
+    }
+    return pastDays;
+  }
+  
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
       <Card.Header style={{background: 'none'}}>
@@ -79,32 +94,32 @@ function LineChart() {
       </Card.Header>
       <Card.Body>
         <Line
-      data={{labels: ['March 17', 'March 18', 'March 19', 'March 20', 'March 21', 'March 22', 'March 23'],
+      data={{
+        labels: pastSevenDays,
         datasets: groupedData.map((row) => {
           return ({
             label: row[0].project_name,
             data: row.map((cell:SoilData) => cell.soil_amount),
             tension: 0.2,
+            borderJoinStyle: 'round',
             borderWidth: 3,
             // borderColor: '#FFCF8B',
             // backgroundColor: '#FFCF8B',
             pointBorderColor: 'black',
             pointBorderWidth: 2
           });
-        })        
+        })
       }}
       options={{
         maintainAspectRatio: false,
       }}
     />
       </Card.Body>
-      <Card.Footer className="border-0">
+      {/* <Card.Footer className="border-0">
         <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: 20XX</p></div>
-      </Card.Footer>
+      </Card.Footer> */}
     </Card>
   )
 }
 
 export default LineChart;
-
-const chart_colors = ['#ffcf8b', '#8BFF95', '#8BBBFF', '#FF8BF5'];
