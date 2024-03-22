@@ -5,8 +5,8 @@ import { Card } from "react-bootstrap";
 import Axios from "axios";
 
   interface SoilData {
-    soil_amount: any;
-    date: any;
+    soil_amount: number;
+    date: string;
     project_name: string;
   }
 
@@ -28,8 +28,11 @@ function LineChart() {
 
   useEffect(() => {
     getLineChartData();
-    groupTheData();
   }, []);
+
+  useEffect(() => {
+    groupTheData();
+  }, [lineChartData])
 
   const getLineChartData = () =>{
     Axios.get('http://localhost:3001/api/dashboard').then((response) => {
@@ -41,11 +44,11 @@ function LineChart() {
     });
   };
 
-  const groupTheData = () => {
+  function groupTheData() {
     const length: number = lineChartData.length;
     let dataGroup: Array<Array<SoilData>> = [];
     dataGroup = Array.from({ length }, () => []);
-
+    
     if (length > 0) {
       const groupedData: Record<string, SoilData[]> = {};
       lineChartData.forEach((data) => {
@@ -55,9 +58,16 @@ function LineChart() {
         }
         groupedData[projectName].push(data);
       });
-      
+
       Object.values(groupedData).forEach((group) => {
         const index = dataGroup.findIndex((arr) => arr.length === 0);
+        for(let i=0; i<pastSevenDays.length; i++) {
+          let groupie = group.find((arr) => arr.date === pastSevenDays[i]);
+          if (!groupie) {
+            group.push({ project_name: group[i].project_name, soil_amount: 0, date: pastSevenDays[i] });
+          }
+        }
+        group.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
         if (index !== -1) {
           dataGroup[index] = group;
         }
@@ -65,10 +75,9 @@ function LineChart() {
     }
 
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
-    console.log(dataGroup);
     setGroupedData(dataGroup);
   };
-  
+
   function getPastSevenDays() {
     var pastDays = [];
     var today = new Date();
@@ -76,12 +85,16 @@ function LineChart() {
     for (var i = 0; i < 7; i++) {
       let pastDay = new Date(today);
       pastDay.setDate(today.getDate() - i);
-      const month = pastDay.getUTCMonth() + 1;
+      let month = (pastDay.getUTCMonth() + 1).toString();
+      if (month.length === 1) {
+        month = '0' + month;
+      }
       const day = pastDay.getUTCDate();
       const year = pastDay.getUTCFullYear();
       const newDate = year + "-" + month + "-" + day;
       pastDays.push(newDate);
     }
+    pastDays.reverse();
     return pastDays;
   }
   
@@ -93,27 +106,30 @@ function LineChart() {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <Line
-      data={{
-        labels: pastSevenDays,
-        datasets: groupedData.map((row) => {
-          return ({
-            label: row[0].project_name,
-            data: row.map((cell:SoilData) => cell.soil_amount),
-            tension: 0.2,
-            borderJoinStyle: 'round',
-            borderWidth: 3,
-            // borderColor: '#FFCF8B',
-            // backgroundColor: '#FFCF8B',
-            pointBorderColor: 'black',
-            pointBorderWidth: 2
-          });
-        })
-      }}
-      options={{
-        maintainAspectRatio: false,
-      }}
-    />
+        { groupedData ?
+        (
+          <Line
+            data={{
+              labels: pastSevenDays,
+              datasets: groupedData.map((row) => {
+                return ({
+                  label: row[0].project_name,
+                  data: row.map((cell:SoilData) => cell.soil_amount),
+                  tension: 0.2,
+                  borderJoinStyle: 'round',
+                  borderWidth: 3,
+                  // borderColor: '#FFCF8B',
+                  // backgroundColor: '#FFCF8B',
+                  pointBorderColor: 'black',
+                  pointBorderWidth: 2
+                });
+              })
+            }}
+            options={{
+              maintainAspectRatio: false,
+            }}
+          />
+        ) : ('') }
       </Card.Body>
       {/* <Card.Footer className="border-0">
         <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: 20XX</p></div>

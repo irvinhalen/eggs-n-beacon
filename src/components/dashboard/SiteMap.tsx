@@ -47,7 +47,7 @@ function SiteMap() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {markers.map((marker:any) => (
-                    <Marker position={marker.geocode} icon={customIcon}>
+                    <Marker key={marker.popUp} position={marker.geocode} icon={customIcon}>
                         <Popup>{marker.popUp}</Popup>
                     </Marker>
                 ))}
