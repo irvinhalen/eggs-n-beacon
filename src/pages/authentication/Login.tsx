@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Card } from 'react-bootstrap';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { blackTheme, greenTheme } from '../../components/MaterialThemes';
+import { blackTheme, authTheme } from '../../components/MaterialThemes';
 
 function Login() {
     const {user, loginUser, loading} = useAuth() as AuthContextType;
@@ -52,14 +52,14 @@ function Login() {
                                         </div>
                                         <p className='login-sub-text'>※ A display resolution of FHD (1920 x 1080) or higher is recommended.</p>
                                         {loading ? (
-                                            <ThemeProvider theme={greenTheme}>
+                                            <ThemeProvider theme={authTheme}>
                                                 <LoadingButton loading variant='contained' sx={{width: '25%'}}>
                                                     LOGIN
                                                 </LoadingButton>
                                             </ThemeProvider>
                                             
                                         ): (
-                                            <ThemeProvider theme={greenTheme}>
+                                            <ThemeProvider theme={authTheme}>
                                                 <Button onClick={login} type='submit' variant='contained' sx={{width: '25%'}}>Login</Button>
                                             </ThemeProvider>
                                         )}

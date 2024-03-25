@@ -3,6 +3,14 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import Axios from "axios";
+import { AuthContextType, useAuth } from "../../utils/AuthContext";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Button, ThemeProvider } from "@mui/material";
+import { greenTheme } from "../../components/MaterialThemes";
+import { FilterAltRounded } from "@mui/icons-material";
+import dayjs, { Dayjs } from "dayjs";
 
   interface SoilData {
     soil_amount: number;
@@ -22,9 +30,14 @@ import Axios from "axios";
   );
 
 function LineChart() {
+  const { user } = useAuth() as AuthContextType;
   const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
   const [groupedData, setGroupedData] = useState<Array<any>>([]);
-  let pastSevenDays = getPastSevenDays();
+  const [selectedDates, setSelectedDates] = useState(getPastSevenDays());
+  const [dateStart, setDateStart] = useState<Dayjs | null>(null);
+  const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
+  const [dateStartString, setDateStartString] = useState('');
+  const [dateEndString, setDateEndString] = useState('');
 
   useEffect(() => {
     getLineChartData();
@@ -32,23 +45,32 @@ function LineChart() {
 
   useEffect(() => {
     groupTheData();
-  }, [lineChartData])
+  }, [lineChartData]);
 
-  const getLineChartData = () =>{
-    Axios.get('http://localhost:3001/api/dashboard').then((response) => {
-      setLineChartData(() => {
-        return response.data.map((entry:any) => {
-          return {...entry}
+  const getLineChartData = () => {
+    if (user) {
+      const userId = user.id;
+        Axios.get('http://localhost:3001/api/dashboard', {
+          params: {
+            id: userId,
+            date_start: dateStartString,
+            date_end: dateEndString
+          }
+        }).then((response) => {
+          setLineChartData(() => {
+            return response.data.map((entry:any) => {
+              return {...entry}
+            });
+          });
         });
-      });
-    });
-  };
+    };
+  }    
 
   function groupTheData() {
     const length: number = lineChartData.length;
     let dataGroup: Array<Array<SoilData>> = [];
     dataGroup = Array.from({ length }, () => []);
-    
+
     if (length > 0) {
       const groupedData: Record<string, SoilData[]> = {};
       lineChartData.forEach((data) => {
@@ -61,10 +83,11 @@ function LineChart() {
 
       Object.values(groupedData).forEach((group) => {
         const index = dataGroup.findIndex((arr) => arr.length === 0);
-        for(let i=0; i<pastSevenDays.length; i++) {
-          let groupie = group.find((arr) => arr.date === pastSevenDays[i]);
-          if (!groupie) {
-            group.push({ project_name: group[i].project_name, soil_amount: 0, date: pastSevenDays[i] });
+        const single_projName = group[0].project_name
+        for(let i=0; i<selectedDates.length; i++) {
+          let single = group.find((arr) => arr.date === selectedDates[i]);
+          if (!single) {
+            group.push({ project_name: single_projName, soil_amount: 0, date: selectedDates[i] });
           }
         }
         group.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
@@ -77,6 +100,28 @@ function LineChart() {
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
     setGroupedData(dataGroup);
   };
+
+  function fillSelectedDates() {
+    const dateStartS = dayjs(dateStart).format('YYYY-MM-DD');
+    const dateEndS = dayjs(dateEnd).format('YYYY-MM-DD');
+    setDateStartString(dateStartS);
+    setDateEndString(dateEndS);
+    let currentDate = new Date(dateStartString);
+    let stopDate = new Date(dateEndString);
+    let dateRange = [];
+    for(currentDate; currentDate<=stopDate; currentDate.setDate(currentDate.getDate()+1)) {
+      let month = (currentDate.getUTCMonth() + 1).toString();
+      if (month.length === 1) {
+        month = '0' + month;
+      }
+      const day = currentDate.getUTCDate();
+      const year = currentDate.getUTCFullYear();
+      const newDate = year + "-" + month + "-" + day;
+      dateRange.push(newDate);
+    }
+    getLineChartData();
+    setSelectedDates(dateRange);
+  }
 
   function getPastSevenDays() {
     var pastDays = [];
@@ -100,9 +145,25 @@ function LineChart() {
   
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
-      <Card.Header style={{background: 'none'}}>
+      <Card.Header style={{ background: 'none', borderWidth: 0 }}>
         <Card.Title className="card-text">
-          Amount of Soil
+          <div className="title-wrap">
+            Amount of Soil
+            <div className='date-range'>
+              <LocalizationProvider dateAdapter={ AdapterDayjs }>
+                <DatePicker label='From' format='YYYY-MM-DD' value={dateStart} onChange={(newValue) => setDateStart(newValue)} slotProps={{ textField: { size: 'small' } }} />
+                -
+                <DatePicker label='To' format='YYYY-MM-DD' value={dateEnd} onChange={(newValue) => setDateEnd(newValue)} slotProps={{ textField: { size: 'small' } }} />
+              </LocalizationProvider>
+              <ThemeProvider theme={greenTheme}>
+                { dateStart && dateEnd ? (
+                  <Button onClick={fillSelectedDates} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
+                ) : (
+                  <Button endIcon={<FilterAltRounded />} variant="contained" disabled>Filter</Button>
+                ) }
+              </ThemeProvider>
+            </div>
+          </div>
         </Card.Title>
       </Card.Header>
       <Card.Body>
@@ -110,7 +171,7 @@ function LineChart() {
         (
           <Line
             data={{
-              labels: pastSevenDays,
+              labels: selectedDates,
               datasets: groupedData.map((row) => {
                 return ({
                   label: row[0].project_name,

@@ -1,13 +1,12 @@
 import '../../css/Authentication.css';
-import Axios from 'axios';
-import { Button, Divider, TextField, ThemeProvider } from '@mui/material';
+import { Button, TextField, ThemeProvider } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
 import logo from '../../assets/logo.png';
 import register_photo from '../../assets/register_photo.png';
-import { blackTheme, greenTheme } from '../../components/MaterialThemes';
+import { blackTheme, authTheme } from '../../components/MaterialThemes';
 import { LoadingButton } from '@mui/lab';
 
 function Register() {
@@ -71,11 +70,11 @@ function Register() {
                                         </ThemeProvider>
                                     </div>
                                     {loading ? (
-                                        <ThemeProvider theme={greenTheme}>
+                                        <ThemeProvider theme={authTheme}>
                                             <LoadingButton loading onClick={register} type='submit' variant='contained' sx={{width: '25%', marginTop: '1.5rem'}}>Sign Up</LoadingButton>
                                         </ThemeProvider>
                                     ): (
-                                        <ThemeProvider theme={greenTheme}>
+                                        <ThemeProvider theme={authTheme}>
                                             <Button onClick={register} type='submit' variant='contained' sx={{width: '25%', marginTop: '1.5rem'}}>Sign Up</Button>
                                         </ThemeProvider>
                                     )}

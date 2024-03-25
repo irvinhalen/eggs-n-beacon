@@ -3,9 +3,6 @@ import '../../css/Dashboard.css';
 import LineChart from "../../components/dashboard/LineChart";
 import TruckTransactionTable from '../../components/trucks/TruckTransactionTable';
 import SiteMap from '../../components/dashboard/SiteMap';
-import { blackTheme } from "../../components/MaterialThemes";
-import { Button, ThemeProvider } from "@mui/material";
-import { FilterAltRounded } from "@mui/icons-material";
 
 function Dashboard() {
   return (
@@ -14,9 +11,6 @@ function Dashboard() {
       <div className='main_div'>
         <div className='px-4 py-4 mb-1'>
           <h3 className='main-text site-header-text'>DASHBOARD</h3>
-          <ThemeProvider theme={blackTheme}>
-            <Button startIcon={<FilterAltRounded />} variant="contained">Filter</Button>
-          </ThemeProvider>
         </div>
         <div className='container-fluid'>
             <div className='row mb-3'>

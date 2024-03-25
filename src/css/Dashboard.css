@@ -37,3 +37,16 @@
 }
 
 /* End of Map */
+
+.title-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.date-range {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 0.7rem;
+}

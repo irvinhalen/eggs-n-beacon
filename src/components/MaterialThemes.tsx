@@ -8,7 +8,7 @@ export const blackTheme = createTheme({
     }
 });
 
-export const greenTheme = createTheme({
+export const authTheme = createTheme({
     palette: {
         primary: {
             main: '#019B63'
@@ -20,4 +20,12 @@ export const greenTheme = createTheme({
         },
         fontSize: 20,
     }
-})
+});
+
+export const greenTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#019B63'
+        }
+    }
+});
