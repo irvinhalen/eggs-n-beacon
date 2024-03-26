@@ -41,7 +41,7 @@ function LineChart() {
 
   useEffect(() => {
     getLineChartData();
-  }, []);
+  }, [selectedDates]);
 
   useEffect(() => {
     groupTheData();
@@ -64,7 +64,7 @@ function LineChart() {
           });
         });
     };
-  }    
+  }
 
   function groupTheData() {
     const length: number = lineChartData.length;
@@ -114,12 +114,14 @@ function LineChart() {
       if (month.length === 1) {
         month = '0' + month;
       }
-      const day = currentDate.getUTCDate();
+      let day = currentDate.getUTCDate().toString();
+      if (day.length === 1) {
+        day = '0' + day;
+      }
       const year = currentDate.getUTCFullYear();
       const newDate = year + "-" + month + "-" + day;
       dateRange.push(newDate);
     }
-    getLineChartData();
     setSelectedDates(dateRange);
   }
 
@@ -134,7 +136,10 @@ function LineChart() {
       if (month.length === 1) {
         month = '0' + month;
       }
-      const day = pastDay.getUTCDate();
+      let day = pastDay.getUTCDate().toString();
+      if (day.length === 1) {
+        day = '0' + day;
+      }
       const year = pastDay.getUTCFullYear();
       const newDate = year + "-" + month + "-" + day;
       pastDays.push(newDate);
@@ -159,7 +164,7 @@ function LineChart() {
                 { dateStart && dateEnd ? (
                   <Button onClick={fillSelectedDates} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
                 ) : (
-                  <Button endIcon={<FilterAltRounded />} variant="contained" disabled>Filter</Button>
+                  <Button endIcon={<FilterAltRounded />} sx={{ backgroundColor: 'none' ,borderWidth: '0.15rem' ,borderStyle: 'dashed', width: '6rem' }} disabled>Filter</Button>
                 ) }
               </ThemeProvider>
             </div>
@@ -167,7 +172,7 @@ function LineChart() {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        { groupedData ?
+        { groupedData.length ?
         (
           <Line
             data={{
@@ -190,7 +195,9 @@ function LineChart() {
               maintainAspectRatio: false,
             }}
           />
-        ) : ('') }
+        ) : (
+          <div className="d-flex justify-content-center align-items-center h-100">no data found</div>
+        ) }
       </Card.Body>
       {/* <Card.Footer className="border-0">
         <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: 20XX</p></div>

@@ -61,3 +61,15 @@
 .tabulator-cell {
     padding: 0.5rem!important;
 }
+
+.tabulator-col[aria-sort="none"] .tabulator-arrow{
+    transform: scaleY(-1);
+}
+
+.tabulator-col[aria-sort="ascending"] .tabulator-arrow{
+    transform: scaleY(1);
+}
+
+.tabulator-col[aria-sort="descending"] .tabulator-arrow{
+    transform: scaleY(-1);
+}

@@ -65,22 +65,23 @@ const options = {
 
 const columns = [
   // {field: 'truck_transaction_id', width: '8%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
-  {title: 'Project', field: 'project_name', width: '17%'},
-  {title: 'License Plate', field: 'license_plate', width: '15%', headerSort: false},
+  {title: 'Project', field: 'project_name', headerHozAlign: 'center', width: '17%'},
+  {title: 'License Plate', field: 'license_plate', headerHozAlign: 'center', width: '15%', headerSort: false},
   {
     title: 'Direction',
-    
+    headerHozAlign: 'center',
     columns: [
-      {title: 'Inside', field: 'in', width: '7%', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
-      {title: 'Outside', field: 'out', width: '7%', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
+      {title: 'Inside', field: 'in', width: '7%', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
+      {title: 'Outside', field: 'out', width: '7%', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
     ]
   },
-  {title: 'Amount of Soil', field: 'soil_amount', width: '12%'},
+  {title: 'Amount of Soil', field: 'soil_amount', headerHozAlign: 'center', width: '12%'},
   {
     title: 'Timestamp',
+    headerHozAlign: 'center',
     columns: [
-      {title: 'Inside', field: 'in_time', width: '17%'},
-      {title: 'Outside', field: 'out_time', width: '17%'}
+      {title: 'Inside', field: 'in_time', headerHozAlign: 'center', width: '17%'},
+      {title: 'Outside', field: 'out_time', headerHozAlign: 'center', width: '17%'}
     ]
   }
 ];

@@ -36,7 +36,7 @@ const customIcon = new Icon({
 function SiteMap() {
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
-        <Card.Header style={{ background: 'none' }}>
+        <Card.Header style={{ background: 'none', borderWidth: 0, paddingBottom: 0 }}>
             <Card.Title className="card-text">Site Map</Card.Title>
         </Card.Header>
         <Card.Body>
