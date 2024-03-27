@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.13",
     "@mui/x-charts": "^6.19.4",
     "@mui/x-date-pickers": "^7.0.0",
+    "@types/node": "^20.11.30",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.1",

@@ -4,29 +4,69 @@ import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import { Button, InputAdornment, TextField, ThemeProvider } from "@mui/material";
+import { Edit, FilterAltRounded, SearchRounded } from "@mui/icons-material";
 import '../../css/TabulatorTables.css';
+import { blackTheme, greenTheme } from "../MaterialThemes";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AuthContextType, useAuth } from "../../utils/AuthContext";
+import TransactionModalAdd from "./TransactionModalAdd";
 
 function TruckTransactionTable() {
+  const { user } = useAuth() as AuthContextType;
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     getTruckTransactions();
   }, []);
 
   const getTruckTransactions = () =>{
-    Axios.get('http://localhost:3001/api/truck-transactions').then((response) => {
-      setListOfTruckTransactions(() => {
-        return response.data.map((entry:any) => {
-          return {...entry}
-        })          
+    if(user) {
+      const userId = user.id;
+      Axios.get('http://localhost:3001/api/truck-transactions', {
+        params: {
+          id: userId
+        }
+      }).then((response) => {
+        setListOfTruckTransactions(() => {
+          return response.data.map((entry:any) => {
+            return {...entry}
+          })          
+        });
       });
-    });
+    }
   };
 
   return (
     <Card className="site-table-card shadow-sm">
+      <Card.Header>
+        <Card.Title>
+          <ThemeProvider theme={blackTheme}>
+            <div className='title-wrap'>
+              Soil Tracking Table
+              <div className='actions-wrap'>
+                <div className='filters-wrap'>
+                    <TextField label='Search' size='small' InputProps={{ endAdornment: (
+                      <InputAdornment position='end'>
+                        <SearchRounded />
+                      </InputAdornment>
+                    ) }} autoComplete='off' />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker label='Date' format='YYYY-MM-DD' slotProps={{ textField: { size: 'small' } }} />
+                    </LocalizationProvider>
+                    <FilterAltRounded sx={{ color: '#757575' }} />
+                </div>
+                <ThemeProvider theme={greenTheme}>
+                  <Button onClick={() => setModalShow(true)} variant='contained'>Create Transaction</Button>
+                  <TransactionModalAdd show={modalShow} onHide={() => setModalShow(false)} />
+                </ThemeProvider>
+              </div>
+            </div>
+          </ThemeProvider>
+        </Card.Title>
+      </Card.Header>
       <Card.Body className='manager-cards'>
         <ReactTabulator
             data={listOfTruckTransactions}
@@ -48,9 +88,11 @@ const EditFormat = (props:any) => {
   let deezNuts = props.cell.getData();
   deezNuts = deezNuts.truck_transaction_id;
   return (
-    <Button variant='outlined' color='error' startIcon={<Edit />} onClick={() => {testTickleZ(deezNuts)}}>
-      ACTION
-    </Button>
+    <ThemeProvider theme={greenTheme}>
+      <Button variant='outlined' size='small' startIcon={<Edit />} onClick={() => {testTickleZ(deezNuts)}}>
+        ACTION
+      </Button>
+    </ThemeProvider>
   );
 }
 
@@ -63,10 +105,11 @@ const options = {
   paginationButtonCount: 3
 }
 
-const columns = [
-  // {field: 'truck_transaction_id', width: '8%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
-  {title: 'Project', field: 'project_name', headerHozAlign: 'center', width: '17%'},
-  {title: 'License Plate', field: 'license_plate', headerHozAlign: 'center', width: '15%', headerSort: false},
+const columns:any = [
+  // {field: 'truck_transaction_id', width: '7%', hozAlign: 'center', headerSort: false, formatter: reactFormatter(<EditFormat />)},
+  {title: 'Project', field: 'project_name',  width: '18%', headerHozAlign: 'center', headerSort: true},
+  {title: 'License Plate', field: 'license_plate',  width: '15%', headerHozAlign: 'center', headerSort: false},
+  {title: 'Amount of Soil', field: 'soil_amount', width: '12%', headerHozAlign: 'center', headerSort: true},
   {
     title: 'Direction',
     headerHozAlign: 'center',
@@ -75,7 +118,6 @@ const columns = [
       {title: 'Outside', field: 'out', width: '7%', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
     ]
   },
-  {title: 'Amount of Soil', field: 'soil_amount', headerHozAlign: 'center', width: '12%'},
   {
     title: 'Timestamp',
     headerHozAlign: 'center',

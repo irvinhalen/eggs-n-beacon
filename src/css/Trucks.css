@@ -1,4 +1,4 @@
-/* Start of ManageSites */
+/* Start of ManageTrucks */
 
 .bg-div {
     position: absolute;
@@ -22,13 +22,70 @@
     border-width: 0;
 }
 
-/* End of ManageSites */
+.card-header {
+    background-color: white;
+}
 
-/* Start of SiteTable */
+/* End of ManageTrucks */
+
+/* Start of TruckTables */
+
+.title-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.actions-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.filters-wrap {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
 
 .tabulator-footer-contents {
     display: flex;
     justify-content: space-between;
 }
 
-/* End of SiteTable */
+/* End of TruckTables */
+
+/* Start of Modal */
+
+.modal-header {
+    background-color: #019B63;
+    color: white;
+}
+
+.modal-title {
+    font-size: large;
+}
+
+.modal-content {
+    border-width: 0;
+}
+
+.form-wrap {
+    display: inherit;
+    flex-direction: inherit;
+    gap: 0.5rem;
+}
+
+.form-row-wrap {
+    display: inherit;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.button-row-wrap {
+    gap: 0.5rem;
+}
+
+/* End of Modal */

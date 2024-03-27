@@ -48,7 +48,7 @@ function LineChart() {
   }, [lineChartData]);
 
   const getLineChartData = () => {
-    if (user) {
+    if(user) {
       const userId = user.id;
         Axios.get('http://localhost:3001/api/dashboard', {
           params: {
@@ -147,7 +147,7 @@ function LineChart() {
     pastDays.reverse();
     return pastDays;
   }
-  
+
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
@@ -164,7 +164,7 @@ function LineChart() {
                 { dateStart && dateEnd ? (
                   <Button onClick={fillSelectedDates} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
                 ) : (
-                  <Button endIcon={<FilterAltRounded />} sx={{ backgroundColor: 'none' ,borderWidth: '0.15rem' ,borderStyle: 'dashed', width: '6rem' }} disabled>Filter</Button>
+                  <Button endIcon={<FilterAltRounded />} sx={{ backgroundColor: 'none' ,borderWidth: '0.1rem' ,borderStyle: 'dashed', width: '6.2rem' }} disabled>Filter</Button>
                 ) }
               </ThemeProvider>
             </div>

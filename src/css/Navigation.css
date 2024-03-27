@@ -148,11 +148,6 @@
     text-decoration: none;
 }
 
-li {
-    height: 0.5rem;
-    list-style-type: circle;
-}
-
 .sidebar-group {
     padding: 1rem;
     border-bottom: 0.1rem solid #E4E4E4;
