@@ -1,6 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Colors } from 'chart.js';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "react-bootstrap";
 import Axios from "axios";
 import { AuthContextType, useAuth } from "../../utils/AuthContext";
@@ -38,6 +38,8 @@ function LineChart() {
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
   const [dateStartString, setDateStartString] = useState('');
   const [dateEndString, setDateEndString] = useState('');
+
+  const chartRef = useRef();
 
   useEffect(() => {
     getLineChartData();
@@ -148,8 +150,13 @@ function LineChart() {
     return pastDays;
   }
 
+  const toggleDisplay = () => {
+
+  }
+
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
+      {/* <Button onClick={toggleDisplay} variant="contained">Test</Button> */}
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
         <Card.Title className="card-text">
           <div className="title-wrap">
@@ -194,6 +201,7 @@ function LineChart() {
             options={{
               maintainAspectRatio: false,
             }}
+            ref={chartRef}
           />
         ) : (
           <div className="d-flex justify-content-center align-items-center h-100">no data found</div>

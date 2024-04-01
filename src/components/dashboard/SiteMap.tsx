@@ -41,11 +41,15 @@ function SiteMap() {
         </Card.Header>
         <Card.Body>
             <div className="map-container">
-            <MapContainer center={[9.946858249396133, 123.72928371671546]} zoom={9} scrollWheelZoom={true}>
+            <MapContainer center={[9.946858249396133, 123.72928371671546]} zoom={9} scrollWheelZoom={true} attributionControl={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                {/* <TileLayer
+                    attribution='Stamen Watercolor'
+                    url='https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg'
+                /> */}
                 {markers.map((marker:any) => (
                     <Marker key={marker.popUp} position={marker.geocode} icon={customIcon}>
                         <Popup>{marker.popUp}</Popup>
