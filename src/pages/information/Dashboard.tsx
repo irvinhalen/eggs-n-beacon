@@ -3,8 +3,11 @@ import '../../css/Dashboard.css';
 import LineChart from "../../components/dashboard/LineChart";
 import TruckTransactionTable from '../../components/trucks/TruckTransactionTable';
 import SiteMap from '../../components/dashboard/SiteMap';
+import { useState } from 'react';
 
 function Dashboard() {
+  const [siteId, setSiteId] = useState<number>(0);
+
   return (
     <>
       <div className='bg-div' />
@@ -15,10 +18,10 @@ function Dashboard() {
         <div className='container-fluid'>
             <div className='row mb-3'>
               <div className='col-sm-12 col-md-4 col-md-4'>
-                <SiteMap />
+                <SiteMap setSiteId={setSiteId} />
               </div>
               <div className='col-sm-12 col-md-8 col-md-8'>
-                <LineChart />
+                <LineChart siteId={siteId} />
               </div>
             </div>
             <div className='row'>

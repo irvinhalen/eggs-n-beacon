@@ -13,10 +13,10 @@ import { FilterAltRounded } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
 
   interface SoilData {
-    site_id: number,
-    soil_amount: number,
-    date: string,
-    project_name: string
+    site_id: number;
+    soil_amount: number;
+    date: string;
+    project_name: string;
   }
 
   ChartJS.register(
@@ -28,9 +28,9 @@ import dayjs, { Dayjs } from "dayjs";
     Tooltip,
     Legend,
     Colors
-  );
+    );
 
-function LineChart() {
+function LineChart({siteId}:{siteId:number}) {
   const { user } = useAuth() as AuthContextType;
   const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
   const [groupedData, setGroupedData] = useState<Array<any>>([]);
@@ -39,49 +39,60 @@ function LineChart() {
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
   const [dateStartString, setDateStartString] = useState('');
   const [dateEndString, setDateEndString] = useState('');
-
+  const [listOfSiteIds, setListOfSiteIds] = useState<Array<Number>>([]);
+  
   const chartRef = useRef();
-
+  
   useEffect(() => {
     getLineChartData();
   }, [selectedDates]);
-
+  
   useEffect(() => {
     groupTheData();
   }, [lineChartData]);
+  
+  useEffect(() => {
+    toggleDisplay();
+  }, [siteId]);
 
   const getLineChartData = () => {
     if(user) {
       const userId = user.id;
-        Axios.get('http://localhost:3001/api/dashboard', {
-          params: {
-            id: userId,
-            date_start: dateStartString,
-            date_end: dateEndString
-          }
-        }).then((response) => {
-          setLineChartData(() => {
-            return response.data.map((entry:any) => {
-              return {...entry}
-            });
+      Axios.get('http://localhost:3001/api/dashboard', {
+        params: {
+          id: userId,
+          date_start: dateStartString,
+          date_end: dateEndString
+        }
+      }).then((response) => {
+        setLineChartData(() => {
+          return response.data.map((entry:any) => {
+            return {...entry}
           });
         });
+      });
     };
   }
-
+  
   function groupTheData() {
     const length: number = lineChartData.length;
     let dataGroup: Array<Array<SoilData>> = [];
     dataGroup = Array.from({ length }, () => []);
-
+    
     if (length > 0) {
       const groupedData: Record<string, SoilData[]> = {};
+      const list_of_site_ids:Array<number> = [];
       lineChartData.forEach((data) => {
         const projectName = data.project_name;
-        if (!groupedData[projectName]) {
+        const site_id = data.site_id;
+        if(!list_of_site_ids.includes(site_id)) {
+          list_of_site_ids.push(site_id);
+        }
+        if(!groupedData[projectName]) {
           groupedData[projectName] = [];
         }
         groupedData[projectName].push(data);
+        setListOfSiteIds(list_of_site_ids);
       });
 
       Object.values(groupedData).forEach((group) => {
@@ -100,11 +111,11 @@ function LineChart() {
         }
       });
     }
-
+    
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
     setGroupedData(dataGroup);
   };
-
+  
   function fillSelectedDates() {
     const dateStartS = dayjs(dateStart).format('YYYY-MM-DD');
     const dateEndS = dayjs(dateEnd).format('YYYY-MM-DD');
@@ -128,7 +139,7 @@ function LineChart() {
     }
     setSelectedDates(dateRange);
   }
-
+  
   function getPastSevenDays() {
     var pastDays = [];
     var today = new Date();
@@ -151,18 +162,32 @@ function LineChart() {
     pastDays.reverse();
     return pastDays;
   }
-
   const toggleDisplay = () => {
     const lineChart:any = chartRef.current;
-    for(let i=0; i <= 4; i++) {
-      lineChart.hide(i);
+    if(siteId != 0) {
+      if(lineChart && listOfSiteIds) {
+        const index = listOfSiteIds.indexOf(siteId);
+        console.log(listOfSiteIds, index);
+        for(let i=0; i < listOfSiteIds.length; i++) {
+          // with animation (still janky)
+          // if(index != i) {
+          //   setTimeout(() => { lineChart.hide(i); }, 1000 * i);
+          // }else{
+          //   lineChart.show(index);
+          // }
+          lineChart.hide(i);
+        }
+        lineChart.show(index);
+      }
+    } else {
+      for(let i=0; i < listOfSiteIds.length; i++) {
+        lineChart.show(i);
+      }
     }
-    lineChart.show(1);
   }
 
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
-      {/* <Button onClick={toggleDisplay} variant='contained'>TESTING TESTING 123 this is a button to test the Chart JS methods</Button> */}
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
         <Card.Title className="card-text">
           <div className="title-wrap">
@@ -206,7 +231,10 @@ function LineChart() {
               })
             }}
             options={{
-              maintainAspectRatio: false
+              maintainAspectRatio: false,
+              animation: {
+                duration: 0
+              }
             }}
             ref={chartRef}
           />

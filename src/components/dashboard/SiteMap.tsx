@@ -5,15 +5,15 @@ import marker_flag from '../../assets/marker.png';
 import marker_active from '../../assets/marker_active.png';
 import '../../css/Dashboard.css';
 import { Card } from "react-bootstrap";
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
 import Axios from 'axios';
 
     interface sites {
-        id: number,
-        name: string,
-        geocode: LatLngExpression,
-        active: boolean,
+        id: number;
+        name: string;
+        geocode: LatLngExpression;
+        active: boolean;
     }
 
     const customIcon = new Icon({
@@ -26,7 +26,7 @@ import Axios from 'axios';
         iconSize: [50, 55]
     });
 
-function SiteMap() {
+function SiteMap({setSiteId}:{setSiteId:Dispatch<SetStateAction<number>>}) {
     const { user } = useAuth() as AuthContextType;
     const [listOfSites, setListOfSites] = useState<Array<sites>>([]);
 
@@ -64,6 +64,7 @@ function SiteMap() {
             listWithActive.push(list);
         })
         setListOfSites(listWithActive);
+        setSiteId(site_id);
       }
 
       const deactivateMarkers = () => {
@@ -73,6 +74,7 @@ function SiteMap() {
             listReset.push(list);
         })
         setListOfSites(listReset);
+        setSiteId(0);
       }
 
   return (
