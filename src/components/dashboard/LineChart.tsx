@@ -13,9 +13,10 @@ import { FilterAltRounded } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
 
   interface SoilData {
-    soil_amount: number;
-    date: string;
-    project_name: string;
+    site_id: number,
+    soil_amount: number,
+    date: string,
+    project_name: string
   }
 
   ChartJS.register(
@@ -85,11 +86,12 @@ function LineChart() {
 
       Object.values(groupedData).forEach((group) => {
         const index = dataGroup.findIndex((arr) => arr.length === 0);
-        const single_projName = group[0].project_name
+        const single_projName = group[0].project_name;
+        const single_siteId = group[0].site_id;
         for(let i=0; i<selectedDates.length; i++) {
           let single = group.find((arr) => arr.date === selectedDates[i]);
           if (!single) {
-            group.push({ project_name: single_projName, soil_amount: 0, date: selectedDates[i] });
+            group.push({ project_name: single_projName, site_id: single_siteId, soil_amount: 0, date: selectedDates[i] });
           }
         }
         group.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
@@ -151,12 +153,16 @@ function LineChart() {
   }
 
   const toggleDisplay = () => {
-
+    const lineChart:any = chartRef.current;
+    for(let i=0; i <= 4; i++) {
+      lineChart.hide(i);
+    }
+    lineChart.show(1);
   }
 
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
-      {/* <Button onClick={toggleDisplay} variant="contained">Test</Button> */}
+      {/* <Button onClick={toggleDisplay} variant='contained'>TESTING TESTING 123 this is a button to test the Chart JS methods</Button> */}
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
         <Card.Title className="card-text">
           <div className="title-wrap">
@@ -179,13 +185,14 @@ function LineChart() {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        { groupedData.length ?
+        { groupedData.length && selectedDates.length ?
         (
           <Line
             data={{
               labels: selectedDates,
               datasets: groupedData.map((row) => {
                 return ({
+                  id: row[0].site_id,
                   label: row[0].project_name,
                   data: row.map((cell:SoilData) => cell.soil_amount),
                   tension: 0.2,
@@ -199,7 +206,7 @@ function LineChart() {
               })
             }}
             options={{
-              maintainAspectRatio: false,
+              maintainAspectRatio: false
             }}
             ref={chartRef}
           />
