@@ -57,7 +57,13 @@ function TransactionModalAdd(props:any) {
             setSoilAmount(weightCapOfTruck);
         }
     }, [selectedTruck]);
-    
+
+    const setMaxDate = (daysToAdd: number) => {
+        const now = new Date();
+        const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
+        return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
+    };
+
     const getSelectData = () => {
         if(user) {
             const userId = user.id;
@@ -183,8 +189,8 @@ function TransactionModalAdd(props:any) {
             <FormLabel component='legend'>Timestamp</FormLabel>
             <div className='form-row-wrap'>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm' value={inTime} onChange={(newValue) => setInTime(newValue)} slotProps={{ textField: { size: 'small' } }} />
-                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm' value={outTime} onChange={(newValue) => setOutTime(newValue)} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm' value={inTime} onChange={(newValue) => setInTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm' value={outTime} onChange={(newValue) => setOutTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
                 </LocalizationProvider>
             </div>
         </div>

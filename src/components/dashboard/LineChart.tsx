@@ -28,7 +28,7 @@ import dayjs, { Dayjs } from "dayjs";
     Tooltip,
     Legend,
     Colors
-    );
+  );
 
 function LineChart({siteId}:{siteId:number}) {
   const { user } = useAuth() as AuthContextType;
@@ -162,6 +162,7 @@ function LineChart({siteId}:{siteId:number}) {
     pastDays.reverse();
     return pastDays;
   }
+
   const toggleDisplay = () => {
     const lineChart:any = chartRef.current;
     if(siteId != 0) {
@@ -186,6 +187,12 @@ function LineChart({siteId}:{siteId:number}) {
     }
   }
 
+  const setMaxDate = (daysToAdd: number) => {
+      const now = new Date();
+      const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
+      return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
+  };
+
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
@@ -194,9 +201,9 @@ function LineChart({siteId}:{siteId:number}) {
             Amount of Soil
             <div className='date-range'>
               <LocalizationProvider dateAdapter={ AdapterDayjs }>
-                <DatePicker label='From' format='YYYY-MM-DD' value={dateStart} onChange={(newValue) => setDateStart(newValue)} slotProps={{ textField: { size: 'small' } }} />
+                <DatePicker label='From' format='YYYY-MM-DD' value={dateStart} onChange={(newValue) => setDateStart(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
                 -
-                <DatePicker label='To' format='YYYY-MM-DD' value={dateEnd} onChange={(newValue) => setDateEnd(newValue)} slotProps={{ textField: { size: 'small' } }} />
+                <DatePicker label='To' format='YYYY-MM-DD' value={dateEnd} onChange={(newValue) => setDateEnd(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
               </LocalizationProvider>
               <ThemeProvider theme={greenTheme}>
                 { dateStart && dateEnd ? (
