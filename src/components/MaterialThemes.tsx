@@ -29,3 +29,11 @@ export const greenTheme = createTheme({
         }
     }
 });
+
+export const redTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#E72423'
+        }
+    }
+});

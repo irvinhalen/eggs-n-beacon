@@ -16,8 +16,9 @@ interface SelectData {
     weight_capacity: number
 }
 
-function TransactionModalAdd(props:any) {
+function TransactionModal(props:any) {
     const { user } = useAuth() as AuthContextType;
+    const [truckTransactionId, setTruckTransactionId] = useState(0);
     const [listOfSelectData, setListOfSelectData] = useState<Array<SelectData>>([]);
     const [listOfProjects, setListOfProjects] = useState<Array<SelectData>>([]);
     const [listOfTrucks, setListOfTrucks] = useState<Array<SelectData>>([]);
@@ -33,6 +34,38 @@ function TransactionModalAdd(props:any) {
     useEffect(() => {
       getSelectData();
     }, [])
+
+    useEffect(() => {
+        if(props.isEdit) {
+            if(props.rowData) {
+                setTruckTransactionId(props.rowData.truck_transaction_id);
+                if(listOfProjects) {
+                    setSelectedProject(props.rowData.site_id);
+                    if(listOfTrucks) {
+                        setSelectedTruck(props.rowData.truck_id);
+                    }
+                }
+                setSoilAmount(props.rowData.soil_amount);
+                if (props.rowData.in === 1) {
+                    setCheckedIn(true);
+                } else {
+                    setCheckedIn(false);
+                }
+                if (props.rowData.out === 1) {
+                    setCheckedOut(true);
+                } else {
+                    setCheckedOut(false);
+                }
+                const in_date = dayjs(props.rowData.in_time);
+                const out_date = dayjs(props.rowData.out_time);
+                setInTime(in_date);
+                setOutTime(out_date);
+            }
+        } else {
+            setSelectedProject('');
+            setSelectedTruck('');
+        }
+    }, [props.isEdit])
 
     useEffect(() => {
         setListOfProjects(listOfSelectData.filter((value, index, self) =>
@@ -96,7 +129,33 @@ function TransactionModalAdd(props:any) {
             out: out_num,
             in_time: in_time,
             out_time: out_time
-        
+        }).then((response) => {
+            if(response.data.status === 'success') {
+                setSelectedProject('');
+                setSelectedTruck('');
+                setSoilAmount('');
+                props.onHide();
+            }
+            setAddLoading(false);
+        });
+    }
+
+    const updateTransaction = () => {
+        setAddLoading(true);
+        const in_num = (+ checkedIn);
+        const out_num = (+ checkedOut);
+        const soil_amount = parseFloat(soilAmount);
+        const in_time = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss');
+        const out_time = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss');
+        Axios.put('http://localhost:3001/api/update-transaction', {
+            truck_transaction_id: truckTransactionId,
+            truck_id: selectedTruck,
+            site_id: selectedProject,
+            soil_amount: soil_amount,
+            in: in_num,
+            out: out_num,
+            in_time: in_time,
+            out_time: out_time
         }).then((response) => {
             if(response.data.status === 'success') {
                 setSelectedProject('');
@@ -140,7 +199,7 @@ function TransactionModalAdd(props:any) {
     >
       <Modal.Header className='border-0'>
         <Modal.Title id="contained-modal-title-vcenter">
-          Create New Transaction
+          { props.isEdit ? ('Edit Transaction') : ('Create New Transaction') }
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className='d-flex flex-column'>
@@ -181,10 +240,17 @@ function TransactionModalAdd(props:any) {
             <TextField label='Amount of Soil' variant='outlined' size='small' type='number' value={soilAmount} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSoilAmount(event.target.value)} autoComplete='off' />
             <Divider />
                 <FormLabel component='legend'>Direction</FormLabel>
-            <div className='form-row-wrap'>
-                <FormControlLabel control={<Checkbox defaultChecked onChange={handleInCheckChange} size='small' />} label='Inside' />
-                <FormControlLabel control={<Checkbox defaultChecked onChange={handleOutCheckChange} size='small' />} label='Outside' />
-            </div>
+            { props.isEdit ? (
+                <div className='form-row-wrap'>
+                    <FormControlLabel control={<Checkbox checked={checkedIn} onChange={handleInCheckChange} size='small' />} label='Inside' />
+                    <FormControlLabel control={<Checkbox checked={checkedOut} onChange={handleOutCheckChange} size='small' />} label='Outside' />
+                </div>
+            ) : (  
+                <div className='form-row-wrap'>
+                    <FormControlLabel control={<Checkbox defaultChecked onChange={handleInCheckChange} size='small' />} label='Inside' />
+                    <FormControlLabel control={<Checkbox defaultChecked onChange={handleOutCheckChange} size='small' />} label='Outside' />
+                </div>
+            ) }
             <Divider />
             <FormLabel component='legend'>Timestamp</FormLabel>
             <div className='form-row-wrap'>
@@ -200,11 +266,15 @@ function TransactionModalAdd(props:any) {
             { addLoading ? (
                 <LoadingButton variant='contained' loading>Save</LoadingButton>
             ) : (
-                <Button onClick={addTransaction} variant='contained' type='submit' disableElevation>Save</Button>
+                props.isEdit ? (
+                    <Button onClick={updateTransaction} variant='contained' type='submit' disableElevation>Update</Button>
+                ) : (
+                    <Button onClick={addTransaction} variant='contained' type='submit' disableElevation>Save</Button>
+                )
             ) }
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default TransactionModalAdd;
+export default TransactionModal;

@@ -45,18 +45,26 @@ function LineChart({siteId}:{siteId:number}) {
   
   useEffect(() => {
     getLineChartData();
-  }, [selectedDates]);
-  
+  }, []);
+
   useEffect(() => {
     groupTheData();
+    console.log('before:', groupedData, selectedDates);
   }, [lineChartData]);
-  
+
+  useEffect(() => {
+    console.log('after:', groupedData, selectedDates);
+  }, [groupedData]);
+
   useEffect(() => {
     toggleDisplay();
   }, [siteId]);
 
   const getLineChartData = () => {
     if(user) {
+      if(dateStart && dateEnd){
+        fillSelectedDates();
+      }
       const userId = user.id;
       Axios.get('http://localhost:3001/api/dashboard', {
         params: {
@@ -75,8 +83,8 @@ function LineChart({siteId}:{siteId:number}) {
   }
   
   function groupTheData() {
-    const length: number = lineChartData.length;
-    let dataGroup: Array<Array<SoilData>> = [];
+    const length:number = lineChartData.length;
+    let dataGroup:Array<Array<SoilData>> = [];
     dataGroup = Array.from({ length }, () => []);
     
     if (length > 0) {
@@ -137,7 +145,9 @@ function LineChart({siteId}:{siteId:number}) {
       const newDate = year + "-" + month + "-" + day;
       dateRange.push(newDate);
     }
-    setSelectedDates(dateRange);
+    if(dateRange.length > 0) {
+      setSelectedDates(dateRange);
+    }
   }
   
   function getPastSevenDays() {
@@ -168,7 +178,6 @@ function LineChart({siteId}:{siteId:number}) {
     if(siteId != 0) {
       if(lineChart && listOfSiteIds) {
         const index = listOfSiteIds.indexOf(siteId);
-        console.log(listOfSiteIds, index);
         for(let i=0; i < listOfSiteIds.length; i++) {
           // with animation (still janky)
           // if(index != i) {
@@ -207,7 +216,7 @@ function LineChart({siteId}:{siteId:number}) {
               </LocalizationProvider>
               <ThemeProvider theme={greenTheme}>
                 { dateStart && dateEnd ? (
-                  <Button onClick={fillSelectedDates} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
+                  <Button onClick={getLineChartData} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
                 ) : (
                   <Button endIcon={<FilterAltRounded />} sx={{ backgroundColor: 'none' ,borderWidth: '0.1rem' ,borderStyle: 'dashed', width: '6.2rem' }} disabled>Filter</Button>
                 ) }
