@@ -73,3 +73,8 @@
 .tabulator-col[aria-sort="descending"] .tabulator-arrow{
     transform: scaleY(-1);
 }
+
+.tabulator-selected {
+    color: white;
+    background-color: gray!important;
+}

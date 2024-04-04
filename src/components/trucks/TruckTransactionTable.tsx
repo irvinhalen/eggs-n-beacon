@@ -3,35 +3,43 @@ import { ReactTabulator, reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import Axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, ButtonBase, InputAdornment, TextField, ThemeProvider } from "@mui/material";
 import { Delete, Edit, FilterAltRounded, SearchRounded, SettingsRounded } from "@mui/icons-material";
 import '../../css/TabulatorTables.css';
-import { blackTheme, greenTheme } from "../MaterialThemes";
+import { blackTheme, greenTheme, redTheme } from "../MaterialThemes";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import TransactionModal from "./TransactionModal";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
-import { Tabulator } from "react-tabulator/lib/types/TabulatorTypes";
+import TransactionModalConfirm from "./TransactionModalConfirm";
 
 function TruckTransactionTable() {
   const { user } = useAuth() as AuthContextType;
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [confirmModalShow, setConfirmModalShow] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [rowData, setRowData] = useState<Object>({});
   const [toggleVisibility, setToggleVisibility] = useState<boolean>(false);
+  const [laTable, setLaTable] = useState<any>();
 
   useEffect(() => {
     getTruckTransactions();
   }, []);
 
-  let tableRef = useRef<Tabulator | null>(null);
-
-  // useEffect(() => {
-  //   console.log(tableRef);
-  // }, [toggleVisibility]);
+  // for some reason useRef for Tabulator becomes null after the first use so these are commented out in case I can find a better solution for useRef
+  /* let tableRef = useRef<Tabulator | null>(null);
+  useEffect(() => {
+    console.log(tableRef);
+  }, [toggleVisibility]);
+  const showActions = () => {
+    tableRef.current?.showColumn('truck_transaction_id');
+  }
+  const hideActions = () => {
+    tableRef.current?.hideColumn('truck_transaction_id');
+  } */
 
   const getTruckTransactions = () =>{
     if(user) {
@@ -50,27 +58,30 @@ function TruckTransactionTable() {
     }
   };
 
-  const editRow = (row:any) => {
+  const editRow = (row:ReactTabulatorProps, tabRow:ReactTabulatorProps) => {
+    tabRow.select();
     setIsEdit(true);
     setRowData(row);
     setModalShow(true);
   }
 
   const showActions = () => {
-    tableRef.current?.showColumn('truck_transaction_id');
-    console.log(tableRef);
+    laTable.showColumn('truck_transaction_id');
   }
 
   const hideActions = () => {
-    tableRef.current?.hideColumn('truck_transaction_id');
+    laTable.hideColumn('truck_transaction_id');
+    laTable.redraw();
   }
 
   const OptionsFormat = (props:ReactTabulatorProps) => {
+    setLaTable(props.cell.getTable());
+    const tabRow = props.cell.getRow();
     const row = props.cell.getData();
     return (
       <div className='h-100 d-flex justify-content-between align-items-center' style={{ gap: '0.2rem' }}>
-        <ButtonBase onClick={() => {editRow(row)}} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
-        <ButtonBase sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
+        <ButtonBase onClick={() => {editRow(row, tabRow)}} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
+        <ButtonBase onClick={() => {tabRow.select() ;setConfirmModalShow(true)}} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
       </div>
     );
   }
@@ -81,7 +92,8 @@ function TruckTransactionTable() {
     paginationSize: 10,
     paginationSizeSelector: [5, 10, 50, 100, 1000],
     paginationCounter: 'rows',
-    paginationButtonCount: 3
+    paginationButtonCount: 3,
+    selectableRows: true
   }
 
   const columns:any = [
@@ -165,12 +177,22 @@ function TruckTransactionTable() {
                     <TransactionModal
                       show={modalShow}
                       onHide={() => {
+                        laTable.deselectRow();
                         setModalShow(false);
                         setIsEdit(false);
                       }}
                       isEdit={isEdit}
                       rowData={rowData}
                     />
+                    <ThemeProvider theme={redTheme}>
+                      <TransactionModalConfirm
+                        show={confirmModalShow}
+                        onHide={() => {
+                          laTable.deselectRow();
+                          setConfirmModalShow(false);
+                        }}
+                      />
+                    </ThemeProvider>
                     <SettingsRounded sx={{ color: '#757575' }} />
                   </ThemeProvider>
                 </div>
@@ -181,7 +203,7 @@ function TruckTransactionTable() {
       </Card.Header>
       <Card.Body className='manager-cards'>
         <ReactTabulator
-            onRef={(ref) => (tableRef = ref)}
+            // onRef={(ref) => (tableRef = ref)}
             data={listOfTruckTransactions}
             columns={columns}
             options={options}

@@ -67,6 +67,10 @@
     color: white;
 }
 
+.modal-header-red {
+    background-color: #E72423;
+}
+
 .modal-title {
     font-size: large;
 }
