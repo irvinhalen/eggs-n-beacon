@@ -54,6 +54,7 @@ function TruckTransactionTable() {
             return {...entry}
           })          
         });
+        setToggleVisibility(false);
       });
     }
   };
@@ -63,6 +64,12 @@ function TruckTransactionTable() {
     setIsEdit(true);
     setRowData(row);
     setModalShow(true);
+  }
+
+  const deleteRow = (row:ReactTabulatorProps, tabRow:ReactTabulatorProps) => {
+    tabRow.select();
+    setRowData(row);
+    setConfirmModalShow(true);
   }
 
   const showActions = () => {
@@ -81,7 +88,7 @@ function TruckTransactionTable() {
     return (
       <div className='h-100 d-flex justify-content-between align-items-center' style={{ gap: '0.2rem' }}>
         <ButtonBase onClick={() => {editRow(row, tabRow)}} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
-        <ButtonBase onClick={() => {tabRow.select() ;setConfirmModalShow(true)}} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
+        <ButtonBase onClick={() => {deleteRow(row, tabRow)}} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
       </div>
     );
   }
@@ -183,14 +190,17 @@ function TruckTransactionTable() {
                       }}
                       isEdit={isEdit}
                       rowData={rowData}
+                      updateTable={getTruckTransactions}
                     />
                     <ThemeProvider theme={redTheme}>
                       <TransactionModalConfirm
                         show={confirmModalShow}
+                        rowData={rowData}
                         onHide={() => {
                           laTable.deselectRow();
                           setConfirmModalShow(false);
                         }}
+                        updateTable={getTruckTransactions}
                       />
                     </ThemeProvider>
                     <SettingsRounded sx={{ color: '#757575' }} />

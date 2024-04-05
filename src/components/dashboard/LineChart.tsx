@@ -62,9 +62,6 @@ function LineChart({siteId}:{siteId:number}) {
 
   const getLineChartData = () => {
     if(user) {
-      if(dateStart && dateEnd){
-        fillSelectedDates();
-      }
       const userId = user.id;
       Axios.get('http://localhost:3001/api/dashboard', {
         params: {
@@ -78,6 +75,9 @@ function LineChart({siteId}:{siteId:number}) {
             return {...entry}
           });
         });
+        if(dateStart && dateEnd){
+          fillSelectedDates();
+        }
       });
     };
   }

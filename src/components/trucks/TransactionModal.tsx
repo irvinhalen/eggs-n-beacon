@@ -36,6 +36,14 @@ function TransactionModal(props:any) {
     }, [])
 
     useEffect(() => {
+        if(!props.show) {
+            setSelectedProject('');
+            setSelectedTruck('');
+            setSoilAmount('');
+        }
+    }, [props.show]);
+
+    useEffect(() => {
         if(props.isEdit) {
             if(props.rowData) {
                 setTruckTransactionId(props.rowData.truck_transaction_id);
@@ -64,6 +72,10 @@ function TransactionModal(props:any) {
         } else {
             setSelectedProject('');
             setSelectedTruck('');
+            setSoilAmount('');
+            setCheckedIn(true);
+            setCheckedOut(true);
+            setCurrentDate();
         }
     }, [props.isEdit])
 
@@ -73,9 +85,7 @@ function TransactionModal(props:any) {
                 t.project_name === value.project_name
             ))
         ));
-        const currDate = dayjs();
-        setInTime(currDate);
-        setOutTime(currDate);
+        setCurrentDate();
     }, [listOfSelectData]);
 
     useEffect(() => {
@@ -84,12 +94,18 @@ function TransactionModal(props:any) {
     }, [selectedProject]);
 
     useEffect(() => {
-        if(selectedTruck) {
+        if(selectedTruck && !props.isEdit) {
             const weightCapObj = listOfSelectData.filter((project) => project.truck_id === parseFloat(selectedTruck));
             const weightCapOfTruck = weightCapObj[0].weight_capacity.toString();
             setSoilAmount(weightCapOfTruck);
         }
     }, [selectedTruck]);
+
+    const setCurrentDate = () => {
+        const currDate = dayjs();
+        setInTime(currDate);
+        setOutTime(currDate);
+    }
 
     const setMaxDate = (daysToAdd: number) => {
         const now = new Date();
@@ -119,8 +135,16 @@ function TransactionModal(props:any) {
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
-        const in_time = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss');
-        const out_time = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss');
+        const in_timeS = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss A');
+        const out_timeS = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss A');
+        const in_timeP = dayjs(in_timeS, 'YYYY-MM-DD hh:mm:ss A');
+        const out_timeP = dayjs(out_timeS, 'YYYY-MM-DD hh:mm:ss A');
+        const in_time = in_timeP.hour() >= 12 ?
+        in_timeP.format('YYYY-MM-DD HH:mm:ss') :
+        in_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+        const out_time = out_timeP.hour() >= 12 ?
+        out_timeP.format('YYYY-MM-DD HH:mm:ss') :
+        out_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
         Axios.post('http://localhost:3001/api/add-transaction', {
             truck_id: selectedTruck,
             site_id: selectedProject,
@@ -134,7 +158,10 @@ function TransactionModal(props:any) {
                 setSelectedProject('');
                 setSelectedTruck('');
                 setSoilAmount('');
+                setCheckedIn(true);
+                setCheckedOut(true);
                 props.onHide();
+                props.updateTable();
             }
             setAddLoading(false);
         });
@@ -145,8 +172,16 @@ function TransactionModal(props:any) {
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
-        const in_time = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss');
-        const out_time = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss');
+        const in_timeS = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss A');
+        const out_timeS = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss A');
+        const in_timeP = dayjs(in_timeS, 'YYYY-MM-DD hh:mm:ss A');
+        const out_timeP = dayjs(out_timeS, 'YYYY-MM-DD hh:mm:ss A');
+        const in_time = in_timeP.hour() >= 12 ?
+        in_timeP.format('YYYY-MM-DD HH:mm:ss') :
+        in_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+        const out_time = out_timeP.hour() >= 12 ?
+        out_timeP.format('YYYY-MM-DD HH:mm:ss') :
+        out_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
         Axios.put('http://localhost:3001/api/update-transaction', {
             truck_transaction_id: truckTransactionId,
             truck_id: selectedTruck,
@@ -161,7 +196,10 @@ function TransactionModal(props:any) {
                 setSelectedProject('');
                 setSelectedTruck('');
                 setSoilAmount('');
+                setCheckedIn(true);
+                setCheckedOut(true);
                 props.onHide();
+                props.updateTable();
             }
             setAddLoading(false);
         });
@@ -247,16 +285,16 @@ function TransactionModal(props:any) {
                 </div>
             ) : (  
                 <div className='form-row-wrap'>
-                    <FormControlLabel control={<Checkbox defaultChecked onChange={handleInCheckChange} size='small' />} label='Inside' />
-                    <FormControlLabel control={<Checkbox defaultChecked onChange={handleOutCheckChange} size='small' />} label='Outside' />
+                    <FormControlLabel control={<Checkbox checked={checkedIn} onChange={handleInCheckChange} size='small' />} label='Inside' />
+                    <FormControlLabel control={<Checkbox checked={checkedOut} onChange={handleOutCheckChange} size='small' />} label='Outside' />
                 </div>
             ) }
             <Divider />
             <FormLabel component='legend'>Timestamp</FormLabel>
             <div className='form-row-wrap'>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm' value={inTime} onChange={(newValue) => setInTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
-                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm' value={outTime} onChange={(newValue) => setOutTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm A' value={inTime} onChange={(newValue) => setInTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm A' value={outTime} onChange={(newValue) => setOutTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
                 </LocalizationProvider>
             </div>
         </div>

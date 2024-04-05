@@ -7,32 +7,20 @@ import { useState } from "react";
 function TransactionModalConfirm(props:any) {
     const [addLoading, setAddLoading] = useState(false);
 
-    // const updateTransaction = () => {
-    //     setAddLoading(true);
-    //     const in_num = (+ checkedIn);
-    //     const out_num = (+ checkedOut);
-    //     const soil_amount = parseFloat(soilAmount);
-    //     const in_time = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss');
-    //     const out_time = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss');
-    //     Axios.put('http://localhost:3001/api/update-transaction', {
-    //         truck_transaction_id: truckTransactionId,
-    //         truck_id: selectedTruck,
-    //         site_id: selectedProject,
-    //         soil_amount: soil_amount,
-    //         in: in_num,
-    //         out: out_num,
-    //         in_time: in_time,
-    //         out_time: out_time
-    //     }).then((response) => {
-    //         if(response.data.status === 'success') {
-    //             setSelectedProject('');
-    //             setSelectedTruck('');
-    //             setSoilAmount('');
-    //             props.onHide();
-    //         }
-    //         setAddLoading(false);
-    //     });
-    // }
+    const deleteTransaction = () => {
+        setAddLoading(true);
+        Axios.delete('http://localhost:3001/api/delete-transaction', {
+            params: {
+                truck_transaction_id: props.rowData.truck_transaction_id,
+            }
+        }).then((response) => {
+            if(response.data.status === 'success') {
+                props.onHide();
+                props.updateTable();
+            }
+            setAddLoading(false);
+        });
+    }
 
   return (
     <Modal
@@ -55,7 +43,7 @@ function TransactionModalConfirm(props:any) {
             { addLoading ? (
                 <LoadingButton variant='contained' loading>Delete</LoadingButton>
             ) : (
-                <Button onClick={props.onHide} variant='contained' type='submit' disableElevation>Delete</Button>
+                <Button onClick={deleteTransaction} variant='contained' type='submit' disableElevation>Delete</Button>
             ) }
       </Modal.Footer>
     </Modal>
