@@ -14,6 +14,7 @@ import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import TransactionModal from "./TransactionModal";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import TransactionModalConfirm from "./TransactionModalConfirm";
+import dayjs, { Dayjs } from "dayjs";
 
 function TruckTransactionTable() {
   const { user } = useAuth() as AuthContextType;
@@ -23,23 +24,24 @@ function TruckTransactionTable() {
   const [isEdit, setIsEdit] = useState(false);
   const [rowData, setRowData] = useState<Object>({});
   const [toggleVisibility, setToggleVisibility] = useState<boolean>(false);
-  const [laTable, setLaTable] = useState<any>();
+  const [laTable, setLaTable] = useState<ReactTabulatorProps | null>(null);
+  const [projectNameFilter, setProjectNameFilter] = useState('');
+  const [truckFilter, setTruckFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState<Dayjs | null>(null);
 
   useEffect(() => {
     getTruckTransactions();
   }, []);
 
-  // for some reason useRef for Tabulator becomes null after the first use so these are commented out in case I can find a better solution for useRef
-  /* let tableRef = useRef<Tabulator | null>(null);
   useEffect(() => {
-    console.log(tableRef);
-  }, [toggleVisibility]);
-  const showActions = () => {
-    tableRef.current?.showColumn('truck_transaction_id');
-  }
-  const hideActions = () => {
-    tableRef.current?.hideColumn('truck_transaction_id');
-  } */
+    filterTable();
+  }, [projectNameFilter, truckFilter, dateFilter]);
+
+  const setMaxDate = (daysToAdd: number) => {
+      const now = new Date();
+      const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
+      return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
+  };
 
   const getTruckTransactions = () =>{
     if(user) {
@@ -73,16 +75,15 @@ function TruckTransactionTable() {
   }
 
   const showActions = () => {
-    laTable.showColumn('truck_transaction_id');
+    laTable?.showColumn('truck_transaction_id');
   }
 
   const hideActions = () => {
-    laTable.hideColumn('truck_transaction_id');
-    laTable.redraw();
+    laTable?.hideColumn('truck_transaction_id');
+    laTable?.redraw();
   }
 
   const OptionsFormat = (props:ReactTabulatorProps) => {
-    setLaTable(props.cell.getTable());
     const tabRow = props.cell.getRow();
     const row = props.cell.getData();
     return (
@@ -91,6 +92,20 @@ function TruckTransactionTable() {
         <ButtonBase onClick={() => {deleteRow(row, tabRow)}} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
       </div>
     );
+  }
+
+  const filterTable = () => {
+    if (laTable) {
+      let filterDate = '';
+      if(dateFilter) {
+        filterDate = dateFilter.format('YYYY-MM-DD');
+      }
+      laTable.setFilter([
+        {field: 'project_name', type: 'like', value: projectNameFilter},
+        {field: 'license_plate', type: 'like', value: truckFilter},
+        {field: 'in_time', type: 'like', value: filterDate}
+      ]);
+    }
   }
 
   const options = {
@@ -137,13 +152,35 @@ function TruckTransactionTable() {
               Soil Tracking Table
               <div className='actions-wrap'>
                 <div className='filters-wrap'>
-                    <TextField label='Search' size='small' InputProps={{ endAdornment: (
-                      <InputAdornment position='end'>
-                        <SearchRounded />
-                      </InputAdornment>
-                    ) }} autoComplete='off' />
+                    <TextField label='Project Name'
+                      onChange={(event) => {
+                        setProjectNameFilter(event.target.value);
+                      }}
+                      size='small'
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <SearchRounded />
+                          </InputAdornment>
+                        ) }}
+                      autoComplete='off'
+                    />
+                    <TextField label='License Plate'
+                      onChange={(event) => {
+                        setTruckFilter(event.target.value);
+                      }}
+                      size='small'
+                      sx={{ width: '20%' }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <SearchRounded />
+                          </InputAdornment>
+                        ) }}
+                      autoComplete='off'
+                    />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker label='Date' format='YYYY-MM-DD' slotProps={{ textField: { size: 'small' } }} />
+                      <DatePicker label='Date' format='YYYY-MM-DD' maxDate={setMaxDate(0)} onChange={(date) => setDateFilter(date)} slotProps={{ textField: { size: 'small' } }} />
                     </LocalizationProvider>
                     <FilterAltRounded sx={{ color: '#757575' }} />
                 </div>
@@ -184,7 +221,7 @@ function TruckTransactionTable() {
                     <TransactionModal
                       show={modalShow}
                       onHide={() => {
-                        laTable.deselectRow();
+                        laTable?.deselectRow();
                         setModalShow(false);
                         setIsEdit(false);
                       }}
@@ -197,7 +234,7 @@ function TruckTransactionTable() {
                         show={confirmModalShow}
                         rowData={rowData}
                         onHide={() => {
-                          laTable.deselectRow();
+                          laTable?.deselectRow();
                           setConfirmModalShow(false);
                         }}
                         updateTable={getTruckTransactions}
@@ -213,7 +250,7 @@ function TruckTransactionTable() {
       </Card.Header>
       <Card.Body className='manager-cards'>
         <ReactTabulator
-            // onRef={(ref) => (tableRef = ref)}
+            onRef={(ref) => setLaTable(ref.current)}
             data={listOfTruckTransactions}
             columns={columns}
             options={options}

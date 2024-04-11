@@ -68,7 +68,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
         localStorage.removeItem('user');
         Axios.post('http://localhost:3001/api/logout', {
             user: user
-        }).then((response:any) => {
+        }).then(() => {
             setUser(null);
         });
     }

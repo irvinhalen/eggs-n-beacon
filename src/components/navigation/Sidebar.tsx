@@ -55,15 +55,15 @@ function Sidebar() {
                             <div className='sidebar-list-header'>
                                 USERS
                             </div>
-                            <NavLink to='/manage-user' className={({ isActive }) =>
+                            <NavLink to='/manage-users' className={({ isActive }) =>
                                 isActive ? "sidebar-list-item-active" : "sidebar-list-item"
                                 }>
-                                    <MovingRounded className='sidebar-icons' />&nbsp;&nbsp;Management
+                                    <MovingRounded className='sidebar-icons' />&nbsp;&nbsp;User Management
                             </NavLink>
-                            <NavLink to='/approve-user' className={({ isActive }) =>
+                            <NavLink to='/approve-users' className={({ isActive }) =>
                                 isActive ? "sidebar-list-item-active" : "sidebar-list-item"
                                 }>
-                                    <RuleOutlined className='sidebar-icons' />&nbsp;&nbsp;Approval
+                                    <RuleOutlined className='sidebar-icons' />&nbsp;&nbsp;User Approval
                             </NavLink>
                         </div>
                         ):(
@@ -139,9 +139,9 @@ function Sidebar() {
                         }}
                         sx={{ padding:'1rem', width: '100%' }}
                     >
-                        <div className='main-text' style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem' }}>
+                        <div className='main-text' style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem', fontSize: 'small' }}>
                             Profile
-                            <Link to='/login' onClick={handleLogout}>Logout</Link>
+                            <Link to='/login' onClick={handleLogout} style={{ color: '#E72423',textDecoration: 'none' }}>Logout</Link>
                         </div>
                     </Popover>
                 </div>

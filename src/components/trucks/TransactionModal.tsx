@@ -135,16 +135,8 @@ function TransactionModal(props:any) {
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
-        const in_timeS = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss A');
-        const out_timeS = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss A');
-        const in_timeP = dayjs(in_timeS, 'YYYY-MM-DD hh:mm:ss A');
-        const out_timeP = dayjs(out_timeS, 'YYYY-MM-DD hh:mm:ss A');
-        const in_time = in_timeP.hour() >= 12 ?
-        in_timeP.format('YYYY-MM-DD HH:mm:ss') :
-        in_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
-        const out_time = out_timeP.hour() >= 12 ?
-        out_timeP.format('YYYY-MM-DD HH:mm:ss') :
-        out_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+        const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
+        const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
         Axios.post('http://localhost:3001/api/add-transaction', {
             truck_id: selectedTruck,
             site_id: selectedProject,
@@ -172,16 +164,8 @@ function TransactionModal(props:any) {
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
-        const in_timeS = dayjs(inTime).format('YYYY-MM-DD hh:mm:ss A');
-        const out_timeS = dayjs(outTime).format('YYYY-MM-DD hh:mm:ss A');
-        const in_timeP = dayjs(in_timeS, 'YYYY-MM-DD hh:mm:ss A');
-        const out_timeP = dayjs(out_timeS, 'YYYY-MM-DD hh:mm:ss A');
-        const in_time = in_timeP.hour() >= 12 ?
-        in_timeP.format('YYYY-MM-DD HH:mm:ss') :
-        in_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
-        const out_time = out_timeP.hour() >= 12 ?
-        out_timeP.format('YYYY-MM-DD HH:mm:ss') :
-        out_timeP.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+        const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
+        const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
         Axios.put('http://localhost:3001/api/update-transaction', {
             truck_transaction_id: truckTransactionId,
             truck_id: selectedTruck,

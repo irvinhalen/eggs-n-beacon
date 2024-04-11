@@ -3,10 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
 import { AuthProvider } from './utils/AuthContext';
-import Login from './pages/authentication/Login'
+import Login from './pages/authentication/Login';
 import Register from './pages/authentication/Register';
 import Sidebar from './components/navigation/Sidebar';
-import Dashboard from './pages/information/Dashboard'
+import Dashboard from './pages/information/Dashboard';
+import ManageUsers from './pages/users/ManageUsers';
 import ManageSites from './pages/sites/ManageSites';
 import AddSite from './pages/sites/AddSite';
 import ManageTrucks from './pages/trucks/ManageTrucks';
@@ -26,6 +27,7 @@ function App() {
               <Route path='/register' element={<Register />} />
               <Route element={<PrivateRoutes />}>
                 <Route path='/' element={<Dashboard />} />
+                <Route path='/manage-users' element={<ManageUsers />} />
                 <Route path='/sites' element={<ManageSites />} />
                 <Route path='/register-site' element={<AddSite />} />
                 <Route path='/trucks' element={<ManageTrucks />} />

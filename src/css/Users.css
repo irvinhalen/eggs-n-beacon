@@ -1,0 +1,31 @@
+/* Start of TruckTables */
+
+.title-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.actions-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.filters-wrap {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tabulator-footer-contents {
+    display: flex;
+    justify-content: space-between;
+}
+
+.settings-wrap {
+    gap: 0.5rem;
+}
+
+/* End of TruckTables */
