@@ -1,13 +1,13 @@
+import { useEffect, useRef, useState } from "react";
+import Axios from "axios";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Colors } from 'chart.js';
-import { useEffect, useRef, useState } from "react";
-import { Card } from "react-bootstrap";
-import Axios from "axios";
+import { Card,  } from "react-bootstrap";
 import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Button, ThemeProvider } from "@mui/material";
+import { FormControl, Button, ThemeProvider } from "@mui/material";
 import { greenTheme } from "../../components/MaterialThemes";
 import { FilterAltRounded } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
@@ -34,31 +34,37 @@ function LineChart({siteId}:{siteId:number}) {
   const { user } = useAuth() as AuthContextType;
   const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
   const [groupedData, setGroupedData] = useState<Array<any>>([]);
-  const [selectedDates, setSelectedDates] = useState(getPastSevenDays());
+  const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
   const [dateStartString, setDateStartString] = useState('');
   const [dateEndString, setDateEndString] = useState('');
-  const [listOfSiteIds, setListOfSiteIds] = useState<Array<Number>>([]);
+  const [listOfSiteIds, setListOfSiteIds] = useState<Array<number>>([]);
   
   const chartRef = useRef();
   
   useEffect(() => {
+    getPastSevenDays();
     getLineChartData();
   }, []);
 
   useEffect(() => {
     groupTheData();
-    console.log('before:', groupedData, selectedDates);
   }, [lineChartData]);
-
-  useEffect(() => {
-    console.log('after:', groupedData, selectedDates);
-  }, [groupedData]);
 
   useEffect(() => {
     toggleDisplay();
   }, [siteId]);
+
+  useEffect(() => {
+    if(dateStart) {
+      setMinDate();
+      setDateStartString(dayjs(dateStart).format('YYYY-MM-DD'));
+    }
+    if(dateEnd) {
+      setDateEndString(dayjs(dateEnd).format('YYYY-MM-DD'));
+    }
+  }, [dateStart, dateEnd]);
 
   const getLineChartData = () => {
     if(user) {
@@ -70,18 +76,14 @@ function LineChart({siteId}:{siteId:number}) {
           date_end: dateEndString
         }
       }).then((response) => {
-        setLineChartData(() => {
-          return response.data.map((entry:any) => {
-            return {...entry}
-          });
-        });
-        if(dateStart && dateEnd){
+        setLineChartData(response.data);
+        if(dateStartString && dateEndString){
           fillSelectedDates();
         }
       });
     };
   }
-  
+
   function groupTheData() {
     const length:number = lineChartData.length;
     let dataGroup:Array<Array<SoilData>> = [];
@@ -119,16 +121,12 @@ function LineChart({siteId}:{siteId:number}) {
         }
       });
     }
-    
+
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
     setGroupedData(dataGroup);
   };
-  
+
   function fillSelectedDates() {
-    const dateStartS = dayjs(dateStart).format('YYYY-MM-DD');
-    const dateEndS = dayjs(dateEnd).format('YYYY-MM-DD');
-    setDateStartString(dateStartS);
-    setDateEndString(dateEndS);
     let currentDate = new Date(dateStartString);
     let stopDate = new Date(dateEndString);
     let dateRange = [];
@@ -170,7 +168,7 @@ function LineChart({siteId}:{siteId:number}) {
       pastDays.push(newDate);
     }
     pastDays.reverse();
-    return pastDays;
+    setSelectedDates(pastDays);
   }
 
   const toggleDisplay = () => {
@@ -179,12 +177,12 @@ function LineChart({siteId}:{siteId:number}) {
       if(lineChart && listOfSiteIds) {
         const index = listOfSiteIds.indexOf(siteId);
         for(let i=0; i < listOfSiteIds.length; i++) {
-          // with animation (still janky)
-          // if(index != i) {
-          //   setTimeout(() => { lineChart.hide(i); }, 1000 * i);
-          // }else{
-          //   lineChart.show(index);
-          // }
+          //with animation (still janky)
+          /* if(index != i) {
+            setTimeout(() => { lineChart.hide(i); }, 1000 * i);
+          }else{
+            lineChart.show(index);
+          } */
           lineChart.hide(i);
         }
         lineChart.show(index);
@@ -195,11 +193,9 @@ function LineChart({siteId}:{siteId:number}) {
       }
     }
   }
-
-  const setMaxDate = (daysToAdd: number) => {
-      const now = new Date();
-      const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
-      return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
+  
+  const setMinDate = () => {
+      return dayjs(dateStart);
   };
 
   return (
@@ -210,12 +206,12 @@ function LineChart({siteId}:{siteId:number}) {
             Amount of Soil
             <div className='date-range'>
               <LocalizationProvider dateAdapter={ AdapterDayjs }>
-                <DatePicker label='From' format='YYYY-MM-DD' value={dateStart} onChange={(newValue) => setDateStart(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                <DatePicker label='From' format='YYYY-MM-DD' value={dateStart} onChange={(newValue) => setDateStart(newValue)} disableFuture={true} slotProps={{ textField: { size: 'small' } }} />
                 -
-                <DatePicker label='To' format='YYYY-MM-DD' value={dateEnd} onChange={(newValue) => setDateEnd(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                <DatePicker label='To' format='YYYY-MM-DD' value={dateEnd} onChange={(newValue) => setDateEnd(newValue)} minDate={setMinDate()} disableFuture={true} slotProps={{ textField: { size: 'small' } }} />
               </LocalizationProvider>
               <ThemeProvider theme={greenTheme}>
-                { dateStart && dateEnd ? (
+                { dateStart && dateEnd && dateStart <= dateEnd && dateEnd <= dayjs(new Date) ? (
                   <Button onClick={getLineChartData} endIcon={<FilterAltRounded />} variant="contained">Filter</Button>
                 ) : (
                   <Button endIcon={<FilterAltRounded />} sx={{ backgroundColor: 'none' ,borderWidth: '0.1rem' ,borderStyle: 'dashed', width: '6.2rem' }} disabled>Filter</Button>
@@ -258,9 +254,6 @@ function LineChart({siteId}:{siteId:number}) {
           <div className="d-flex justify-content-center align-items-center h-100">no data found</div>
         ) }
       </Card.Body>
-      {/* <Card.Footer className="border-0">
-        <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Total Amount of Soil in Tons: 20XX</p></div>
-      </Card.Footer> */}
     </Card>
   )
 }

@@ -107,12 +107,6 @@ function TransactionModal(props:any) {
         setOutTime(currDate);
     }
 
-    const setMaxDate = (daysToAdd: number) => {
-        const now = new Date();
-        const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
-        return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
-    };
-
     const getSelectData = () => {
         if(user) {
             const userId = user.id;
@@ -131,32 +125,34 @@ function TransactionModal(props:any) {
     };
 
     const addTransaction = () => {
-        setAddLoading(true);
-        const in_num = (+ checkedIn);
-        const out_num = (+ checkedOut);
-        const soil_amount = parseFloat(soilAmount);
-        const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
-        const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
-        Axios.post('http://localhost:3001/api/add-transaction', {
-            truck_id: selectedTruck,
-            site_id: selectedProject,
-            soil_amount: soil_amount,
-            in: in_num,
-            out: out_num,
-            in_time: in_time,
-            out_time: out_time
-        }).then((response) => {
-            if(response.data.status === 'success') {
-                setSelectedProject('');
-                setSelectedTruck('');
-                setSoilAmount('');
-                setCheckedIn(true);
-                setCheckedOut(true);
-                props.onHide();
-                props.updateTable();
-            }
-            setAddLoading(false);
+        props.setListOfTruckTransactions((prevTruckTransactions) => {
+            return [{project_name: 'TestTickles', license_plate: 'TT', soil_amount: 69, in: true, out: true, in_time: '6969-04-20 10:10:10', out_time: '6969-04-20 10:10:10'}, ...prevTruckTransactions];
         });
+        // setAddLoading(true);
+        // const in_num = (+ checkedIn);
+        // const out_num = (+ checkedOut);
+        // const soil_amount = parseFloat(soilAmount);
+        // const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
+        // const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
+        // Axios.post('http://localhost:3001/api/add-transaction', {
+        //     truck_id: selectedTruck,
+        //     site_id: selectedProject,
+        //     soil_amount: soil_amount,
+        //     in: in_num,
+        //     out: out_num,
+        //     in_time: in_time,
+        //     out_time: out_time
+        // }).then((response) => {
+        //     if(response.data.status === 'success') {
+        //         setSelectedProject('');
+        //         setSelectedTruck('');
+        //         setSoilAmount('');
+        //         setCheckedIn(true);
+        //         setCheckedOut(true);
+        //         props.onHide();
+        //     }
+        //     setAddLoading(false);
+        // });
     }
 
     const updateTransaction = () => {
@@ -277,8 +273,8 @@ function TransactionModal(props:any) {
             <FormLabel component='legend'>Timestamp</FormLabel>
             <div className='form-row-wrap'>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm A' value={inTime} onChange={(newValue) => setInTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
-                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm A' value={outTime} onChange={(newValue) => setOutTime(newValue)} maxDate={setMaxDate(0)} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Inside' format='YYYY-MM-DD hh:mm A' value={inTime} onChange={(newValue) => setInTime(newValue)} disableFuture={true} slotProps={{ textField: { size: 'small' } }} />
+                    <DateTimePicker label='Outside' format='YYYY-MM-DD hh:mm A' value={outTime} onChange={(newValue) => setOutTime(newValue)} disableFuture={true} slotProps={{ textField: { size: 'small' } }} />
                 </LocalizationProvider>
             </div>
         </div>

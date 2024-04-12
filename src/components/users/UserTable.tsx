@@ -26,8 +26,9 @@ function UserTable() {
     if (tabTab) {
       tabTab.setFilter([
         [
-            {field: 'username', type: 'like', value: searchString},
-            {field: 'email', type: 'like', value: searchString}
+          {field: 'id', type: 'like', value: searchString},
+          {field: 'username', type: 'like', value: searchString},
+          {field: 'email', type: 'like', value: searchString}
         ]
       ]);
     }
@@ -49,10 +50,12 @@ function UserTable() {
         <Card.Title>
           <ThemeProvider theme={blackTheme}>
             <div className='title-wrap'>
-              Soil Tracking Table
+              Users Table
               <div className='actions-wrap'>
                 <div className='filters-wrap'>
-                    <TextField label='Search'
+                    <TextField
+                        label='Search'
+                        placeholder='ID, Username, Email'
                         onChange={(event) => setSearchString(event.target.value)}
                         size='small'
                         InputProps={{

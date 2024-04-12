@@ -37,12 +37,6 @@ function TruckTransactionTable() {
     filterTable();
   }, [projectNameFilter, truckFilter, dateFilter]);
 
-  const setMaxDate = (daysToAdd: number) => {
-      const now = new Date();
-      const nowPlusDays = now.setDate(now.getDate() + daysToAdd);
-      return dayjs(dayjs(nowPlusDays).format("YYYY-MM-DD"), 'YYYY-MM-DD');
-  };
-
   const getTruckTransactions = () =>{
     if(user) {
       const userId = user.id;
@@ -51,11 +45,7 @@ function TruckTransactionTable() {
           id: userId
         }
       }).then((response) => {
-        setListOfTruckTransactions(() => {
-          return response.data.map((entry:any) => {
-            return {...entry}
-          })          
-        });
+        setListOfTruckTransactions(response.data);
         setToggleVisibility(false);
       });
     }
@@ -180,7 +170,7 @@ function TruckTransactionTable() {
                       autoComplete='off'
                     />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker label='Date' format='YYYY-MM-DD' maxDate={setMaxDate(0)} onChange={(date) => setDateFilter(date)} slotProps={{ textField: { size: 'small' } }} />
+                      <DatePicker label='Date' format='YYYY-MM-DD' disableFuture={true} onChange={(date) => setDateFilter(date)} slotProps={{ textField: { size: 'small' } }} />
                     </LocalizationProvider>
                     <FilterAltRounded sx={{ color: '#757575' }} />
                 </div>
@@ -227,7 +217,8 @@ function TruckTransactionTable() {
                       }}
                       isEdit={isEdit}
                       rowData={rowData}
-                      updateTable={getTruckTransactions}
+                      listOfTruckTransactions={listOfTruckTransactions}
+                      setListOfTruckTransactions={setListOfTruckTransactions}
                     />
                     <ThemeProvider theme={redTheme}>
                       <TransactionModalConfirm
