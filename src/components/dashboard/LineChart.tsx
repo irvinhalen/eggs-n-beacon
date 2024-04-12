@@ -1,23 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import Axios from "axios";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Colors } from 'chart.js';
 import { Card,  } from "react-bootstrap";
-import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { FormControl, Button, ThemeProvider } from "@mui/material";
+import { Button, ThemeProvider } from "@mui/material";
 import { greenTheme } from "../../components/MaterialThemes";
 import { FilterAltRounded } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
-
-  interface SoilData {
-    site_id: number;
-    soil_amount: number;
-    date: string;
-    project_name: string;
-  }
+import { SoilData } from "../../pages/information/Dashboard";
 
   ChartJS.register(
     CategoryScale,
@@ -30,15 +22,10 @@ import dayjs, { Dayjs } from "dayjs";
     Colors
   );
 
-function LineChart({siteId}:{siteId:number}) {
-  const { user } = useAuth() as AuthContextType;
-  const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
-  const [groupedData, setGroupedData] = useState<Array<any>>([]);
-  const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
+function LineChart({siteId, getLineChartData, lineChartData, selectedDates, setSelectedDates, setDateStartString, setDateEndString}:{siteId:number, getLineChartData:any, lineChartData:Array<SoilData>, selectedDates: Array<string>, setSelectedDates:React.Dispatch<React.SetStateAction<string[]>>, setDateStartString:React.Dispatch<React.SetStateAction<string>>, setDateEndString:React.Dispatch<React.SetStateAction<string>>}) {
+  const [groupedData, setGroupedData] = useState<Array<Array<SoilData>>>([]);
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
-  const [dateStartString, setDateStartString] = useState('');
-  const [dateEndString, setDateEndString] = useState('');
   const [listOfSiteIds, setListOfSiteIds] = useState<Array<number>>([]);
   
   const chartRef = useRef();
@@ -65,24 +52,6 @@ function LineChart({siteId}:{siteId:number}) {
       setDateEndString(dayjs(dateEnd).format('YYYY-MM-DD'));
     }
   }, [dateStart, dateEnd]);
-
-  const getLineChartData = () => {
-    if(user) {
-      const userId = user.id;
-      Axios.get('http://localhost:3001/api/dashboard', {
-        params: {
-          id: userId,
-          date_start: dateStartString,
-          date_end: dateEndString
-        }
-      }).then((response) => {
-        setLineChartData(response.data);
-        if(dateStartString && dateEndString){
-          fillSelectedDates();
-        }
-      });
-    };
-  }
 
   function groupTheData() {
     const length:number = lineChartData.length;
@@ -125,28 +94,6 @@ function LineChart({siteId}:{siteId:number}) {
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
     setGroupedData(dataGroup);
   };
-
-  function fillSelectedDates() {
-    let currentDate = new Date(dateStartString);
-    let stopDate = new Date(dateEndString);
-    let dateRange = [];
-    for(currentDate; currentDate<=stopDate; currentDate.setDate(currentDate.getDate()+1)) {
-      let month = (currentDate.getUTCMonth() + 1).toString();
-      if (month.length === 1) {
-        month = '0' + month;
-      }
-      let day = currentDate.getUTCDate().toString();
-      if (day.length === 1) {
-        day = '0' + day;
-      }
-      const year = currentDate.getUTCFullYear();
-      const newDate = year + "-" + month + "-" + day;
-      dateRange.push(newDate);
-    }
-    if(dateRange.length > 0) {
-      setSelectedDates(dateRange);
-    }
-  }
   
   function getPastSevenDays() {
     var pastDays = [];

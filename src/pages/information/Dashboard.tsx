@@ -4,9 +4,63 @@ import LineChart from "../../components/dashboard/LineChart";
 import TruckTransactionTable from '../../components/trucks/TruckTransactionTable';
 import SiteMap from '../../components/dashboard/SiteMap';
 import { useState } from 'react';
+import Axios from "axios";
+import { AuthContextType, useAuth } from '../../utils/AuthContext';
+
+export interface SoilData {
+  site_id: number;
+  soil_amount: number;
+  date: string;
+  project_name: string;
+}
 
 function Dashboard() {
+  const { user } = useAuth() as AuthContextType;
   const [siteId, setSiteId] = useState<number>(0);
+  const [lineChartData, setLineChartData] = useState<Array<SoilData>>([]);
+  const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
+  const [dateStartString, setDateStartString] = useState('');
+  const [dateEndString, setDateEndString] = useState('');
+
+  const getLineChartData = () => {
+    if(user) {
+      const userId = user.id;
+      Axios.get('http://localhost:3001/api/dashboard', {
+        params: {
+          id: userId,
+          date_start: dateStartString,
+          date_end: dateEndString
+        }
+      }).then((response) => {
+        setLineChartData(response.data);
+        if(dateStartString && dateEndString){
+          fillSelectedDates();
+        }
+      });
+    };
+  }
+
+  function fillSelectedDates() {
+    let currentDate = new Date(dateStartString);
+    let stopDate = new Date(dateEndString);
+    let dateRange = [];
+    for(currentDate; currentDate<=stopDate; currentDate.setDate(currentDate.getDate()+1)) {
+      let month = (currentDate.getUTCMonth() + 1).toString();
+      if (month.length === 1) {
+        month = '0' + month;
+      }
+      let day = currentDate.getUTCDate().toString();
+      if (day.length === 1) {
+        day = '0' + day;
+      }
+      const year = currentDate.getUTCFullYear();
+      const newDate = year + "-" + month + "-" + day;
+      dateRange.push(newDate);
+    }
+    if(dateRange.length > 0) {
+      setSelectedDates(dateRange);
+    }
+  }
 
   return (
     <>
@@ -21,17 +75,17 @@ function Dashboard() {
                 <SiteMap setSiteId={setSiteId} />
               </div>
               <div className='col-sm-12 col-md-8 col-md-8'>
-                <LineChart siteId={siteId} />
+                <LineChart siteId={siteId} getLineChartData={getLineChartData} lineChartData={lineChartData} selectedDates={selectedDates} setSelectedDates={setSelectedDates} setDateStartString={setDateStartString} setDateEndString={setDateEndString} />
               </div>
             </div>
             <div className='row'>
               <div className="col mb-2">
-                <TruckTransactionTable/>
+                <TruckTransactionTable getLineChartData={getLineChartData} />
               </div>
             </div>
         </div>
       </div>
-    </> 
+    </>
   )
 }
 

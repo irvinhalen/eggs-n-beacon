@@ -14,9 +14,9 @@ import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import TransactionModal from "./TransactionModal";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import TransactionModalConfirm from "./TransactionModalConfirm";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-function TruckTransactionTable() {
+function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void}) {
   const { user } = useAuth() as AuthContextType;
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -217,8 +217,8 @@ function TruckTransactionTable() {
                       }}
                       isEdit={isEdit}
                       rowData={rowData}
-                      listOfTruckTransactions={listOfTruckTransactions}
-                      setListOfTruckTransactions={setListOfTruckTransactions}
+                      updateTable={getTruckTransactions}
+                      updateChart={getLineChartData}
                     />
                     <ThemeProvider theme={redTheme}>
                       <TransactionModalConfirm
@@ -229,6 +229,7 @@ function TruckTransactionTable() {
                           setConfirmModalShow(false);
                         }}
                         updateTable={getTruckTransactions}
+                        updateChart={getLineChartData}
                       />
                     </ThemeProvider>
                     <SettingsRounded sx={{ color: '#757575' }} />

@@ -17,8 +17,11 @@ function TransactionModalConfirm(props:any) {
             if(response.data.status === 'success') {
                 props.onHide();
                 props.updateTable();
+                props.updateChart();
+                setAddLoading(false);
+            } else {
+              setAddLoading(false);
             }
-            setAddLoading(false);
         });
     }
 

@@ -22,8 +22,8 @@ function TransactionModal(props:any) {
     const [listOfSelectData, setListOfSelectData] = useState<Array<SelectData>>([]);
     const [listOfProjects, setListOfProjects] = useState<Array<SelectData>>([]);
     const [listOfTrucks, setListOfTrucks] = useState<Array<SelectData>>([]);
-    const [selectedProject, setSelectedProject] = useState<string>('');
-    const [selectedTruck, setSelectedTruck] = useState<string>('');
+    const [selectedSite, setSelectedSite] = useState<string>('');
+    const [selectedPlate, setSelectedPlate] = useState<string>('');
     const [soilAmount, setSoilAmount] = useState('');
     const [checkedIn, setCheckedIn] = useState(true);
     const [checkedOut, setCheckedOut] = useState(true);
@@ -37,20 +37,42 @@ function TransactionModal(props:any) {
 
     useEffect(() => {
         if(!props.show) {
-            setSelectedProject('');
-            setSelectedTruck('');
+            setSelectedSite('');
+            setSelectedPlate('');
             setSoilAmount('');
         }
     }, [props.show]);
+    
+    useEffect(() => {
+        setListOfProjects(listOfSelectData.filter((value, index, self) =>
+            index === self.findIndex((t) => (
+                t.project_name === value.project_name
+            ))
+        ));
+        setCurrentDate();
+    }, [listOfSelectData]);
+
+    useEffect(() => {
+        const license_plate_list = listOfSelectData.filter((project) => project.site_id === parseFloat(selectedSite));
+        setListOfTrucks(license_plate_list);
+    }, [selectedSite]);
+
+    useEffect(() => {
+        if(selectedPlate && !props.isEdit) {
+            const weightCapObj = listOfSelectData.filter((project) => project.truck_id === parseFloat(selectedPlate));
+            const weightCapOfTruck = weightCapObj[0].weight_capacity.toString();
+            setSoilAmount(weightCapOfTruck);
+        }
+    }, [selectedPlate]);
 
     useEffect(() => {
         if(props.isEdit) {
             if(props.rowData) {
                 setTruckTransactionId(props.rowData.truck_transaction_id);
                 if(listOfProjects) {
-                    setSelectedProject(props.rowData.site_id);
+                    setSelectedSite(props.rowData.site_id);
                     if(listOfTrucks) {
-                        setSelectedTruck(props.rowData.truck_id);
+                        setSelectedPlate(props.rowData.truck_id);
                     }
                 }
                 setSoilAmount(props.rowData.soil_amount);
@@ -70,8 +92,8 @@ function TransactionModal(props:any) {
                 setOutTime(out_date);
             }
         } else {
-            setSelectedProject('');
-            setSelectedTruck('');
+            setSelectedSite('');
+            setSelectedPlate('');
             setSoilAmount('');
             setCheckedIn(true);
             setCheckedOut(true);
@@ -79,27 +101,6 @@ function TransactionModal(props:any) {
         }
     }, [props.isEdit])
 
-    useEffect(() => {
-        setListOfProjects(listOfSelectData.filter((value, index, self) =>
-            index === self.findIndex((t) => (
-                t.project_name === value.project_name
-            ))
-        ));
-        setCurrentDate();
-    }, [listOfSelectData]);
-
-    useEffect(() => {
-        const license_plate_list = listOfSelectData.filter((project) => project.site_id === parseFloat(selectedProject));
-        setListOfTrucks(license_plate_list);
-    }, [selectedProject]);
-
-    useEffect(() => {
-        if(selectedTruck && !props.isEdit) {
-            const weightCapObj = listOfSelectData.filter((project) => project.truck_id === parseFloat(selectedTruck));
-            const weightCapOfTruck = weightCapObj[0].weight_capacity.toString();
-            setSoilAmount(weightCapOfTruck);
-        }
-    }, [selectedTruck]);
 
     const setCurrentDate = () => {
         const currDate = dayjs();
@@ -115,44 +116,41 @@ function TransactionModal(props:any) {
                 id: userId
             }
             }).then((response) => {
-                setListOfSelectData(() => {
-                    return response.data.map((entry:any) => {
-                    return {...entry}
-                    })
-                });
+                setListOfSelectData(response.data);
             });
         }
     };
 
     const addTransaction = () => {
-        props.setListOfTruckTransactions((prevTruckTransactions) => {
-            return [{project_name: 'TestTickles', license_plate: 'TT', soil_amount: 69, in: true, out: true, in_time: '6969-04-20 10:10:10', out_time: '6969-04-20 10:10:10'}, ...prevTruckTransactions];
+        setAddLoading(true);
+        const in_num = (+ checkedIn);
+        const out_num = (+ checkedOut);
+        const soil_amount = parseFloat(soilAmount);
+        const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
+        const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
+        Axios.post('http://localhost:3001/api/add-transaction', {
+            truck_id: selectedPlate,
+            site_id: selectedSite,
+            soil_amount,
+            in: in_num,
+            out: out_num,
+            in_time,
+            out_time
+        }).then((response) => {
+            if(response.data.status === 'success') {
+                props.onHide();
+                props.updateTable();
+                props.updateChart();
+                setSelectedSite('');
+                setSelectedPlate('');
+                setSoilAmount('');
+                setCheckedIn(true);
+                setCheckedOut(true);
+                setAddLoading(false);
+            } else {
+                setAddLoading(false);
+            }
         });
-        // setAddLoading(true);
-        // const in_num = (+ checkedIn);
-        // const out_num = (+ checkedOut);
-        // const soil_amount = parseFloat(soilAmount);
-        // const in_time = inTime?.format('YYYY-MM-DD HH:mm:ss');
-        // const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
-        // Axios.post('http://localhost:3001/api/add-transaction', {
-        //     truck_id: selectedTruck,
-        //     site_id: selectedProject,
-        //     soil_amount: soil_amount,
-        //     in: in_num,
-        //     out: out_num,
-        //     in_time: in_time,
-        //     out_time: out_time
-        // }).then((response) => {
-        //     if(response.data.status === 'success') {
-        //         setSelectedProject('');
-        //         setSelectedTruck('');
-        //         setSoilAmount('');
-        //         setCheckedIn(true);
-        //         setCheckedOut(true);
-        //         props.onHide();
-        //     }
-        //     setAddLoading(false);
-        // });
     }
 
     const updateTransaction = () => {
@@ -164,8 +162,8 @@ function TransactionModal(props:any) {
         const out_time = outTime?.format('YYYY-MM-DD HH:mm:ss');
         Axios.put('http://localhost:3001/api/update-transaction', {
             truck_transaction_id: truckTransactionId,
-            truck_id: selectedTruck,
-            site_id: selectedProject,
+            truck_id: selectedPlate,
+            site_id: selectedSite,
             soil_amount: soil_amount,
             in: in_num,
             out: out_num,
@@ -173,30 +171,33 @@ function TransactionModal(props:any) {
             out_time: out_time
         }).then((response) => {
             if(response.data.status === 'success') {
-                setSelectedProject('');
-                setSelectedTruck('');
+                props.onHide();
+                props.updateTable();
+                props.updateChart();
+                setSelectedSite('');
+                setSelectedPlate('');
                 setSoilAmount('');
                 setCheckedIn(true);
                 setCheckedOut(true);
-                props.onHide();
-                props.updateTable();
+                setAddLoading(false);
+            } else {
+                setAddLoading(false);
             }
-            setAddLoading(false);
         });
     }
 
     const handleChangeProj = (event: SelectChangeEvent) => {
-        if(selectedTruck) {
-            setSelectedTruck('');
+        if(selectedPlate) {
+            setSelectedPlate('');
         }
         if(soilAmount) {
             setSoilAmount('');
         }
-        setSelectedProject(event.target.value as string);
+        setSelectedSite(event.target.value as string);
     }
 
     const handleChangeTruck = (event: SelectChangeEvent) => {
-        setSelectedTruck(event.target.value as string);
+        setSelectedPlate(event.target.value as string);
     }
 
     const handleInCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,7 +225,7 @@ function TransactionModal(props:any) {
         <div className='form-wrap'>
             <FormControl fullWidth size='small'>
                 <InputLabel id='project-name'>Project Name</InputLabel>
-                <Select label='Project Name' labelId='project-name' value={selectedProject} onChange={handleChangeProj}>
+                <Select label='Project Name' labelId='project-name' value={selectedSite} onChange={handleChangeProj}>
                     { listOfProjects.length ? ('') : (
                         <MenuItem value=''>
                             <em>No projects found</em>
@@ -239,7 +240,7 @@ function TransactionModal(props:any) {
             </FormControl>
             <FormControl fullWidth size='small'>
                 <InputLabel id='license-plate'>License Plate</InputLabel>
-                <Select label='License Plate' labelId='license-plate' value={selectedTruck} onChange={handleChangeTruck}>
+                <Select label='License Plate' labelId='license-plate' value={selectedPlate} onChange={handleChangeTruck}>
                     { listOfTrucks.length ? ('') : (
                         <MenuItem value=''>
                             <em>No trucks found</em>
@@ -251,7 +252,7 @@ function TransactionModal(props:any) {
                         );
                     }) }
                 </Select>
-                {selectedProject ? ('') : (
+                {selectedSite ? ('') : (
                     <FormHelperText>Select a project name to view license plates</FormHelperText>
                 )}
             </FormControl>
