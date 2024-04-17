@@ -6,6 +6,10 @@ import SiteMap from '../../components/dashboard/SiteMap';
 import { useState } from 'react';
 import Axios from "axios";
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
+// import { io } from 'socket.io-client';
+
+// const socket = io('http://localhost:3001');
+// console.log(socket);
 
 export interface SoilData {
   site_id: number;

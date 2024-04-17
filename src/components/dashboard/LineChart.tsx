@@ -145,6 +145,8 @@ function LineChart({siteId, getLineChartData, lineChartData, selectedDates, setS
       return dayjs(dateStart);
   };
 
+  const tempDates = ['2024-04-20', '2024-04-21', '2024-04-22', '2024-04-23', '2024-04-24', '2024-04-25', '2024-04-26'];
+
   return (
     <Card className="shadow-sm border-0 p-1 h-100">
       <Card.Header style={{ background: 'none', borderWidth: 0 }}>
