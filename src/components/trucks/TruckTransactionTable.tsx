@@ -77,7 +77,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
     const tabRow = props.cell.getRow();
     const row = props.cell.getData();
     return (
-      <div className='h-100 d-flex justify-content-center align-items-center' style={{ gap: '0.2rem' }}>
+      <div className='actions-div'>
         <ButtonBase onClick={() => {editRow(row, tabRow)}} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
         <ButtonBase onClick={() => {deleteRow(row, tabRow)}} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
       </div>
@@ -99,7 +99,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   }
 
   const options = {
-    layout: 'fitDataTable',
+    layout: 'fitColumns',
     pagination: true,
     paginationSize: 10,
     paginationSizeSelector: [5, 10, 50, 100, 1000],
@@ -111,24 +111,24 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   const columns:any = [
     {field: 'truck_transaction_id', visible: false, hozAlign: 'center', headerSort: false, formatter: reactFormatter(<OptionsFormat />)},
     {field: 'site_id', visible: false},
-    {title: 'Project', field: 'project_name',  width: '20%', headerHozAlign: 'center', headerSort: true},
+    {title: 'Project', field: 'project_name',   headerHozAlign: 'center', headerSort: true, widthGrow: 1.5},
     {field: 'truck_id', visible: false},
-    {title: 'License Plate', field: 'license_plate',  width: '17%', headerHozAlign: 'center', headerSort: false},
-    {title: 'Amount of Soil', field: 'soil_amount', width: '13%', headerHozAlign: 'center', headerSort: true, editor: 'number'},
+    {title: 'License Plate', field: 'license_plate',   headerHozAlign: 'center', headerSort: false},
+    {title: 'Amount of Soil', field: 'soil_amount', headerHozAlign: 'center', headerSort: true, editor: 'number'},
     {
       title: 'Direction',
       headerHozAlign: 'center',
       columns: [
-        {title: 'Inside', field: 'in', width: '7%', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
-        {title: 'Outside', field: 'out', width: '7%', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
+        {title: 'Inside', field: 'in',  headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
+        {title: 'Outside', field: 'out',  headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
       ]
     },
     {
       title: 'Timestamp',
       headerHozAlign: 'center',
       columns: [
-        {title: 'Inside', field: 'in_time', headerHozAlign: 'center', width: '18%'},
-        {title: 'Outside', field: 'out_time', headerHozAlign: 'center', width: '18%'}
+        {title: 'Inside', field: 'in_time', headerHozAlign: 'center', widthGrow: 1.5} ,
+        {title: 'Outside', field: 'out_time', headerHozAlign: 'center', widthGrow: 1.5}
       ]
     }
   ];

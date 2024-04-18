@@ -43,6 +43,14 @@
     margin-top: 0.5rem;
 }
 
+.actions-div {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: -0.15rem;
+}
+
 .filters-wrap {
     display: flex;
     gap: 0.5rem;
