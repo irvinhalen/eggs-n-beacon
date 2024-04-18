@@ -82,3 +82,7 @@
 .tabulator-pages > .active {
     color: #E72423!important;
 }
+
+.tabulator-tableholder {
+    overflow: hidden!important;
+}
