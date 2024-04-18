@@ -99,7 +99,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   }
 
   const options = {
-    layout: 'fitDataStretch',
+    layout: 'fitDataTable',
     pagination: true,
     paginationSize: 10,
     paginationSizeSelector: [5, 10, 50, 100, 1000],
