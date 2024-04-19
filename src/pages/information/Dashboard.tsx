@@ -28,10 +28,9 @@ function Dashboard() {
 
   const getLineChartData = () => {
     if(user) {
-      const userId = user.id;
       Axios.get('http://localhost:3001/api/dashboard', {
         params: {
-          id: userId,
+          id: user.id,
           date_start: dateStartString,
           date_end: dateEndString
         }

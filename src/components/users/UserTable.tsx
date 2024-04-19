@@ -12,7 +12,7 @@ import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 function UserTable() {
   const [listOfUsers, setListOfUsers] = useState([]);
   const [searchString, setSearchString] = useState('');
-  const [tabTab, setTabTab] = useState<ReactTabulatorProps | null>(null);
+  const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
 
   useEffect(() => {
     getUsers();
@@ -23,24 +23,18 @@ function UserTable() {
   }, [searchString]);
 
   const filterTable = () => {
-    if (tabTab) {
-      tabTab.setFilter([
-        [
-          {field: 'id', type: 'like', value: searchString},
-          {field: 'username', type: 'like', value: searchString},
-          {field: 'email', type: 'like', value: searchString}
-        ]
-      ]);
-    }
+    tableRef?.setFilter([
+      [
+        {field: 'id', type: 'like', value: searchString},
+        {field: 'username', type: 'like', value: searchString},
+        {field: 'email', type: 'like', value: searchString}
+      ]
+    ]);
   }
 
   const getUsers = () =>{
     Axios.get('http://localhost:3001/api/users').then((response) => {
-      setListOfUsers(() => {
-        return response.data.map((entry:any) => {
-          return {...entry}
-        })
-      });
+      setListOfUsers(response.data);
     });
   };
 
@@ -92,7 +86,7 @@ function UserTable() {
       </Card.Header>
       <Card.Body className='manager-cards'>
         <ReactTabulator
-            onRef={(ref) => setTabTab(ref.current)}
+            onRef={(ref) => setTableRef(ref.current)}
             data={listOfUsers}
             columns={columns}
             options={options}

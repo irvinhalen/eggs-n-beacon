@@ -110,10 +110,9 @@ function TransactionModal(props:any) {
 
     const getSelectData = () => {
         if(user) {
-            const userId = user.id;
             Axios.get('http://localhost:3001/api/transactions-select-data', {
             params: {
-                id: userId
+                id: user.id
             }
             }).then((response) => {
                 setListOfSelectData(response.data);

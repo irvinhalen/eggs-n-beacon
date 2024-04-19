@@ -24,7 +24,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   const [isEdit, setIsEdit] = useState(false);
   const [rowData, setRowData] = useState<Object>({});
   const [toggleVisibility, setToggleVisibility] = useState<boolean>(false);
-  const [laTable, setLaTable] = useState<ReactTabulatorProps | null>(null);
+  const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
   const [projectNameFilter, setProjectNameFilter] = useState('');
   const [truckFilter, setTruckFilter] = useState('');
   const [dateFilter, setDateFilter] = useState<Dayjs | null>(null);
@@ -65,12 +65,12 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   }
 
   const showActions = () => {
-    laTable?.showColumn('truck_transaction_id');
+    tableRef?.showColumn('truck_transaction_id');
   }
 
   const hideActions = () => {
-    laTable?.hideColumn('truck_transaction_id');
-    laTable?.redraw();
+    tableRef?.hideColumn('truck_transaction_id');
+    tableRef?.redraw();
   }
 
   const OptionsFormat = (props:ReactTabulatorProps) => {
@@ -85,17 +85,15 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   }
 
   const filterTable = () => {
-    if (laTable) {
-      let filterDate = '';
-      if(dateFilter) {
-        filterDate = dateFilter.format('YYYY-MM-DD');
-      }
-      laTable.setFilter([
-        {field: 'project_name', type: 'like', value: projectNameFilter},
-        {field: 'license_plate', type: 'like', value: truckFilter},
-        {field: 'in_time', type: 'like', value: filterDate}
-      ]);
+    let filterDate = '';
+    if(dateFilter) {
+      filterDate = dateFilter.format('YYYY-MM-DD');
     }
+    tableRef?.setFilter([
+      {field: 'project_name', type: 'like', value: projectNameFilter},
+      {field: 'license_plate', type: 'like', value: truckFilter},
+      {field: 'in_time', type: 'like', value: filterDate}
+    ]);
   }
 
   const options = {
@@ -111,16 +109,16 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   const columns:any = [
     {field: 'truck_transaction_id', visible: false, hozAlign: 'center', headerSort: false, formatter: reactFormatter(<OptionsFormat />)},
     {field: 'site_id', visible: false},
-    {title: 'Project', field: 'project_name',   headerHozAlign: 'center', headerSort: true, widthGrow: 1.5},
+    {title: 'Project', field: 'project_name', headerHozAlign: 'center', headerSort: true, widthGrow: 1.5},
     {field: 'truck_id', visible: false},
-    {title: 'License Plate', field: 'license_plate',   headerHozAlign: 'center', headerSort: false},
+    {title: 'License Plate', field: 'license_plate', headerHozAlign: 'center', headerSort: false},
     {title: 'Amount of Soil', field: 'soil_amount', headerHozAlign: 'center', headerSort: true, editor: 'number'},
     {
       title: 'Direction',
       headerHozAlign: 'center',
       columns: [
-        {title: 'Inside', field: 'in',  headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
-        {title: 'Outside', field: 'out',  headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
+        {title: 'Inside', field: 'in', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'},
+        {title: 'Outside', field: 'out', headerHozAlign: 'center', hozAlign: 'center', headerSort: false, formatter: 'tickCross'}
       ]
     },
     {
@@ -210,7 +208,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
                     <TransactionModal
                       show={modalShow}
                       onHide={() => {
-                        laTable?.deselectRow();
+                        tableRef?.deselectRow();
                         setModalShow(false);
                         setIsEdit(false);
                       }}
@@ -224,7 +222,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
                         show={confirmModalShow}
                         rowData={rowData}
                         onHide={() => {
-                          laTable?.deselectRow();
+                          tableRef?.deselectRow();
                           setConfirmModalShow(false);
                         }}
                         updateTable={getTruckTransactions}
@@ -241,7 +239,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
       </Card.Header>
       <Card.Body className='manager-cards'>
         <ReactTabulator
-            onRef={(ref) => setLaTable(ref.current)}
+            onRef={(ref) => setTableRef(ref.current)}
             data={listOfTruckTransactions}
             columns={columns}
             options={options}

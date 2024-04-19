@@ -114,8 +114,8 @@ function Sidebar() {
                     </div>
                 </div>
                 <div className='sidebar-sticky'>
-                    <ButtonBase onClick={handleClick} sx={{ width: '100%' }}>
-                        <div id='sidebar-profile' style={{ width: '100%' }}>
+                    <ButtonBase onClick={handleClick} sx={{ height: '100%', width: '100%' }}>
+                        <div id='sidebar-profile'>
                             <div className='profile-user-div'>
                                 <div className='profile-avatar'>
                                     <div className='profile-letter'>{ userLetter }</div>

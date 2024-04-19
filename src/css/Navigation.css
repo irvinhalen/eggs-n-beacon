@@ -88,17 +88,19 @@
 }
 
 .logo-photo {
-    max-height: 5rem;
+    max-height: 7rem;
+    width: 100%;
 }
 
 .sidebar {
     background-color:#F9F9F9;
-    height:100%;
+    height: calc(100% - 3.5rem);
     width: 14rem;
     position:fixed;
     z-index:3;
     overflow:auto;
     border-right: 0.1rem solid #E4E4E4;
+    padding-bottom: 3.5rem;
 }
 
 .sidebar-container {
@@ -159,12 +161,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0 1rem;
+    height: 100%;
+    width: 100%;
 }
 
 .sidebar-sticky {
     position: fixed;
     background-color: #F9F9F9;
+    height: 3.5rem;
     width: 14rem;
     border-right: 0.1rem solid #E4E4E4;
     bottom: 0;

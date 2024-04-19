@@ -2,6 +2,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
+import AdminRoutes from './utils/AdminRoutes';
 import { AuthProvider } from './utils/AuthContext';
 import Login from './pages/authentication/Login';
 import Register from './pages/authentication/Register';
@@ -27,7 +28,6 @@ function App() {
               <Route path='/register' element={<Register />} />
               <Route element={<PrivateRoutes />}>
                 <Route path='/' element={<Dashboard />} />
-                <Route path='/manage-users' element={<ManageUsers />} />
                 <Route path='/sites' element={<ManageSites />} />
                 <Route path='/register-site' element={<AddSite />} />
                 <Route path='/trucks' element={<ManageTrucks />} />
@@ -35,6 +35,9 @@ function App() {
                 <Route path='/truck-transaction' element={<TruckTransactions />} />
                 <Route path='/beacons' element={<ManageBeacons/>} />
                 <Route path='/beacon-transaction' element={<BeaconTransactions />} />
+                <Route element={<AdminRoutes />}>
+                  <Route path='/manage-users' element={<ManageUsers />} />
+                </Route>
               </Route>
             </Routes>
           </AuthProvider>

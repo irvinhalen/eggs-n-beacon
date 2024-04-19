@@ -36,10 +36,9 @@ function SiteMap({setSiteId}:{setSiteId:Dispatch<SetStateAction<number>>}) {
 
     const getSites = () => {
         if(user) {
-          const userId = user.id;
             Axios.get('http://localhost:3001/api/sites', {
               params: {
-                id: userId,
+                id: user.id,
               }
             }).then((response) => {
               setListOfSites(() => {
