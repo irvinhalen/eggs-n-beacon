@@ -31,4 +31,18 @@
     justify-content: space-between;
 }
 
+/* Start of Modals */
+
+.input-wrap {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.confirm-delete {
+    gap: 0.5rem;
+}
+
+/* End of Modals */
+
 /* End of SiteTable */

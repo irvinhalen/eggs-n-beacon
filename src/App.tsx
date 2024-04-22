@@ -10,11 +10,11 @@ import Sidebar from './components/navigation/Sidebar';
 import Dashboard from './pages/information/Dashboard';
 import ManageUsers from './pages/users/ManageUsers';
 import ManageSites from './pages/sites/ManageSites';
-import AddSite from './pages/sites/AddSite';
 import ManageTrucks from './pages/trucks/ManageTrucks';
 import ManageBeacons from './pages/beacons/ManageBeacons';
 import TruckTransactions from './pages/trucks/TruckTransactions';
 import BeaconTransactions from './pages/beacons/BeaconTransactions';
+import Missing from './pages/information/Missing';
 
 function App() {
   return (
@@ -24,12 +24,12 @@ function App() {
           <AuthProvider>
             <Sidebar />
             <Routes>
+              <Route path='/*' element={<Missing />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route element={<PrivateRoutes />}>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/sites' element={<ManageSites />} />
-                <Route path='/register-site' element={<AddSite />} />
                 <Route path='/trucks' element={<ManageTrucks />} />
                 <Route path='/register-truck' />
                 <Route path='/truck-transaction' element={<TruckTransactions />} />

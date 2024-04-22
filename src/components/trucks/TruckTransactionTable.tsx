@@ -78,8 +78,8 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
     const row = props.cell.getData();
     return (
       <div className='actions-div'>
-        <ButtonBase onClick={() => {editRow(row, tabRow)}} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
-        <ButtonBase onClick={() => {deleteRow(row, tabRow)}} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
+        <ButtonBase onClick={() => editRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
+        <ButtonBase onClick={() => deleteRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
       </div>
     );
   }

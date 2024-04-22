@@ -101,7 +101,6 @@ function TransactionModal(props:any) {
         }
     }, [props.isEdit])
 
-
     const setCurrentDate = () => {
         const currDate = dayjs();
         setInTime(currDate);
