@@ -69,7 +69,7 @@ function Dashboard() {
     <>
       <div className='bg-div' />
       <div className='main_div'>
-        <div className='px-4 py-4 mb-1'>
+        <div className='px-4 pt-3 pb-2 mb-1'>
           <h3 className='main-text site-header-text'>DASHBOARD</h3>
         </div>
         <div className='container-fluid'>
@@ -83,7 +83,7 @@ function Dashboard() {
             </div>
             <div className='row'>
               <div className="col mb-2">
-                <TruckTransactionTable getLineChartData={getLineChartData} />
+                <TruckTransactionTable getLineChartData={getLineChartData} siteId={siteId} />
               </div>
             </div>
         </div>

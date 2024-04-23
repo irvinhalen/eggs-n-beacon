@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import '../../css/Navigation.css';
 import logo from '../../assets/logo_sidebar.png';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
-import { CasesOutlined, MovingRounded, RuleOutlined, SpaceDashboardOutlined, UnfoldMoreRounded } from '@mui/icons-material';
+import { AssignmentOutlined, CasesOutlined, MovingRounded, SpaceDashboardOutlined, UnfoldMoreRounded } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { ButtonBase, Popover } from '@mui/material';
 
@@ -60,10 +60,10 @@ function Sidebar() {
                                 }>
                                     <MovingRounded className='sidebar-icons' />&nbsp;&nbsp;User Management
                             </NavLink>
-                            <NavLink to='/approve-users' className={({ isActive }) =>
+                            <NavLink to='/assign-users' className={({ isActive }) =>
                                 isActive ? "sidebar-list-item-active" : "sidebar-list-item"
                                 }>
-                                    <RuleOutlined className='sidebar-icons' />&nbsp;&nbsp;User Approval
+                                    <AssignmentOutlined className='sidebar-icons' />&nbsp;&nbsp;User Assignment
                             </NavLink>
                         </div>
                         ):(

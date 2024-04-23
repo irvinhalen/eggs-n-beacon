@@ -12,7 +12,7 @@ import { Delete, Edit, FilterAltRounded, SearchRounded, SettingsRounded } from "
 import SiteModal from "./SiteModal";
 import SiteModalConfirm from "./SiteModalConfirm";
 
-function SiteTable() {
+function SiteTable({ siteId }:{ siteId:number }) {
   const { user } = useAuth() as AuthContextType;
   const [listOfSites, setListOfSites] = useState([]);
   const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
@@ -31,6 +31,22 @@ function SiteTable() {
   useEffect(() => {
     filterTable();
   }, [searchString]);
+
+  useEffect(() => {
+    toggleDisplay();
+  }, [siteId]);
+
+  const toggleDisplay = () => {
+    if(siteId != 0) {
+      tableRef?.setFilter([
+        {field: 'site_id', type: '=', value: siteId}
+      ]);
+    } else {
+      tableRef?.setFilter([
+        {field: 'site_id', type: '!=', value: siteId}
+      ]);
+    }
+  }
 
   const filterTable = () => {
     tableRef?.setFilter([
@@ -127,6 +143,7 @@ function SiteTable() {
                         label='Search'
                         placeholder='Project Name, Address'
                         onChange={(event) => setSearchString(event.target.value)}
+                        value={searchString}
                         size='small'
                         InputProps={{
                         endAdornment: (
@@ -219,7 +236,7 @@ export default SiteTable;
 const options = {
   layout: 'fitColumns',
   pagination: true,
-  paginationSize: 10,
+  paginationSize: 5,
   paginationSizeSelector: [5, 10, 50, 100, 1000],
   paginationCounter: 'rows',
   paginationButtonCount: 3

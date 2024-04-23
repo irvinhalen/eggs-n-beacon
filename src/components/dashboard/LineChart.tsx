@@ -98,7 +98,7 @@ function LineChart({siteId, getLineChartData, lineChartData, selectedDates, setS
   function getPastSevenDays() {
     var pastDays = [];
     var today = new Date();
-    
+
     for (var i = 0; i < 7; i++) {
       let pastDay = new Date(today);
       pastDay.setDate(today.getDate() - i);

@@ -4,18 +4,18 @@ import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/css/tabulator_simple.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, InputAdornment, TextField, ThemeProvider } from "@mui/material";
-import { blackTheme, greenTheme } from "../MaterialThemes";
-import { FilterAltRounded, SearchRounded, SettingsRounded } from "@mui/icons-material";
+import { InputAdornment, TextField, ThemeProvider } from "@mui/material";
+import { blackTheme } from "../MaterialThemes";
+import { FilterAltRounded, SearchRounded } from "@mui/icons-material";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 
-function UserTable() {
+function AssignmentSiteTable() {
   const [listOfUsers, setListOfUsers] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
 
   useEffect(() => {
-    getUsers();
+    getAssignmentSites();
   }, []);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ function UserTable() {
     ]);
   }
 
-  const getUsers = () =>{
-    Axios.get('http://localhost:3001/api/users').then((response) => {
+  const getAssignmentSites = () =>{
+    Axios.get('http://localhost:3001/api/assignments-site').then((response) => {
       setListOfUsers(response.data);
     });
   };
@@ -44,7 +44,7 @@ function UserTable() {
         <Card.Title>
           <ThemeProvider theme={blackTheme}>
             <div className='title-wrap'>
-              User Table
+              Site Table
               <div className='actions-wrap'>
                 <div className='filters-wrap'>
                     <TextField
@@ -61,23 +61,6 @@ function UserTable() {
                       autoComplete='off'
                     />
                     <FilterAltRounded sx={{ color: '#757575' }} />
-                </div>
-                <div className='d-flex justify-content-between align-items-center settings-wrap'>
-                  <ThemeProvider theme={greenTheme}>
-                    <ThemeProvider theme={blackTheme}>
-                        <Button
-                            variant='outlined'
-                          >
-                            Show Actions
-                        </Button>
-                    </ThemeProvider>
-                    <Button
-                      variant='contained'
-                    >
-                      Add User
-                    </Button>
-                    <SettingsRounded sx={{ color: '#757575' }} />
-                  </ThemeProvider>
                 </div>
               </div>
             </div>
@@ -96,7 +79,7 @@ function UserTable() {
   )
 }
 
-export default UserTable;
+export default AssignmentSiteTable;
 
 const options = {
   layout: 'fitColumns',
@@ -107,8 +90,15 @@ const options = {
   paginationButtonCount: 3
 }
 
-const columns:any = [
-  {title: 'ID', field: 'id', headerHozAlign: 'center'},
-  {title: 'Username', field: 'username', headerHozAlign: 'center', widthGrow: 2},
-  {title: 'Email Address', field: 'email', headerHozAlign: 'center', widthGrow: 2}
-];
+const columns:any = [,
+    {title: 'Project Name', field: 'project_name', headerHozAlign: 'center', widthGrow: 1.5},
+    {
+      title: 'Address', headerHozAlign: 'center',
+      columns: [
+        {title: 'City', field: 'city', headerHozAlign: 'center'},
+        {title: 'Town', field: 'town', headerHozAlign: 'center'},
+        {title: 'Barangay', field: 'barangay', headerHozAlign: 'center'},
+      ]
+    },
+    {title: 'Users Assigned', field: 'assus', headerHozAlign: 'center'},
+  ];

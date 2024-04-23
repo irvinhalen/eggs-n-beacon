@@ -15,6 +15,7 @@ import ManageBeacons from './pages/beacons/ManageBeacons';
 import TruckTransactions from './pages/trucks/TruckTransactions';
 import BeaconTransactions from './pages/beacons/BeaconTransactions';
 import Missing from './pages/information/Missing';
+import AssignUsers from './pages/users/AssignUsers';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 <Route path='/beacon-transaction' element={<BeaconTransactions />} />
                 <Route element={<AdminRoutes />}>
                   <Route path='/manage-users' element={<ManageUsers />} />
+                  <Route path='/assign-users' element={<AssignUsers />} />
                 </Route>
               </Route>
             </Routes>

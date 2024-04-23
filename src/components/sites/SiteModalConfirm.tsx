@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
 
 function SiteModalConfirm(props:any) {
-    const [addLoading, setAddLoading] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [isMatch, setIsMatch] = useState(false);
 
@@ -14,7 +14,7 @@ function SiteModalConfirm(props:any) {
     }, [projectName]);
 
     const deleteSite = () => {
-        setAddLoading(true);
+        setConfirmLoading(true);
         Axios.delete('http://localhost:3001/api/delete-site', {
             params: {
                 site_id: props.rowData.site_id,
@@ -24,9 +24,10 @@ function SiteModalConfirm(props:any) {
                 props.onHide();
                 props.updateTable();
                 props.updateChart();
-                setAddLoading(false);
+                setProjectName('');
+                setConfirmLoading(false);
             } else {
-              setAddLoading(false);
+              setConfirmLoading(false);
             }
         });
     }
@@ -59,13 +60,13 @@ function SiteModalConfirm(props:any) {
       <Modal.Footer className='border-0 button-row-wrap'>
             <Button onClick={props.onHide} variant='outlined'>Cancel</Button>
             { props.confirmDelete ? (
-                addLoading ? (
+                confirmLoading ? (
                     <LoadingButton variant='contained' loading>Delete</LoadingButton>
                 ) : (
                     isMatch ? (
                         <Button onClick={deleteSite} variant='contained' type='submit' disableElevation>Delete</Button>
                     ) : (
-                        <Button onClick={deleteSite} variant='contained' type='submit' disableElevation disabled>Delete</Button>
+                        <Button variant='contained' type='submit' disableElevation disabled>Delete</Button>
                     )
                 )
             ) : (

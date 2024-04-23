@@ -16,7 +16,7 @@ import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import TransactionModalConfirm from "./TransactionModalConfirm";
 import { Dayjs } from "dayjs";
 
-function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void}) {
+function TruckTransactionTable({getLineChartData, siteId}:{getLineChartData:() => void, siteId:number}) {
   const { user } = useAuth() as AuthContextType;
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -34,10 +34,26 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   }, []);
 
   useEffect(() => {
+    toggleDisplay();
+  }, [siteId]);
+
+  useEffect(() => {
     filterTable();
   }, [projectNameFilter, truckFilter, dateFilter]);
 
-  const getTruckTransactions = () =>{
+  const toggleDisplay = () => {
+    siteId != 0 ?
+    tableRef?.setFilter([
+      { field: 'site_id', type: '=', value: siteId }
+    ])
+    :
+    tableRef?.setFilter([
+      { field: 'site_id', type: '!=', value: siteId }
+    ])
+    ;
+  };
+
+  const getTruckTransactions = () => {
     if(user) {
       const userId = user.id;
       Axios.get('http://localhost:3001/api/truck-transactions', {
@@ -99,7 +115,7 @@ function TruckTransactionTable({getLineChartData}:{getLineChartData:() => void})
   const options = {
     layout: 'fitColumns',
     pagination: true,
-    paginationSize: 10,
+    paginationSize: 5,
     paginationSizeSelector: [5, 10, 50, 100, 1000],
     paginationCounter: 'rows',
     paginationButtonCount: 3,
