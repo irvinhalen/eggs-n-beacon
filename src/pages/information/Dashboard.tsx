@@ -72,21 +72,25 @@ function Dashboard() {
         <div className='px-4 pt-3 pb-2 mb-1'>
           <h3 className='main-text site-header-text'>DASHBOARD</h3>
         </div>
-        <div className='container-fluid'>
-            <div className='row mb-3'>
-              <div className='col-sm-12 col-md-4 col-md-4'>
-                <SiteMap setSiteId={setSiteId} />
+        { user.role === 1 ? (
+          ''
+        ) : (
+          <div className='container-fluid'>
+              <div className='row mb-3'>
+                <div className='col-sm-12 col-md-4 col-md-4'>
+                  <SiteMap setSiteId={setSiteId} />
+                </div>
+                <div className='col-sm-12 col-md-8 col-md-8'>
+                  <LineChart siteId={siteId} getLineChartData={getLineChartData} lineChartData={lineChartData} selectedDates={selectedDates} setSelectedDates={setSelectedDates} setDateStartString={setDateStartString} setDateEndString={setDateEndString} />
+                </div>
               </div>
-              <div className='col-sm-12 col-md-8 col-md-8'>
-                <LineChart siteId={siteId} getLineChartData={getLineChartData} lineChartData={lineChartData} selectedDates={selectedDates} setSelectedDates={setSelectedDates} setDateStartString={setDateStartString} setDateEndString={setDateEndString} />
+              <div className='row'>
+                <div className="col mb-2">
+                  <TruckTransactionTable getLineChartData={getLineChartData} siteId={siteId} />
+                </div>
               </div>
-            </div>
-            <div className='row'>
-              <div className="col mb-2">
-                <TruckTransactionTable getLineChartData={getLineChartData} siteId={siteId} />
-              </div>
-            </div>
-        </div>
+          </div>
+        ) }
       </div>
     </>
   )

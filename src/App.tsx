@@ -32,7 +32,6 @@ function App() {
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/sites' element={<ManageSites />} />
                 <Route path='/trucks' element={<ManageTrucks />} />
-                <Route path='/register-truck' />
                 <Route path='/truck-transaction' element={<TruckTransactions />} />
                 <Route path='/beacons' element={<ManageBeacons/>} />
                 <Route path='/beacon-transaction' element={<BeaconTransactions />} />

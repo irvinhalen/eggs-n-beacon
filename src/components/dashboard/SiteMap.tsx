@@ -39,6 +39,7 @@ function SiteMap({setSiteId}:{setSiteId:Dispatch<SetStateAction<number>>}) {
             Axios.get('http://localhost:3001/api/markers', {
               params: {
                 id: user.id,
+                role: user.role
               }
             }).then((response) => {
               setListOfSites(() => {
@@ -114,9 +115,6 @@ function SiteMap({setSiteId}:{setSiteId:Dispatch<SetStateAction<number>>}) {
             </MapContainer>
             </div>
         </Card.Body>
-        {/* <Card.Footer className="border-0">
-            <div className="main-text"><p className="mb-0" style={{ textAlign: 'right' }}>Project: Vertex</p></div>
-        </Card.Footer> */}
     </Card>
   )
 }

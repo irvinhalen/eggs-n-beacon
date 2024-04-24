@@ -63,7 +63,8 @@ function SiteTable({ siteId }:{ siteId:number }) {
     if(user){
       Axios.get('http://localhost:3001/api/sites', {
         params: {
-          id: user.id
+          id: user.id,
+          role: user.role
         }
       }).then((response) => {
         setListOfSites(response.data);
@@ -236,7 +237,7 @@ export default SiteTable;
 const options = {
   layout: 'fitColumns',
   pagination: true,
-  paginationSize: 5,
+  paginationSize: 10,
   paginationSizeSelector: [5, 10, 50, 100, 1000],
   paginationCounter: 'rows',
   paginationButtonCount: 3

@@ -117,8 +117,8 @@ const options = {
 }
 
 const columns:any = [
-  {title: 'Project', field: 'project_name', headerHozAlign: 'center', widthGrow: 1.5},
-  {title: 'License Plate', field: 'license_plate', headerHozAlign: 'center', headerSort: false},
+  {title: 'Designated Site', field: 'project_name', headerHozAlign: 'center', widthGrow: 1.5},
+  {title: 'Assigned Truck', field: 'license_plate', headerHozAlign: 'center', headerSort: false},
   {title: 'Beacon', field: 'beacon_name', headerHozAlign: 'center'},
   {title: 'Direction', field: 'direction', headerHozAlign: 'center', headerSort: false},
   {title: 'Timestamp', field: 'transaction_time', headerHozAlign: 'center', widthGrow: 1.5}

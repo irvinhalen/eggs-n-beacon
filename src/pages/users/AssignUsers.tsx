@@ -7,7 +7,7 @@ function AssignUsers() {
       <div className='bg-div' />
       <div className='main_div'>
       <div className='px-4 py-3 mb-1'>
-          <h3 className='main-text site-header-text'>USER MANAGEMENT</h3>
+          <h3 className='main-text site-header-text'>SITE ASSIGNMENT</h3>
         </div>
         <div className='container-fluid'>
           <div className='row'>

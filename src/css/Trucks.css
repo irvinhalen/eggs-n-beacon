@@ -48,7 +48,10 @@
     gap: 1rem;
     justify-content: center;
     align-items: center;
-    margin-top: -0.15rem;
+}
+
+.actions-div button {
+    padding: 0;
 }
 
 .filters-wrap {
