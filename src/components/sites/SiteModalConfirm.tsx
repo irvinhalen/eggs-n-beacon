@@ -23,7 +23,6 @@ function SiteModalConfirm(props:any) {
             if(response.data.status === 'success') {
                 props.onHide();
                 props.updateTable();
-                props.updateChart();
                 setProjectName('');
                 setConfirmLoading(false);
             } else {

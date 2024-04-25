@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 
 function SiteModal(props:any) {
-    const [addLoading, setAddLoading] = useState(false);
+    const [loading, setloading] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [city, setCity] = useState('');
     const [town, setTown] = useState('');
@@ -32,7 +32,7 @@ function SiteModal(props:any) {
     }, [props.isEdit])
 
     const addSite = () => {
-        setAddLoading(true);
+        setloading(true);
         Axios.post('http://localhost:3001/api/add-site', {
             project_name: projectName,
             city,
@@ -50,15 +50,15 @@ function SiteModal(props:any) {
                 setBarangay('');
                 setLatitude('');
                 setLongitude('');
-                setAddLoading(false);
+                setloading(false);
             } else {
-                setAddLoading(false);
+                setloading(false);
             }
         });
     }
 
     const updateSite = () => {
-        setAddLoading(true);
+        setloading(true);
         Axios.put('http://localhost:3001/api/update-site', {
             site_id: props.rowData.site_id,
             project_name: projectName,
@@ -77,9 +77,9 @@ function SiteModal(props:any) {
                 setBarangay('');
                 setLatitude('');
                 setLongitude('');
-                setAddLoading(false);
+                setloading(false);
             } else {
-                setAddLoading(false);
+                setloading(false);
             }
         });
     }
@@ -117,7 +117,7 @@ function SiteModal(props:any) {
       </Modal.Body>
       <Modal.Footer className='border-0 button-row-wrap'>
             <Button onClick={props.onHide} variant='outlined'>Cancel</Button>
-            { addLoading ? (
+            { loading ? (
                 <LoadingButton variant='contained' loading>Save</LoadingButton>
             ) : (
                 props.isEdit ? (

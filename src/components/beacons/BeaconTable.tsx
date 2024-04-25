@@ -55,6 +55,7 @@ function BeaconTable() {
           return entry;
         })
       );
+      setToggleVisibility(false);
     });
   };
 
@@ -164,20 +165,22 @@ function BeaconTable() {
                           setIsEdit(false);
                           setModalShow(false);
                         }}
-                        rowData={rowData}
                         isEdit={isEdit}
+                        rowData={rowData}
+                        updateTable={getBeacons}
                     />
                     <ThemeProvider theme={redTheme}>
                       <BeaconModalConfirm
                         show={confirmModalShow}
-                        rowData={rowData}
                         onHide={() => {
                           tableRef?.deselectRow();
                           setConfirmDelete(false);
                           setConfirmModalShow(false);
                         }}
+                        rowData={rowData}
                         confirmDelete={confirmDelete}
                         setConfirmDelete={setConfirmDelete}
+                        updateTable={getBeacons}
                       />
                     </ThemeProvider>
                     <SettingsRounded sx={{ color: '#757575' }} />

@@ -2,6 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
+import Axios from "axios";
 
 function TruckModalConfirm(props:any) {
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -11,6 +12,24 @@ function TruckModalConfirm(props:any) {
     useEffect(() => {
         licensePlate === props.rowData.license_plate ? setIsMatch(true) : setIsMatch(false);
     }, [licensePlate]);
+
+    const deleteTruck = () => {
+      setConfirmLoading(true);
+      Axios.delete('http://localhost:3001/api/delete-truck', {
+          params: {
+              truck_id: props.rowData.truck_id,
+          }
+      }).then((response) => {
+          if(response.data.status === 'success') {
+              props.onHide();
+              props.updateTable();
+              setLicensePlate('');
+              setConfirmLoading(false);
+          } else {
+            setConfirmLoading(false);
+          }
+      });
+  }
 
   return (
     <Modal
@@ -44,7 +63,7 @@ function TruckModalConfirm(props:any) {
                     <LoadingButton variant='contained' loading>Delete</LoadingButton>
                 ) : (
                     isMatch ? (
-                        <Button variant='contained' type='submit' disableElevation>Delete</Button>
+                        <Button onClick={deleteTruck} variant='contained' type='submit' disableElevation>Delete</Button>
                     ) : (
                         <Button variant='contained' type='submit' disableElevation disabled>Delete</Button>
                     )

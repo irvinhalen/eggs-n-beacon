@@ -201,12 +201,12 @@ function SiteTable({ siteId }:{ siteId:number }) {
                     <ThemeProvider theme={redTheme}>
                       <SiteModalConfirm
                         show={confirmModalShow}
-                        rowData={rowData}
                         onHide={() => {
                           tableRef?.deselectRow();
                           setConfirmDelete(false);
                           setConfirmModalShow(false);
                         }}
+                        rowData={rowData}
                         updateTable={getSites}
                         confirmDelete={confirmDelete}
                         setConfirmDelete={setConfirmDelete}

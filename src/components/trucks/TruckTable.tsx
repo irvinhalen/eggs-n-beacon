@@ -53,12 +53,16 @@ function TruckTable() {
       }).then((response) => {
         setListOfTrucks(
           response.data.map((entry:any) => {
-            if(!entry.beacon_name) {
+            if(!entry.project_name){
+              entry.project_name = 'ㅤ';
+            }
+            if(!entry.beacon_name){
               entry.beacon_name = 'ㅤ';
             }
             return entry;
           })          
         );
+        setToggleVisibility(false);
       });
     }
   };
@@ -102,6 +106,8 @@ function TruckTable() {
 
   const columns:any = [
     {field: 'truck_id', visible: false, headerSort: false, formatter: reactFormatter(<OptionsFormat />) },
+    {field: 'site_id', visible: false},
+    {field: 'beacon_id', visible: false},
     {title: 'License Plate', field: 'license_plate', headerSort: false, headerHozAlign: 'center'},
     {title: 'Weight Capacity', field: 'weight_capacity', headerHozAlign: 'center'},
     {title: 'Designated Site', field: 'project_name', headerHozAlign: 'center', widthGrow: 1.5},
@@ -170,20 +176,22 @@ function TruckTable() {
                           setIsEdit(false);
                           setModalShow(false);
                         }}
-                        rowData={rowData}
                         isEdit={isEdit}
+                        rowData={rowData}
+                        updateTable={getTrucks}
                     />
                     <ThemeProvider theme={redTheme}>
                       <TruckModalConfirm
                         show={confirmModalShow}
-                        rowData={rowData}
                         onHide={() => {
                           tableRef?.deselectRow();
                           setConfirmDelete(false);
                           setConfirmModalShow(false);
                         }}
+                        rowData={rowData}
                         confirmDelete={confirmDelete}
                         setConfirmDelete={setConfirmDelete}
+                        updateTable={getTrucks}
                       />
                     </ThemeProvider>
                     <SettingsRounded sx={{ color: '#757575' }} />

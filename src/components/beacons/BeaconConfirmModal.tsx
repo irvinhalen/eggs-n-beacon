@@ -2,15 +2,34 @@ import { Button, TextField } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
+import Axios from "axios";
 
 function BeaconModalConfirm(props:any) {
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [beaconName, setBeaconName] = useState('');
-    const [isMatch, setIsMatch] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [beaconName, setBeaconName] = useState('');
+  const [isMatch, setIsMatch] = useState(false);
 
-    useEffect(() => {
-        beaconName === props.rowData.beacon_name ? setIsMatch(true) : setIsMatch(false);
-    }, [beaconName]);
+  useEffect(() => {
+      beaconName === props.rowData.beacon_name ? setIsMatch(true) : setIsMatch(false);
+  }, [beaconName]);
+
+    const deleteBeacon = () => {
+        setConfirmLoading(true);
+        Axios.delete('http://localhost:3001/api/delete-beacon', {
+            params: {
+                beacon_id: props.rowData.beacon_id,
+            }
+        }).then((response) => {
+            if(response.data.status === 'success') {
+                props.onHide();
+                props.updateTable();
+                setBeaconName('');
+                setConfirmLoading(false);
+            } else {
+              setConfirmLoading(false);
+            }
+        });
+    }
 
   return (
     <Modal
@@ -44,7 +63,7 @@ function BeaconModalConfirm(props:any) {
                     <LoadingButton variant='contained' loading>Delete</LoadingButton>
                 ) : (
                     isMatch ? (
-                        <Button variant='contained' type='submit' disableElevation>Delete</Button>
+                        <Button onClick={deleteBeacon} variant='contained' type='submit' disableElevation>Delete</Button>
                     ) : (
                         <Button variant='contained' type='submit' disableElevation disabled>Delete</Button>
                     )

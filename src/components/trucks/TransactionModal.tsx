@@ -29,7 +29,7 @@ function TransactionModal(props:any) {
     const [checkedOut, setCheckedOut] = useState(true);
     const [inTime, setInTime] = useState<Dayjs | null>(null);
     const [outTime, setOutTime] = useState<Dayjs | null>(null);
-    const [addLoading, setAddLoading] = useState(false);
+    const [loading, setloading] = useState(false);
 
     useEffect(() => {
       getSelectData();
@@ -120,7 +120,7 @@ function TransactionModal(props:any) {
     };
 
     const addTransaction = () => {
-        setAddLoading(true);
+        setloading(true);
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
@@ -144,15 +144,15 @@ function TransactionModal(props:any) {
                 setSoilAmount('');
                 setCheckedIn(true);
                 setCheckedOut(true);
-                setAddLoading(false);
+                setloading(false);
             } else {
-                setAddLoading(false);
+                setloading(false);
             }
         });
     }
 
     const updateTransaction = () => {
-        setAddLoading(true);
+        setloading(true);
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
@@ -177,9 +177,9 @@ function TransactionModal(props:any) {
                 setSoilAmount('');
                 setCheckedIn(true);
                 setCheckedOut(true);
-                setAddLoading(false);
+                setloading(false);
             } else {
-                setAddLoading(false);
+                setloading(false);
             }
         });
     }
@@ -224,31 +224,33 @@ function TransactionModal(props:any) {
             <FormControl fullWidth size='small'>
                 <InputLabel id='project-name'>Project Name</InputLabel>
                 <Select label='Project Name' labelId='project-name' value={selectedSite} onChange={handleChangeProj}>
-                    { listOfProjects.length ? ('') : (
+                    { listOfProjects.length ? (
+                        listOfProjects.map((project) => {
+                            return (
+                                <MenuItem key={project.site_id} value={project.site_id}>{project.project_name}</MenuItem>
+                            );
+                        })
+                    ) : (
                         <MenuItem value=''>
                             <em>No projects found</em>
                         </MenuItem>
                     ) }
-                    { listOfProjects.map((project) => {
-                        return (
-                            <MenuItem key={project.site_id} value={project.site_id}>{project.project_name}</MenuItem>
-                        );
-                    }) }
                 </Select>
             </FormControl>
             <FormControl fullWidth size='small'>
                 <InputLabel id='license-plate'>License Plate</InputLabel>
                 <Select label='License Plate' labelId='license-plate' value={selectedPlate} onChange={handleChangeTruck}>
-                    { listOfTrucks.length ? ('') : (
+                    { listOfTrucks.length ? (
+                        listOfTrucks.map((truck) => {
+                            return (
+                                <MenuItem key={truck.truck_id} value={truck.truck_id}>{truck.license_plate}</MenuItem>
+                            );
+                        })
+                    ) : (
                         <MenuItem value=''>
                             <em>No trucks found</em>
                         </MenuItem>
                     ) }
-                    { listOfTrucks.map((project) => {
-                        return (
-                            <MenuItem key={project.truck_id} value={project.truck_id}>{project.license_plate}</MenuItem>
-                        );
-                    }) }
                 </Select>
                 {selectedSite ? ('') : (
                     <FormHelperText>Select a project name to view license plates</FormHelperText>
@@ -280,7 +282,7 @@ function TransactionModal(props:any) {
       </Modal.Body>
       <Modal.Footer className='border-0 button-row-wrap'>
             <Button onClick={props.onHide} variant='outlined'>Cancel</Button>
-            { addLoading ? (
+            { loading ? (
                 <LoadingButton variant='contained' loading>Save</LoadingButton>
             ) : (
                 props.isEdit ? (

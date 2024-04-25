@@ -1,10 +1,11 @@
-import { Button, Divider, FormControl, FormLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import Axios from "axios";
 
 function BeaconModal(props:any) {
-    const [addLoading, setAddLoading] = useState(false);
+    const [loading, setloading] = useState(false);
     const [beaconName, setBeaconName] = useState('');
 
     useEffect(() => {
@@ -14,6 +15,39 @@ function BeaconModal(props:any) {
             setBeaconName('');
         }
     }, [props.isEdit])
+
+  const addBeacon = () => {
+    setloading(true);
+    Axios.post('http://localhost:3001/api/add-beacon', {
+      beacon_name: beaconName
+    }).then((response) => {
+        if(response.data.status === 'success') {
+            props.onHide();
+            props.updateTable();
+            setBeaconName('');
+            setloading(false);
+        } else {
+            setloading(false);
+        }
+    });
+  }
+
+  const updateBeacon = () => {
+    setloading(true);
+    Axios.put('http://localhost:3001/api/update-beacon', {
+      beacon_id: props.rowData.beacon_id,
+      beacon_name: beaconName
+    }).then((response) => {
+        if(response.data.status === 'success') {
+            props.onHide();
+            props.updateTable();
+            setBeaconName('');
+            setloading(false);
+        } else {
+            setloading(false);
+        }
+    });
+}
 
   return (
     <Modal
@@ -35,13 +69,13 @@ function BeaconModal(props:any) {
       </Modal.Body>
       <Modal.Footer className='border-0 button-row-wrap'>
             <Button onClick={props.onHide} variant='outlined'>Cancel</Button>
-            { addLoading ? (
+            { loading ? (
                 <LoadingButton variant='contained' loading>Save</LoadingButton>
             ) : (
                 props.isEdit ? (
-                    <Button variant='contained' type='submit' disableElevation>Update</Button>
+                    <Button onClick={updateBeacon} variant='contained' type='submit' disableElevation>Update</Button>
                 ) : (
-                    <Button variant='contained' type='submit' disableElevation>Save</Button>
+                    <Button onClick={addBeacon} variant='contained' type='submit' disableElevation>Save</Button>
                 )
             ) }
       </Modal.Footer>

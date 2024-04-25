@@ -238,11 +238,11 @@ function TruckTransactionTable({getLineChartData, siteId}:{getLineChartData?:() 
                     <ThemeProvider theme={redTheme}>
                       <TransactionModalConfirm
                         show={confirmModalShow}
-                        rowData={rowData}
                         onHide={() => {
                           tableRef?.deselectRow();
                           setConfirmModalShow(false);
                         }}
+                        rowData={rowData}
                         updateTable={getTruckTransactions}
                         updateChart={getLineChartData}
                       />
