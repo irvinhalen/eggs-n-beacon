@@ -5,7 +5,7 @@ import 'react-tabulator/css/tabulator_simple.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, InputAdornment, TextField, ThemeProvider } from "@mui/material";
-import { blackTheme, greenTheme } from "../MaterialThemes";
+import { blackTheme } from "../MaterialThemes";
 import { FilterAltRounded, SearchRounded, SettingsRounded } from "@mui/icons-material";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 
@@ -63,21 +63,14 @@ function UserTable() {
                     <FilterAltRounded sx={{ color: '#757575' }} />
                 </div>
                 <div className='d-flex justify-content-between align-items-center settings-wrap'>
-                  <ThemeProvider theme={greenTheme}>
-                    <ThemeProvider theme={blackTheme}>
-                        <Button
-                            variant='outlined'
-                          >
-                            Show Actions
-                        </Button>
-                    </ThemeProvider>
-                    <Button
-                      variant='contained'
-                    >
-                      Add User
-                    </Button>
-                    <SettingsRounded sx={{ color: '#757575' }} />
+                  <ThemeProvider theme={blackTheme}>
+                      <Button
+                          variant='outlined'
+                        >
+                          Show Actions
+                      </Button>
                   </ThemeProvider>
+                  <SettingsRounded sx={{ color: '#757575' }} />
                 </div>
               </div>
             </div>

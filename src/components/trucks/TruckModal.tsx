@@ -15,7 +15,7 @@ interface SelectBeacon {
 }
 
 function TruckModal(props:any) {
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [licensePlate, setLicensePlate] = useState('');
     const [weightCapacity, setWeightCapacity] = useState('');
     const [project, setProject] = useState('');
@@ -48,7 +48,7 @@ function TruckModal(props:any) {
     }, [props.isEdit]);
 
     const addTruck = () => {
-        setloading(true);
+        setLoading(true);
         Axios.post('http://localhost:3001/api/add-truck', {
             license_plate: licensePlate,
             weight_capacity: weightCapacity,
@@ -63,15 +63,15 @@ function TruckModal(props:any) {
                 setWeightCapacity('');
                 setProject('');
                 setBeacon('');
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }
 
     const updateTruck = () => {
-        setloading(true);
+        setLoading(true);
         Axios.put('http://localhost:3001/api/update-truck', {
             truck_id: props.rowData.truck_id,
             license_plate: licensePlate,
@@ -87,15 +87,16 @@ function TruckModal(props:any) {
                 setWeightCapacity('');
                 setProject('');
                 setBeacon('');
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }
 
     const getSelectData = () => {
         Axios.get('http://localhost:3001/api/trucks-select-data').then((response) => {
+            response.data[1].unshift({beacon_id: 0, beacon_name: ''});
             setListOfProjects(response.data[0]);
             setListOfBeacons(response.data[1]);
         });
@@ -148,25 +149,15 @@ function TruckModal(props:any) {
                     <InputLabel id='project-name'>Beacon</InputLabel>
                     <Select label='Beacon' labelId='project-name' value={beacon} onChange={handleChangeBeacon}>
                     { listOfBeacons.length ? (
-                        props.isEdit ? (
-                            listOfBeacons.map((beacon) => {
-                                return (
+                        listOfBeacons.map((beacon) => {
+                            return (
+                                beacon.beacon_id != 0 ? (
                                     <MenuItem key={beacon.beacon_id} value={beacon.beacon_id}>{beacon.beacon_name}</MenuItem>
-                                );
-                            })
-                        ) : (
-                            listOfBeacons.length ? (
-                                listOfBeacons.map((beacon) => {
-                                    return (
-                                        <MenuItem key={beacon.beacon_id} value={beacon.beacon_id}>{beacon.beacon_name}</MenuItem>
-                                    );
-                                })
-                            ) : (
-                                <MenuItem value=''>
-                                    <em>No beacons found</em>
-                                </MenuItem>
-                            )
-                        )
+                                ) : (
+                                    <MenuItem key={beacon.beacon_id} value={''}><em>Remove Beacon</em></MenuItem>
+                                )
+                            );
+                        })
                     ) : (
                         <MenuItem value=''>
                             <em>No beacons found</em>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 
 function SiteModal(props:any) {
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [city, setCity] = useState('');
     const [town, setTown] = useState('');
@@ -32,7 +32,7 @@ function SiteModal(props:any) {
     }, [props.isEdit])
 
     const addSite = () => {
-        setloading(true);
+        setLoading(true);
         Axios.post('http://localhost:3001/api/add-site', {
             project_name: projectName,
             city,
@@ -50,15 +50,15 @@ function SiteModal(props:any) {
                 setBarangay('');
                 setLatitude('');
                 setLongitude('');
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }
 
     const updateSite = () => {
-        setloading(true);
+        setLoading(true);
         Axios.put('http://localhost:3001/api/update-site', {
             site_id: props.rowData.site_id,
             project_name: projectName,
@@ -77,9 +77,9 @@ function SiteModal(props:any) {
                 setBarangay('');
                 setLatitude('');
                 setLongitude('');
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }

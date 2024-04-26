@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import Axios from "axios";
 
 function BeaconModal(props:any) {
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [beaconName, setBeaconName] = useState('');
 
     useEffect(() => {
@@ -17,7 +17,7 @@ function BeaconModal(props:any) {
     }, [props.isEdit])
 
   const addBeacon = () => {
-    setloading(true);
+    setLoading(true);
     Axios.post('http://localhost:3001/api/add-beacon', {
       beacon_name: beaconName
     }).then((response) => {
@@ -25,15 +25,15 @@ function BeaconModal(props:any) {
             props.onHide();
             props.updateTable();
             setBeaconName('');
-            setloading(false);
+            setLoading(false);
         } else {
-            setloading(false);
+            setLoading(false);
         }
     });
   }
 
   const updateBeacon = () => {
-    setloading(true);
+    setLoading(true);
     Axios.put('http://localhost:3001/api/update-beacon', {
       beacon_id: props.rowData.beacon_id,
       beacon_name: beaconName
@@ -42,9 +42,9 @@ function BeaconModal(props:any) {
             props.onHide();
             props.updateTable();
             setBeaconName('');
-            setloading(false);
+            setLoading(false);
         } else {
-            setloading(false);
+            setLoading(false);
         }
     });
 }

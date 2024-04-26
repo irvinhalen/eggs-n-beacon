@@ -29,7 +29,7 @@ function TransactionModal(props:any) {
     const [checkedOut, setCheckedOut] = useState(true);
     const [inTime, setInTime] = useState<Dayjs | null>(null);
     const [outTime, setOutTime] = useState<Dayjs | null>(null);
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
       getSelectData();
@@ -120,7 +120,7 @@ function TransactionModal(props:any) {
     };
 
     const addTransaction = () => {
-        setloading(true);
+        setLoading(true);
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
@@ -144,15 +144,15 @@ function TransactionModal(props:any) {
                 setSoilAmount('');
                 setCheckedIn(true);
                 setCheckedOut(true);
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }
 
     const updateTransaction = () => {
-        setloading(true);
+        setLoading(true);
         const in_num = (+ checkedIn);
         const out_num = (+ checkedOut);
         const soil_amount = parseFloat(soilAmount);
@@ -177,9 +177,9 @@ function TransactionModal(props:any) {
                 setSoilAmount('');
                 setCheckedIn(true);
                 setCheckedOut(true);
-                setloading(false);
+                setLoading(false);
             } else {
-                setloading(false);
+                setLoading(false);
             }
         });
     }
