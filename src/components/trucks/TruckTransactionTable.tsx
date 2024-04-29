@@ -16,7 +16,7 @@ import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import TransactionModalConfirm from "./TransactionModalConfirm";
 import { Dayjs } from "dayjs";
 
-function TruckTransactionTable({getLineChartData, siteId}:{getLineChartData?:() => void, siteId?:number}) {
+function TruckTransactionTable({ getLineChartData, siteId }:{ getLineChartData?:() => void, siteId?:number }) {
   const { user } = useAuth() as AuthContextType;
   const [listOfTruckTransactions, setListOfTruckTransactions] = useState([]);
   const [modalShow, setModalShow] = useState(false);

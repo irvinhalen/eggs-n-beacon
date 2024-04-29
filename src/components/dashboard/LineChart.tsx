@@ -94,7 +94,7 @@ function LineChart({siteId, getLineChartData, lineChartData, selectedDates, setS
     dataGroup = dataGroup.filter((arr) => arr.length > 0);
     setGroupedData(dataGroup);
   };
-  
+
   function getPastSevenDays() {
     var pastDays = [];
     var today = new Date();
@@ -168,38 +168,37 @@ function LineChart({siteId, getLineChartData, lineChartData, selectedDates, setS
           </div>
         </Card.Title>
       </Card.Header>
-      <Card.Body>
-        { groupedData.length && selectedDates.length ?
-        (
-          <Line
-            data={{
-              labels: selectedDates,
-              datasets: groupedData.map((row) => {
-                return ({
-                  id: row[0].site_id,
-                  label: row[0].project_name,
-                  data: row.map((cell:SoilData) => cell.soil_amount),
-                  tension: 0.2,
-                  borderJoinStyle: 'round',
-                  borderWidth: 3,
-                  // borderColor: '#FFCF8B',
-                  // backgroundColor: '#FFCF8B',
-                  pointBorderColor: 'black',
-                  pointBorderWidth: 2
-                });
-              })
-            }}
-            options={{
-              maintainAspectRatio: false,
-              animation: {
-                duration: 0
-              }
-            }}
-            ref={chartRef}
-          />
-        ) : (
-          <div className="d-flex justify-content-center align-items-center h-100">no data found</div>
-        ) }
+      <Card.Body style={{ position: 'relative' }}>
+          { groupedData.length && selectedDates.length ?
+            <Line
+              data={{
+                labels: selectedDates,
+                datasets: groupedData.map((row) => {
+                  return ({
+                    id: row[0].site_id,
+                    label: row[0].project_name,
+                    data: row.map((cell:SoilData) => cell.soil_amount),
+                    tension: 0.2,
+                    borderJoinStyle: 'round',
+                    borderWidth: 3,
+                    // borderColor: '#FFCF8B',
+                    // backgroundColor: '#FFCF8B',
+                    pointBorderColor: 'black',
+                    pointBorderWidth: 2
+                  });
+                })
+              }}
+              options={{
+                maintainAspectRatio: false,
+                animation: {
+                  duration: 0
+                }
+              }}
+              ref={chartRef}
+            />
+           : 
+            <div className="d-flex justify-content-center align-items-center h-100">no data found</div>
+          }
       </Card.Body>
     </Card>
   )

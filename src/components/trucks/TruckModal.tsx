@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import Axios from "axios";
 
-interface SelectProject {
+export interface SelectProject {
     site_id: number,
     project_name: string
 }
@@ -133,16 +133,17 @@ function TruckModal(props:any) {
                 <FormControl fullWidth size='small'>
                     <InputLabel id='project-name'>Project</InputLabel>
                     <Select label='Project' labelId='project-name' value={project} onChange={handleChangeProj}>
-                        { listOfProjects.length ? ('') : (
+                        { listOfProjects.length ? (
+                            listOfProjects.map((project) => {
+                                return (
+                                    <MenuItem key={project.site_id} value={project.site_id}>{project.project_name}</MenuItem>
+                                );
+                            })
+                        ) : (
                             <MenuItem value=''>
                                 <em>No projects found</em>
                             </MenuItem>
                         ) }
-                        { listOfProjects.map((project) => {
-                            return (
-                                <MenuItem key={project.site_id} value={project.site_id}>{project.project_name}</MenuItem>
-                            );
-                        }) }
                     </Select>
                 </FormControl>
                 <FormControl fullWidth size='small'>

@@ -1,5 +1,4 @@
 import '../../css/Dashboard.css';
-// import DashboardTable from "../../components/dashboard/DashboardTable";
 import LineChart from "../../components/dashboard/LineChart";
 import TruckTransactionTable from '../../components/trucks/TruckTransactionTable';
 import SiteMap from '../../components/dashboard/SiteMap';
@@ -26,19 +25,19 @@ function Dashboard() {
   const [message, setMessage] = useState('');
   const [output, setOutput] = useState('∅');
 
-  useEffect(() => {
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+  // useEffect(() => {
+  //   // Enable pusher logging - don't include this in production
+  //   Pusher.logToConsole = true;
 
-    const pusher = new Pusher('5b5b15f8723996710b78', {
-      cluster: 'ap1'
-    });
+  //   const pusher = new Pusher('5b5b15f8723996710b78', {
+  //     cluster: 'ap1'
+  //   });
 
-    const channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data:any) {
-      setOutput(data.message);
-    });
-  }, []);
+  //   const channel = pusher.subscribe('my-channel');
+  //   channel.bind('my-event', function(data:any) {
+  //     setOutput(data.message);
+  //   });
+  // }, []);
 
   const handleClick = () => {
     Axios.post('http://localhost:3001/api/message', {
@@ -95,13 +94,14 @@ function Dashboard() {
           <h3 className='main-text site-header-text'>DASHBOARD</h3>
         </div>
         { user.role === 1 ? (
-          <div className='d-flex flex-column gap-3 mx-5'>
-            <TextField label='Text' color='secondary' onChange={(event) => setMessage(event.target.value)} value={message} autoComplete='off' />
-            <Button onClick={handleClick} variant='contained' color='secondary'>Change the output text in realtime</Button>
-            <div className='fs-1 w-100 d-flex justify-content-center'>
-              <b>{output}</b>
-            </div>
-          </div>
+          ''
+          // <div className='d-flex flex-column gap-3 mx-5'>
+          //   <TextField label='Text' color='secondary' onChange={(event) => setMessage(event.target.value)} value={message} autoComplete='off' />
+          //   <Button onClick={handleClick} variant='contained' color='secondary'>Change the output text in realtime</Button>
+          //   <div className='fs-1 w-100 d-flex justify-content-center'>
+          //     <b>{output}</b>
+          //   </div>
+          // </div>
         ) : (
           <div className='container-fluid'>
               <div className='row mb-3'>

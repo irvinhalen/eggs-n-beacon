@@ -11,6 +11,7 @@ import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import AssignmentModal from "./AssignmentModal";
 
 function AssignmentUserTable() {
+
   const [listOfUsers, setListOfUsers] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);

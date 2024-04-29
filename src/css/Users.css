@@ -29,3 +29,15 @@
 }
 
 /* End of TruckTables */
+
+/* Start of Assignment */
+
+.project-list {
+    display: inherit;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 7rem;
+    overflow: auto;
+}
+
+/* End of Assignment */
