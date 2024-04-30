@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
         const [user, setUser] = useState(() => {
         const localValue = localStorage.getItem('user');
             if (localValue == null) {
-                return []
+                return null;
             }
             return JSON.parse(localValue);
         });
