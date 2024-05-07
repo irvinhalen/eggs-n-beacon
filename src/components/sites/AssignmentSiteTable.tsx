@@ -2,15 +2,14 @@ import { Card } from "react-bootstrap";
 import { ReactTabulator } from "react-tabulator";
 import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/css/tabulator_simple.min.css';
-import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import { InputAdornment, TextField, ThemeProvider } from "@mui/material";
 import { blackTheme } from "../MaterialThemes";
 import { FilterAltRounded, SearchRounded } from "@mui/icons-material";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
+import { DesignatedSite } from "../../pages/users/AssignUsers";
 
-function AssignmentSiteTable() {
-  const [listOfUsers, setListOfUsers] = useState([]);
+function AssignmentSiteTable({listOfSites, getAssignmentSites}:{listOfSites:Array<DesignatedSite>, getAssignmentSites:() => void}) {
   const [searchString, setSearchString] = useState('');
   const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
 
@@ -31,12 +30,6 @@ function AssignmentSiteTable() {
       ]
     ]);
   }
-
-  const getAssignmentSites = () =>{
-    Axios.get('http://localhost:3001/api/assignments-site').then((response) => {
-      setListOfUsers(response.data);
-    });
-  };
 
   return (
     <Card className="site-table-card shadow-sm">
@@ -70,7 +63,7 @@ function AssignmentSiteTable() {
       <Card.Body className='manager-cards'>
         <ReactTabulator
             onRef={(ref) => setTableRef(ref.current)}
-            data={listOfUsers}
+            data={listOfSites}
             columns={columns}
             options={options}
         />

@@ -10,7 +10,7 @@ import { EditLocationAlt, FilterAltRounded, SearchRounded } from "@mui/icons-mat
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 import AssignmentModal from "./AssignmentModal";
 
-function AssignmentUserTable() {
+function AssignmentUserTable({getAssignmentSites}:{getAssignmentSites:() => void}) {
 
   const [listOfUsers, setListOfUsers] = useState([]);
   const [searchString, setSearchString] = useState('');
@@ -115,6 +115,7 @@ function AssignmentUserTable() {
           }}
           rowData={rowData}
           updateUserTable={getAssignmentUsers}
+          updateSiteTable={getAssignmentSites}
         />
       </Card.Body>      
     </Card>

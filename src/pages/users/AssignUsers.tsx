@@ -1,7 +1,25 @@
 import AssignmentUserTable from "../../components/users/AssignmentUserTable";
 import AssignmentSiteTable from "../../components/sites/AssignmentSiteTable";
+import { useState } from "react";
+import Axios from 'axios';
+
+export interface DesignatedSite{
+  project_name: string,
+  city: string,
+  town: string,
+  barangay: string,
+  assus: number
+}
 
 function AssignUsers() {
+  const [listOfSites, setListOfSites] = useState<Array<DesignatedSite>>([]);
+
+  const getAssignmentSites = () =>{
+    Axios.get('http://localhost:3001/api/assignments-site').then((response) => {
+      setListOfSites(response.data);
+    });
+  };
+
   return (
     <>
       <div className='bg-div' />
@@ -12,10 +30,10 @@ function AssignUsers() {
         <div className='container-fluid'>
           <div className='row'>
             <div className="col-lg-5 mb-2">
-                <AssignmentUserTable />
+                <AssignmentUserTable getAssignmentSites={getAssignmentSites} />
             </div>
             <div className="col-lg-7 mb-2">
-                <AssignmentSiteTable />
+                <AssignmentSiteTable listOfSites={listOfSites} getAssignmentSites={getAssignmentSites} />
             </div>
           </div>
         </div>

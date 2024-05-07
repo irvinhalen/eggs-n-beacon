@@ -8,7 +8,6 @@ import { blackTheme, greenTheme } from "../MaterialThemes";
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import { SelectProject } from '../trucks/TruckModal';
-// import Axios from "axios";
 
 interface AssignedSites{
   site_assignment_id?: number,
@@ -68,6 +67,37 @@ function AssignmentModal(props:any) {
       });
     };
 
+    const addAssignment = (site_id: number) => {
+      setLoading(true);
+      Axios.post('http://localhost:3001/api/add-assignment', {
+        user_id: props.rowData.id,
+        site_id
+      }).then((response) => {
+        if(response.status === 200){
+          props.onHide();
+          props.updateUserTable();
+          props.updateSiteTable();
+        }
+        setLoading(false);
+      });
+    }
+
+    const deleteAssignment = (site_assignment_id: number) => {
+      setLoading(true);
+      Axios.delete('http://localhost:3001/api/delete-assignment', {
+          params: {
+              site_assignment_id
+          }
+      }).then((response) => {
+          if(response.data.status === 'success') {
+              props.onHide();
+              props.updateUserTable();
+              props.updateSiteTable();
+          }
+          setLoading(false);
+      });
+    }
+    
     const crudChecker = () => {
       let allMatch:boolean = true;
       setListOfAssignedSites((assignedSites) => assignedSites.sort((a, b) => { return a.site_id - b.site_id }));
@@ -78,7 +108,6 @@ function AssignmentModal(props:any) {
             allMatch = false;
           }
         }
-        console.log(listOfAssignedSites, listOfAssignedSitesBeforeChanges);
       }else{
         allMatch = false;
       }
@@ -86,58 +115,34 @@ function AssignmentModal(props:any) {
       if(allMatch){
         props.onHide();
       }else{
-        if(listOfAssignedSites.length > 0 && listOfAssignedSitesBeforeChanges.length >0){
+        if(listOfAssignedSites.length > 0 && listOfAssignedSitesBeforeChanges.length === 0){
           listOfAssignedSites.forEach((assignedSite) => {
-            let match:boolean = false;
-            for(let i=0; i<listOfAssignedSitesBeforeChanges.length; i++){
-              if(assignedSite.site_id === listOfAssignedSitesBeforeChanges[i].site_id){
-                match = true;
+            addAssignment(assignedSite.site_id);
+          });
+        }else if(listOfAssignedSites.length === 0 && listOfAssignedSitesBeforeChanges.length > 0){
+          listOfAssignedSitesBeforeChanges.forEach((assignedSiteBeforeChange) => {
+              if(assignedSiteBeforeChange.site_assignment_id){
+                deleteAssignment(assignedSiteBeforeChange.site_assignment_id);
               }
-              if(!match){
-                addAssignment(assignedSite.site_id);
-              }
+          });
+        }else{
+          listOfAssignedSites.forEach((assignedSite) => {
+            const foundSite = listOfAssignedSitesBeforeChanges.find((site) => site.site_id === assignedSite.site_id);
+            if(!foundSite){
+              addAssignment(assignedSite.site_id);
             }
           });
           listOfAssignedSitesBeforeChanges.forEach((assignedSiteBeforeChange) => {
             const foundSite = listOfAssignedSites.find((site) => site.site_assignment_id === assignedSiteBeforeChange.site_assignment_id);
             if(!foundSite){
               if(assignedSiteBeforeChange.site_assignment_id){
-                removeAssignment(assignedSiteBeforeChange.site_assignment_id);
+                deleteAssignment(assignedSiteBeforeChange.site_assignment_id);
               }
             }
-          })
+          });
         }
       }
     };
-
-  const addAssignment = (site_id: number) => {
-    setLoading(true);
-    Axios.post('http://localhost:3001/api/add-assignment', {
-      user_id: props.rowData.id,
-      site_id
-    }).then((response) => {
-      if(response.status === 200){
-        props.updateUserTable();
-        props.onHide();
-      }
-      setLoading(false);
-    });
-  }
-
-  const removeAssignment = (site_assignment_id: number) => {
-    setLoading(true);
-    Axios.delete('http://localhost:3001/api/delete-assignment', {
-        params: {
-            site_assignment_id
-        }
-    }).then((response) => {
-        if(response.data.status === 'success') {
-            props.onHide();
-            props.updateUserTable();
-        }
-        setLoading(false);
-    });
-  }
 
   const addAssignedSite = () => {
     setProject('');
