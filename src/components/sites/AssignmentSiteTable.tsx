@@ -74,7 +74,7 @@ function AssignmentSiteTable() {
             columns={columns}
             options={options}
         />
-      </Card.Body>      
+      </Card.Body>
     </Card>
   )
 }

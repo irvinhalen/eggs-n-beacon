@@ -4,9 +4,9 @@ import 'react-tabulator/lib/styles.css';
 import 'react-tabulator/css/tabulator_simple.min.css';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, InputAdornment, TextField, ThemeProvider } from "@mui/material";
+import { InputAdornment, TextField, ThemeProvider } from "@mui/material";
 import { blackTheme } from "../MaterialThemes";
-import { FilterAltRounded, SearchRounded, SettingsRounded } from "@mui/icons-material";
+import { FilterAltRounded, SearchRounded } from "@mui/icons-material";
 import { ReactTabulatorProps } from "react-tabulator/lib/ReactTabulator";
 
 function UserTable() {
@@ -25,7 +25,6 @@ function UserTable() {
   const filterTable = () => {
     tableRef?.setFilter([
       [
-        {field: 'id', type: 'like', value: searchString},
         {field: 'username', type: 'like', value: searchString},
         {field: 'email', type: 'like', value: searchString}
       ]
@@ -49,7 +48,7 @@ function UserTable() {
                 <div className='filters-wrap'>
                     <TextField
                         label='Search'
-                        placeholder='ID, Username, Email'
+                        placeholder='Username, Email'
                         onChange={(event) => setSearchString(event.target.value)}
                         size='small'
                         InputProps={{
@@ -61,16 +60,6 @@ function UserTable() {
                       autoComplete='off'
                     />
                     <FilterAltRounded sx={{ color: '#757575' }} />
-                </div>
-                <div className='d-flex justify-content-between align-items-center settings-wrap'>
-                  <ThemeProvider theme={blackTheme}>
-                      <Button
-                          variant='outlined'
-                        >
-                          Show Actions
-                      </Button>
-                  </ThemeProvider>
-                  <SettingsRounded sx={{ color: '#757575' }} />
                 </div>
               </div>
             </div>
@@ -101,7 +90,7 @@ const options = {
 }
 
 const columns:any = [
-  {title: 'ID', field: 'id', headerHozAlign: 'center'},
+  {field: 'id', headerSort: false},
   {title: 'Username', field: 'username', headerHozAlign: 'center', widthGrow: 2},
   {title: 'Email Address', field: 'email', headerHozAlign: 'center', widthGrow: 2}
 ];

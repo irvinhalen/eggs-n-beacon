@@ -46,7 +46,6 @@ function AssignmentUserTable() {
     tabRow.select();
     setRowData(row);
     setModalShow(true);
-    console.log(tabRow, row, modalShow);
   }
 
   const OptionsFormat = (props:ReactTabulatorProps) => {
@@ -109,12 +108,13 @@ function AssignmentUserTable() {
             options={options}
         />
         <AssignmentModal
-            show={modalShow}
-            onHide={() => {
-              tableRef?.deselectRow();
-              setModalShow(false);
-            }}
-            rowData={rowData}
+          show={modalShow}
+          onHide={() => {
+            tableRef?.deselectRow();
+            setModalShow(false);
+          }}
+          rowData={rowData}
+          updateUserTable={getAssignmentUsers}
         />
       </Card.Body>      
     </Card>

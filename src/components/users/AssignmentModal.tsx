@@ -11,35 +11,38 @@ import { SelectProject } from '../trucks/TruckModal';
 // import Axios from "axios";
 
 interface AssignedSites{
-  site_assignment_id: number,
+  site_assignment_id?: number,
   site_id: number,
   project_name: string
 };
 
 function AssignmentModal(props:any) {
     const { user } = useAuth() as AuthContextType;
-    const [loading, setLoading] = useState(false);
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [listOfSites, setListOfSites] = useState<Array<SelectProject>>([]);
     const [listOfAssignedSites, setListOfAssignedSites] = useState<Array<AssignedSites>>([]);
-    const [project, setProject] = useState('');
+    const [listOfAssignedSitesBeforeChanges, setListOfAssignedSitesBeforeChanges] = useState<Array<AssignedSites>>([]);
+    const [project, setProject] = useState<string>('');
 
     useEffect(() => {
       getSites();
     }, []);
 
     useEffect(() => {
-        if(props.show){
-            getAssignments();
-            setUsername(props.rowData.username);
-            setEmail(props.rowData.email);
-        }else{
-            setUsername('');
-            setEmail('');
-            setProject('');
-        }
-    }, [props.show])
+      if(props.show){
+          getAssignments();
+          setUsername(props.rowData.username);
+          setEmail(props.rowData.email);
+      }else{
+          setUsername('');
+          setEmail('');
+          setProject('');
+          setListOfAssignedSites([]);
+          setListOfAssignedSitesBeforeChanges([]);
+      }
+    }, [props.show]);
 
     const getSites = () => {
       if(user){
@@ -61,41 +64,94 @@ function AssignmentModal(props:any) {
         }
       }).then((response) => {
         setListOfAssignedSites(response.data);
+        setListOfAssignedSitesBeforeChanges(response.data);
       });
     };
 
-//   const addBeacon = () => {
-//     setLoading(true);
-//     Axios.post('http://localhost:3001/api/add-beacon', {
-//       beacon_name: username
-//     }).then((response) => {
-//         if(response.data.status === 'success') {
-//             props.onHide();
-//             props.updateTable();
-//             setUsername('');
-//             setLoading(false);
-//         } else {
-//             setLoading(false);
-//         }
-//     });
-//   }
+    const crudChecker = () => {
+      let allMatch:boolean = true;
+      setListOfAssignedSites((assignedSites) => assignedSites.sort((a, b) => { return a.site_id - b.site_id }));
+      setListOfAssignedSitesBeforeChanges((assignedSitesBeforeChanges) => assignedSitesBeforeChanges.sort((a, b) => { return a.site_id - b.site_id }));
+      if(listOfAssignedSites.length === listOfAssignedSitesBeforeChanges.length){
+        for(let i=0; i<listOfAssignedSitesBeforeChanges.length; i++){
+          if(listOfAssignedSites[i].site_id != listOfAssignedSitesBeforeChanges[i].site_id){
+            allMatch = false;
+          }
+        }
+        console.log(listOfAssignedSites, listOfAssignedSitesBeforeChanges);
+      }else{
+        allMatch = false;
+      }
 
-//   const updateBeacon = () => {
-//     setLoading(true);
-//     Axios.put('http://localhost:3001/api/update-beacon', {
-//       beacon_id: props.rowData.beacon_id,
-//       beacon_name: username
-//     }).then((response) => {
-//         if(response.data.status === 'success') {
-//             props.onHide();
-//             props.updateTable();
-//             setUsername('');
-//             setLoading(false);
-//         } else {
-//             setLoading(false);
-//         }
-//     });
-// }
+      if(allMatch){
+        props.onHide();
+      }else{
+        if(listOfAssignedSites.length > 0 && listOfAssignedSitesBeforeChanges.length >0){
+          listOfAssignedSites.forEach((assignedSite) => {
+            let match:boolean = false;
+            for(let i=0; i<listOfAssignedSitesBeforeChanges.length; i++){
+              if(assignedSite.site_id === listOfAssignedSitesBeforeChanges[i].site_id){
+                match = true;
+              }
+              if(!match){
+                addAssignment(assignedSite.site_id);
+              }
+            }
+          });
+          listOfAssignedSitesBeforeChanges.forEach((assignedSiteBeforeChange) => {
+            const foundSite = listOfAssignedSites.find((site) => site.site_assignment_id === assignedSiteBeforeChange.site_assignment_id);
+            if(!foundSite){
+              if(assignedSiteBeforeChange.site_assignment_id){
+                removeAssignment(assignedSiteBeforeChange.site_assignment_id);
+              }
+            }
+          })
+        }
+      }
+    };
+
+  const addAssignment = (site_id: number) => {
+    setLoading(true);
+    Axios.post('http://localhost:3001/api/add-assignment', {
+      user_id: props.rowData.id,
+      site_id
+    }).then((response) => {
+      if(response.status === 200){
+        props.updateUserTable();
+        props.onHide();
+      }
+      setLoading(false);
+    });
+  }
+
+  const removeAssignment = (site_assignment_id: number) => {
+    setLoading(true);
+    Axios.delete('http://localhost:3001/api/delete-assignment', {
+        params: {
+            site_assignment_id
+        }
+    }).then((response) => {
+        if(response.data.status === 'success') {
+            props.onHide();
+            props.updateUserTable();
+        }
+        setLoading(false);
+    });
+  }
+
+  const addAssignedSite = () => {
+    setProject('');
+    const selectedSite = listOfSites.find((site) => site.site_id === parseInt(project));
+    if(selectedSite){
+      setListOfAssignedSites((assignedSite) => [{site_id: parseInt(project), project_name: selectedSite.project_name }, ...assignedSite]);
+    }
+  }
+
+  const removeAssignedSite = (site:AssignedSites) => {
+    setListOfAssignedSites(listOfAssignedSites.filter((assignedSite) => {
+      return assignedSite.site_id != site.site_id;
+    }));
+  }
 
   return (
     <Modal
@@ -125,11 +181,13 @@ function AssignmentModal(props:any) {
                         <Select label='Project Name' labelId='project-name' value={project} onChange={(event: SelectChangeEvent) => setProject(event.target.value as string)}>
                           { listOfSites.length ? (
                             listOfSites.map((project) => {
-                              return (
-                                <MenuItem key={project.site_id} value={project.site_id}>
-                                    {project.project_name}
-                                </MenuItem>
-                              );
+                              if(!listOfAssignedSites.some((assignedSite) => assignedSite.site_id === project.site_id)){
+                                return (
+                                  <MenuItem key={project.site_id} value={project.site_id}>
+                                      {project.project_name}
+                                  </MenuItem>
+                                );
+                              }
                             })
                           ):(
                             <MenuItem value=''>
@@ -141,7 +199,7 @@ function AssignmentModal(props:any) {
                     { project === '' ? (
                       <ButtonBase sx={{ borderRadius: 25, padding: 0.5 }} disabled><AddCircle sx={{ color: '#757575' }} /></ButtonBase>
                     ):(
-                      <ButtonBase onClick={() => listOfAssignedSites.unshift({site_assignment_id: 0, site_id: parseInt(project), project_name: 'Howdy' })} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><AddCircle className='text-primary' /></ButtonBase>
+                      <ButtonBase onClick={ () => addAssignedSite() } centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><AddCircle className='text-primary' /></ButtonBase>
                     ) }
                 </div>
                 { listOfAssignedSites.length > 0 ? (
@@ -152,7 +210,7 @@ function AssignmentModal(props:any) {
                         <div className='d-flex flex-row justify-content-center align-items-center gap-3'>
                           <input type='hidden' value={site.site_id} />
                           <TextField variant='standard' value={site.project_name} inputProps={{ readOnly: true }} fullWidth />
-                          <ButtonBase centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><RemoveCircle sx={{ color: '#E72423' }} /></ButtonBase>
+                          <ButtonBase onClick={ () => removeAssignedSite(site) } centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><RemoveCircle sx={{ color: '#E72423' }} /></ButtonBase>
                         </div>
                       ) }
                     </div>
@@ -169,7 +227,7 @@ function AssignmentModal(props:any) {
             { loading ? (
                 <LoadingButton variant='contained' loading>Save</LoadingButton>
             ) : (
-                <Button onClick={props.onHide} variant='contained' type='submit' disableElevation>Save</Button>
+                <Button onClick={crudChecker} variant='contained' type='submit' disableElevation>Save</Button>
             ) }
         </ThemeProvider>
       </Modal.Footer>
