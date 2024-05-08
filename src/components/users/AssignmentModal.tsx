@@ -9,7 +9,7 @@ import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { AuthContextType, useAuth } from "../../utils/AuthContext";
 import { SelectProject } from '../trucks/TruckModal';
 
-interface AssignedSites{
+export interface AssignedSites{
   site_assignment_id?: number,
   site_id: number,
   project_name: string

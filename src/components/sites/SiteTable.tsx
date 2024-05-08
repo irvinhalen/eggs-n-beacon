@@ -11,10 +11,12 @@ import { blackTheme, greenTheme, redTheme } from "../MaterialThemes";
 import { Delete, Edit, FilterAltRounded, SearchRounded, SettingsRounded } from "@mui/icons-material";
 import SiteModal from "./SiteModal";
 import SiteModalConfirm from "./SiteModalConfirm";
+import { AssignedSites } from "../users/AssignmentModal";
 
 function SiteTable({ siteId }:{ siteId:number }) {
   const { user } = useAuth() as AuthContextType;
   const [listOfSites, setListOfSites] = useState([]);
+  const [listOfAssignments, setListOfAssignments] = useState<Array<AssignedSites>>([]);
   const [tableRef, setTableRef] = useState<ReactTabulatorProps | null>(null);
   const [searchString, setSearchString] = useState<string>('');
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -26,6 +28,7 @@ function SiteTable({ siteId }:{ siteId:number }) {
 
   useEffect(() => {
     getSites();
+    getAssignments();
   }, []);
 
   useEffect(() => {
@@ -60,29 +63,40 @@ function SiteTable({ siteId }:{ siteId:number }) {
   }
 
   const getSites = () => {
+    Axios.get('http://localhost:3001/api/sites').then((response) => {
+      setListOfSites(response.data);
+      setToggleVisibility(false);
+    });
+  };
+
+  const getAssignments = () => {
     if(user){
-      Axios.get('http://localhost:3001/api/sites', {
+      Axios.get('http://localhost:3001/api/assignments', {
         params: {
-          id: user.id,
-          role: user.role
+          id: user.id
         }
       }).then((response) => {
-        setListOfSites(response.data);
-        setToggleVisibility(false);
+        setListOfAssignments(response.data);
+        console.log(listOfAssignments);
       });
-    }
-  };
+    };
+  }
 
   const OptionsFormat = (props:ReactTabulatorProps) => {
     const tabRow = props.cell.getRow();
     const row = props.cell.getData();
     return (
       <div className='actions-div'>
-        <ButtonBase onClick={() => editRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
         { user.role === 1 ? (
-          <ButtonBase onClick={() => deleteRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
+          <>
+            <ButtonBase onClick={() => editRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
+            <ButtonBase onClick={() => deleteRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Delete fontSize='small' sx={{ color: '#E72423' }} /></ButtonBase>
+          </>
         ) : (
-          ''
+          listOfAssignments?.find((assignment) => assignment.site_id === row.site_id) ? 
+            <ButtonBase onClick={() => editRow(row, tabRow)} centerRipple={true} sx={{ borderRadius: 25, padding: 0.5 }}><Edit fontSize='small' sx={{ color: '#019B63' }} /></ButtonBase>
+          :
+            ''
         ) }
       </div>
     );

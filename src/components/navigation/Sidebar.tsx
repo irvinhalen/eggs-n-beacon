@@ -140,7 +140,11 @@ function Sidebar() {
                         sx={{ padding:'1rem', width: '100%' }}
                     >
                         <div className='main-text' style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem', fontSize: 'small' }}>
-                            Profile
+                            { user.role === 2 ? 
+                                'Profile'
+                            :
+                                ''
+                            }
                             <Link to='/login' onClick={handleLogout} style={{ color: '#E72423',textDecoration: 'none' }}>Logout</Link>
                         </div>
                     </Popover>

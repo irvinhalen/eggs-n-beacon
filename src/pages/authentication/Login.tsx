@@ -2,7 +2,7 @@ import { useState ,useEffect } from 'react';
 import '../../css/Authentication.css';
 import login_photo from '../../assets/login_photo.jpg';
 import logo from '../../assets/logo.png';
-import { Button, TextField, ThemeProvider } from '@mui/material';
+import { Alert, Button, Collapse, TextField, ThemeProvider } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Card } from 'react-bootstrap';
 import { AuthContextType, useAuth } from '../../utils/AuthContext';
@@ -11,9 +11,9 @@ import { blackTheme, authTheme } from '../../components/MaterialThemes';
 
 function Login() {
     const {user, loginUser, loading} = useAuth() as AuthContextType;
-    
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [open, setOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -42,6 +42,11 @@ function Login() {
                         <div className='card-wrapper'>
                             <Card style={{ borderWidth: 0, height: '95%', width: '95%', position: 'absolute', margin: 'auto', top: 0, bottom: 0, left: 0, right: 0 }}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '3rem', textAlign: 'center' }}>
+                                    <Collapse in={open} className='w-50'>
+                                        <Alert severity='error' icon={false} className='d-flex flex-row justify-content-center'>
+                                            Username does not exist!
+                                        </Alert>
+                                    </Collapse>
                                     <Card.Title style={{ fontWeight: '700' }}><h1><img src={logo} alt='Site Manager Logo' height='70rem' />&nbsp;Site Manager</h1></Card.Title>
                                     <form style={{ display: 'inherit', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
                                         <div className='input-div'>
